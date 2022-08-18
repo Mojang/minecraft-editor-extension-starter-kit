@@ -43,11 +43,10 @@
 		"@mojang/minecraft-editor-events": "file:./libraries/@mojang-minecraft-editor-events-0.0.1.tgz"
 	},
 	"scripts": {
-		"prepare-uwp": "just-scripts prepare-uwp",
-		"prepare-win32": "just-scripts prepare-win32",
-		"build": "just-scripts build",
+		"prepare-win32": "just-scripts prepare --exetype win32 --forceprepare",
+		"prepare-uwp": "just-scripts prepare --exetype uwp --forceprepare",
 		"clean": "just-scripts clean",
-		"build-uwp": "just-scripts bundle --overrideConfig './webpack.config.debuguwp.js'",
-		"build-win32": "just-scripts bundle --overrideConfig './webpack.config.debugwin32.js'"
+		"build-uwp": "just-scripts build --exetype uwp",
+		"build-win32": "just-scripts build --exetype win32"
 	}
 }

@@ -7,13 +7,81 @@ import path from 'path';
 
 require('dotenv').config();
 
-option('overrideConfig');
+// Win32 or UWP
+option('exetype'); 
+
+// Forces the behavior pack folder to be created and the assets to be copied over and 
+// various environment variables to be injected
+option('forceprepare'); 
 
 task('bundle', () => {
-	return webpackTask(argv().overrideConfig ? { config: argv().overrideConfig } : undefined);
+	return webpackTask();
 });
 
-task('build', series('bundle'));
+task('prepare', () => {
+	const exeType: string = (argv().exetype as string).toLowerCase();
+	if(!exeType) {
+		throw 'No exetype option specified - unknown target platform';
+	}
+
+	const forcePrepare: boolean = (argv().forceprepare ? argv().forceprepare as boolean : false);
+
+	if(exeType === 'win32') {
+		_prepareTargetFolder('Win32', forcePrepare);
+	}
+	else if( exeType === 'uwp') {
+		_prepareTargetFolder('UWP', forcePrepare);
+	}
+	else {
+		throw 'Unrecognized target platform';
+	}
+});
+
+task('copyBuildToTarget', () => {
+
+	const exeType: string = (argv().exetype as string).toLowerCase();
+	if(!exeType) {
+		throw 'No exetype option specified - unknown target platform';
+	}
+
+	const extensionName = envHelpers.getExtensionName();
+	var targetFolder = envHelpers.getTargetDir(exeType, extensionName);
+	targetFolder = path.resolve(targetFolder, 'scripts');
+	try{
+		// check that our destination scripts folder exists
+		if(!fs.existsSync(targetFolder)) {
+			fs.mkdirSync(targetFolder);
+		}
+	} catch(err) {
+		logger.error(err);
+		throw err;
+	}
+
+	const sourcePath = path.resolve(__dirname, 'dist');
+	logger.info('Copying build artifacts to destination (' + targetFolder + ')');
+	try{
+		// check that our assets folder exists!
+		if(!fs.existsSync(sourcePath)) {
+			const msg = 'Failed to locate build artifact `dist` folder';
+			logger.error(msg);
+			throw msg;
+		}
+	} catch(err) {
+		logger.error(err);
+		throw err;
+	}
+
+	// Copy the dist folder contents to the destination target
+	fs.copySync(sourcePath, targetFolder, {overwrite: true}, (err) => {
+		if(err) {
+			logger.error(err);
+			throw err;
+		}
+		logger.info('Copy Success');
+	});
+});
+
+task('build', series('prepare', 'bundle', 'copyBuildToTarget'));
 
 task('clean', () => {
 	rimraf('temp', {}, () => {
@@ -30,23 +98,12 @@ task('clean', () => {
 	});
 });
 
-task('prepare-uwp', () => {
-	const exeType = "UWP";
-	_prepareTargetFolder(exeType);
-});
-
-task('prepare-win32', () => {
-	const exeType = "Win32";
-	_prepareTargetFolder(exeType);
-});
-
 /*
   Internal function to create and prepare the destination folder,
   and modify the assets contained within to match with the settings
   stored in the .env file
 */
-
-function _prepareTargetFolder(exeType: string) {
+function _prepareTargetFolder(exeType: string, force: boolean) {
 
 	logger.info('Preparing destination behavior pack folder (' + exeType + ')');
 
@@ -61,6 +118,15 @@ function _prepareTargetFolder(exeType: string) {
 		if (!fs.existsSync(targetFolder)) {
 			logger.info('Creating behavior pack folder [' + targetFolder + ']');
 			fs.mkdirSync(targetFolder);
+		}
+		else {
+			// Behavior Pack folder exists - no need to carry on unless we're
+			// forced to
+			if( !force ) {
+				logger.info('Behavior Pack exists - skipping prepare step');
+				return;
+			}
+			logger.info('Forcing Behavior Pack prepare step');
 		}
 	} catch(err) {
 		logger.error(err);

@@ -743,30 +743,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mojang/core-utilities@file:./@mojang-core-utilities-0.0.1.tgz::locator=editor-extension%40workspace%3A.":
+"@mojang/core-utilities@file:./libraries/@mojang-core-utilities-0.0.1.tgz::locator=your-custom-editor-extension%40workspace%3A.":
   version: 0.0.1
-  resolution: "@mojang/core-utilities@file:./@mojang-core-utilities-0.0.1.tgz::locator=editor-extension%40workspace%3A."
+  resolution: "@mojang/core-utilities@file:./libraries/@mojang-core-utilities-0.0.1.tgz::locator=your-custom-editor-extension%40workspace%3A."
   checksum: e9eba27cc7dd7bc1ed9dac58a7c6acaa0b0b504e770c3903301335116df9bc3a1fab54515ed5c3c5a6530205197f7c0e175652f9c3bbcb32f97b9ec15fb0f404
   languageName: node
   linkType: hard
 
-"@mojang/minecraft-editor-bindings@file:./@mojang-minecraft-editor-bindings-0.0.1.tgz::locator=editor-extension%40workspace%3A.":
+"@mojang/minecraft-editor-bindings@file:./libraries/@mojang-minecraft-editor-bindings-0.0.1.tgz::locator=your-custom-editor-extension%40workspace%3A.":
   version: 0.0.1
-  resolution: "@mojang/minecraft-editor-bindings@file:./@mojang-minecraft-editor-bindings-0.0.1.tgz::locator=editor-extension%40workspace%3A."
+  resolution: "@mojang/minecraft-editor-bindings@file:./libraries/@mojang-minecraft-editor-bindings-0.0.1.tgz::locator=your-custom-editor-extension%40workspace%3A."
   checksum: 29d8c95ebe0d851f98949fc5509913c91baef1465e5b985a4b883b329985d5faab4e7cbe20a87d6f1ac38dafd2db080a2b9afdd9ec9eedbd998aa948e89ed1ae
   languageName: node
   linkType: hard
 
-"@mojang/minecraft-editor-events@file:./@mojang-minecraft-editor-events-0.0.1.tgz::locator=editor-extension%40workspace%3A.":
+"@mojang/minecraft-editor-events@file:./libraries/@mojang-minecraft-editor-events-0.0.1.tgz::locator=your-custom-editor-extension%40workspace%3A.":
   version: 0.0.1
-  resolution: "@mojang/minecraft-editor-events@file:./@mojang-minecraft-editor-events-0.0.1.tgz::locator=editor-extension%40workspace%3A."
+  resolution: "@mojang/minecraft-editor-events@file:./libraries/@mojang-minecraft-editor-events-0.0.1.tgz::locator=your-custom-editor-extension%40workspace%3A."
   checksum: 735cd90e452a35783f42dd56b54a90365901be080dc85337de729a491817739bcee51e60d7b6670d01e965bd7096a9cdd8cf51ee89d1bbd0ddc571b2ef2b97f3
   languageName: node
   linkType: hard
 
-"@mojang/minecraft-editor@file:./@mojang-minecraft-editor-0.0.1.tgz::locator=editor-extension%40workspace%3A.":
+"@mojang/minecraft-editor@file:./libraries/@mojang-minecraft-editor-0.0.1.tgz::locator=your-custom-editor-extension%40workspace%3A.":
   version: 0.0.1
-  resolution: "@mojang/minecraft-editor@file:./@mojang-minecraft-editor-0.0.1.tgz::locator=editor-extension%40workspace%3A."
+  resolution: "@mojang/minecraft-editor@file:./libraries/@mojang-minecraft-editor-0.0.1.tgz::locator=your-custom-editor-extension%40workspace%3A."
   dependencies:
     "@mojang/core-utilities": "*"
     "@mojang/minecraft-editor-bindings": "*"
@@ -2055,29 +2055,6 @@ __metadata:
   checksum: f459ffce07b977b7f15d8cc4ee69cdff77d4dd8c5dc8c85d2d485ee84655352c2415f9dd09d42b5b5985ced3be186130871b34e2f3e2569ebc72fbc2e8096792
   languageName: node
   linkType: hard
-
-"editor-extension@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "editor-extension@workspace:."
-  dependencies:
-    "@mojang/core-utilities": "file:./@mojang-core-utilities-0.0.1-patch.tgz"
-    "@mojang/minecraft-editor": "file:./@mojang-minecraft-editor-0.0.1.tgz"
-    "@mojang/minecraft-editor-bindings": "file:./@mojang-minecraft-editor-bindings-0.0.1.tgz"
-    "@mojang/minecraft-editor-events": "file:./@mojang-minecraft-editor-events-0.0.1.tgz"
-    "@types/mojang-minecraft": ^0.1.6
-    "@types/node": ^12.12.7
-    dotenv: 16.0.1
-    fs-extra: ^10.1.0
-    just-scripts: ^2.0.0
-    rimraf: ^3.0.2
-    ts-loader: ^9.3.1
-    ts-node: ^10.9.1
-    tsconfig: "*"
-    tslib: ^2.4.0
-    typescript: ^4.7.2
-    webpack: ^5.74.0
-  languageName: unknown
-  linkType: soft
 
 "electron-to-chromium@npm:^1.4.202":
   version: 1.4.221
@@ -5135,6 +5112,29 @@ __metadata:
   checksum: f77b3d8d00310def622123df93d4ee654fc6a0096182af8bd60679ddcdfb3474c56c6c7190817c84a2785648cdee9d721c0154eb45698c62176c322fb46fc700
   languageName: node
   linkType: hard
+
+"your-custom-editor-extension@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "your-custom-editor-extension@workspace:."
+  dependencies:
+    "@mojang/core-utilities": "file:./libraries/@mojang-core-utilities-0.0.1-patch.tgz"
+    "@mojang/minecraft-editor": "file:./libraries/@mojang-minecraft-editor-0.0.1.tgz"
+    "@mojang/minecraft-editor-bindings": "file:./libraries/@mojang-minecraft-editor-bindings-0.0.1.tgz"
+    "@mojang/minecraft-editor-events": "file:./libraries/@mojang-minecraft-editor-events-0.0.1.tgz"
+    "@types/mojang-minecraft": ^0.1.6
+    "@types/node": ^12.12.7
+    dotenv: 16.0.1
+    fs-extra: ^10.1.0
+    just-scripts: ^2.0.0
+    rimraf: ^3.0.2
+    ts-loader: ^9.3.1
+    ts-node: ^10.9.1
+    tsconfig: "*"
+    tslib: ^2.4.0
+    typescript: ^4.7.2
+    webpack: ^5.74.0
+  languageName: unknown
+  linkType: soft
 
 "z-schema@npm:~5.0.2":
   version: 5.0.3

@@ -67,7 +67,8 @@ Execute `reload` command in game:
 
 ### Known issues
 
-- None yet - I haven't fully tested it :)
+- `--watch` option should not be used - the updated build artifacts won't be copied to the destination folder
+
 
 ## Available Scripts
 
@@ -77,5 +78,5 @@ Below are the most common scripts, but refer to the package.json file for up to 
 | ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `yarn build`                        | Regular build. This creates JS files into `lib` directory and a webpack bundle into the dist directory.                                                                                                                                                                                                                                             |
 | `yarn clean`                        | Cleans all output folders.                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `yarn build-uwp [--watch]`      | Build for quick development for **UWP**. <br/>This creates JS files into `%LOCALAPPDATA%\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\com.mojang\development_behavior_packs`.
-| `yarn build-win32 [--watch]` | Build for quick development for **Win32 x64**. <br/>This creates JS files into `%APPDATA%\MinecraftPE\games\com.mojang\development_behavior_packs`.    |
+| `yarn build-uwp`      | Build for quick development for **UWP**. <br/>This creates JS files into `%LOCALAPPDATA%\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\com.mojang\development_behavior_packs`.
+| `yarn build-win32` | Build for quick development for **Win32 x64**. <br/>This creates JS files into `%APPDATA%\MinecraftPE\games\com.mojang\development_behavior_packs`.    |
