@@ -1,15 +1,15 @@
 {
   "format_version": 2,
   "header": {
-    "description": "{MC_BEHAVIOR_PACK_NAME}",
-    "name": "{MC_BEHAVIOR_PACK_NAME}",
+    "description": "{MC_PACK_NAME} Behaviors",
+    "name": "{MC_PACK_NAME}",
     "uuid": "{MC_BEHAVIOR_PACK_UUID}",
     "version": [ 0, 0, 1 ],
     "min_engine_version": [ 1, 14, 0 ]
   },
   "modules": [
     {
-      "description": "{MC_EXTENSION_NAME}",
+      "description": "{MC_EXTENSION_NAME} Script Module",
       "type": "script",
       "uuid": "{MC_BEHAVIOR_PACK_SCRIPT_UUID}",
       "version": [ 0, 0, 1 ],

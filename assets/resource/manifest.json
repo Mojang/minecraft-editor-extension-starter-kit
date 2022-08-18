@@ -1,0 +1,18 @@
+{
+  "format_version": 2,
+  "header": {
+    "description": "{MC_PACK_NAME} Resources",
+    "name": "{MC_PACK_NAME}",
+    "uuid": "{MC_RESOURCE_PACK_UUID}",
+    "version": [ 0, 0, 1 ],
+    "min_engine_version": [ 1, 14, 0 ]
+  },
+  "modules": [
+    {
+      "description": "{MC_EXTENSION_NAME} Resource Module",
+      "type": "resources",
+      "uuid": "{MC_RESOURCE_PACK_RESOURCES_UUID}",
+      "version": [ 0, 0, 1 ]
+    }
+  ]
+}

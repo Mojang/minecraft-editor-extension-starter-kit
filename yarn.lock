@@ -998,7 +998,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mojang-minecraft@npm:^0.1.6":
+"@types/mojang-gametest@npm:^0.1.3":
+  version: 0.1.5
+  resolution: "@types/mojang-gametest@npm:0.1.5"
+  dependencies:
+    "@types/mojang-minecraft": "*"
+  checksum: 47fae7e85868a8ae5d80ae185a857b8dd9eb85134436b5b1484d95a475827636d0d9800784c80e31b8162a869717ddfe4c85c3e5c34c84e76e8edf08840050a8
+  languageName: node
+  linkType: hard
+
+"@types/mojang-minecraft@npm:*, @types/mojang-minecraft@npm:^0.1.6":
   version: 0.1.6
   resolution: "@types/mojang-minecraft@npm:0.1.6"
   checksum: a32d7b7daeb038d9c5a637fafa166f1a14e3f9f96e3d39dfc1263529fcfb3f96f9cc9018dc0344c519b69db95121d4c3f0635fb6148ee7f85ddfdb5a33407af5
@@ -5121,6 +5130,7 @@ __metadata:
     "@mojang/minecraft-editor": "file:./libraries/@mojang-minecraft-editor-0.0.1.tgz"
     "@mojang/minecraft-editor-bindings": "file:./libraries/@mojang-minecraft-editor-bindings-0.0.1.tgz"
     "@mojang/minecraft-editor-events": "file:./libraries/@mojang-minecraft-editor-events-0.0.1.tgz"
+    "@types/mojang-gametest": ^0.1.3
     "@types/mojang-minecraft": ^0.1.6
     "@types/node": ^12.12.7
     dotenv: 16.0.1
