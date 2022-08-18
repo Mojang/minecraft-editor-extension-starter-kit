@@ -52,7 +52,13 @@ export function getBehaviorPackName() {
   return packName;
 }
 
-export function getTargetDir(exePrefix, extensionName) {
+export function getBehaviorPackFolder(exePrefix) {
+  const behaviorPackName = getBehaviorPackName();
+  const outputDir = path.resolve(getTargetFolder(exePrefix), behaviorPackName);
+  return outputDir;
+}
+
+export function getTargetFolder(exePrefix) {
   var outputDir = process.env["MC_PACK_ROOT_" + exePrefix];
   if (!outputDir) {
     throw "Unable to resolve " + exePrefix + " output path from .env file";
@@ -60,8 +66,5 @@ export function getTargetDir(exePrefix, extensionName) {
 
   // Expand any environment variables
   outputDir = expandVariablesWithEnvironmentVariables(outputDir);
-
-  // Append the extension name and the output directory within
-  outputDir = path.resolve(outputDir, extensionName);
   return outputDir;
 }

@@ -44,8 +44,7 @@ task('copyBuildToTarget', () => {
 		throw 'No exetype option specified - unknown target platform';
 	}
 
-	const extensionName = envHelpers.getExtensionName();
-	var targetFolder = envHelpers.getTargetDir(exeType, extensionName);
+	var targetFolder = envHelpers.getBehaviorPackFolder(exeType);
 	targetFolder = path.resolve(targetFolder, 'scripts');
 	try{
 		// check that our destination scripts folder exists
@@ -108,7 +107,7 @@ function _prepareTargetFolder(exeType: string, force: boolean) {
 	logger.info('Preparing destination behavior pack folder (' + exeType + ')');
 
 	const extensionName = envHelpers.getExtensionName();
-	const targetFolder = envHelpers.getTargetDir(exeType, extensionName);
+	const targetFolder = envHelpers.getBehaviorPackFolder(exeType);
 	if(!targetFolder) {
 		throw 'Unable to resolve target behavior pack folder';
 	}
