@@ -17,7 +17,8 @@
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,
 		"preserveWatchOutput": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"sourceMap": true
 	},
 	"include": ["src/**/*"],
 	"exclude": ["lib", "build", "node_modules"],

@@ -1,5 +1,5 @@
 {
-	"name": "your-custom-editor-extension",
+	"name": "EditorExtensionStarterKit",
 	"version": "0.1.0",
 	"productName": "Minecraft Editor Extension Package",
 	"description": "Minecraft Editor Extension Package",
@@ -31,7 +31,7 @@
 		"webpack": "^5.74.0"
 	},
 	"dependencies": {
-		"@mojang/core-utilities": "file:./libraries/@mojang-core-utilities-0.0.1-patch.tgz",
+		"@mojang/core-utilities": "file:./libraries/@mojang-core-utilities-0.0.1.tgz",
 		"@mojang/minecraft-editor": "file:./libraries/@mojang-minecraft-editor-0.0.1.tgz",
 		"@mojang/minecraft-editor-bindings": "file:./libraries/@mojang-minecraft-editor-bindings-0.0.1.tgz",
 		"@mojang/minecraft-editor-events": "file:./libraries/@mojang-minecraft-editor-events-0.0.1.tgz",

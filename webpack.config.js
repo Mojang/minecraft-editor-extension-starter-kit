@@ -1,7 +1,7 @@
 import * as envHelpers from './environment-helpers';
 
 const path = require('path');
-const { webpack, DefinePlugin } = require('webpack');
+const { webpack, DefinePlugin, SourceMapDevToolPlugin } = require('webpack');
 
 const ExtensionName = envHelpers.getExtensionName();
 const BehaviorPackName = envHelpers.getBehaviorPackName();
@@ -9,7 +9,7 @@ const BehaviorPackName = envHelpers.getBehaviorPackName();
 module.exports = {
     entry: './src/index.ts',
     mode: 'development',
-    devtool: 'source-map',
+    devtool: false,
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: ExtensionName + '.js',
@@ -36,6 +36,10 @@ module.exports = {
         new DefinePlugin({
             __EXTENSION_NAME__: JSON.stringify(ExtensionName),
             __BEHAVIOR_PACK_NAME__: JSON.stringify(BehaviorPackName)
-        })
+        }),
+        new SourceMapDevToolPlugin({
+            filename: `${ExtensionName}.js.map`,
+            moduleFilenameTemplate: '[absolute-resource-path]',
+        }),
     ]
 };

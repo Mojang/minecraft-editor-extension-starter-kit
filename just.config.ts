@@ -28,6 +28,7 @@ task('prepare', () => {
 
 	_prepareBehaviorPackFolder(exeType, forcePrepare);
 	_prepareResourcePackFolder(exeType, forcePrepare);
+	_prepareVSCode(exeType);
 });
 
 task('copyBuildToTarget', () => {
@@ -95,6 +96,66 @@ task('clean', () => {
   and modify the assets contained within to match with the settings
   stored in the .env file
 */
+function _prepareVSCode(exeType: string) {
+	logger.info('Preparing VSCode settings');
+
+	const extensionName = envHelpers.getExtensionName();
+
+	const assetSource = path.resolve(__dirname, 'assets', '.vscode');
+	const vsCodeDest = path.resolve(__dirname, '.vscode');
+
+	logger.info('Copying VSCode settings to .vscode (' + vsCodeDest + ')');
+	// Copy the folder contents to the destination
+	fs.copySync(assetSource, vsCodeDest, {overwrite: true}, (err) => {
+		if(err) {
+			logger.error(err);
+			throw err;
+		}
+		logger.info('Copy Success');
+	});
+
+	const launchSettingsPath = path.resolve(vsCodeDest, 'launch.json');
+	var launchSettings = require(launchSettingsPath);
+
+	interface configuration {
+		type?: string;
+		request?: string;
+		name?: string;
+		mode?: string;
+		sourceMapRoot?: string;
+		port?: number;
+	};
+
+	logger.info('Inserting destination source mapping');
+	var found = false;
+
+	for(var configAny of launchSettings.configurations) {
+		const config: configuration = configAny as configuration;
+		found = true;
+		const buildTarget = path.resolve(envHelpers.getBehaviorPackFolder(exeType), 'scripts');
+		config.sourceMapRoot = buildTarget;
+	}
+
+	if(!found) {
+		throw('Unable to locate vscode.launch.json configuration');
+	}
+
+	// Now re-write the file 
+	try {
+		// Write out the modified file
+		fs.writeFileSync(launchSettingsPath, JSON.stringify(launchSettings, null, 2), {encoding: 'utf8', flag: 'w'});
+	} catch(err) {
+		logger.error(err);
+		throw err;
+	}
+}
+
+
+/*
+  Internal function to create and prepare the resource pack folder,
+  and modify the assets contained within to match with the settings
+  stored in the .env file
+*/
 function _prepareResourcePackFolder(exeType: string, force: boolean) {
 	if( !envHelpers.shouldGenerateResourcePack()) {
 		logger.info('Skipping Resource Pack generation');
@@ -153,32 +214,31 @@ function _prepareResourcePackFolder(exeType: string, force: boolean) {
 		logger.info('Copy Success');
 	});
 
-		// Now grep through the manifest file and expand upon the variables
-		logger.info('Preparing Manifest file');
+	// Now grep through the manifest file and expand upon the variables
+	logger.info('Preparing Manifest file');
 
-		var manifest: string;
-		const manifestFilename = path.resolve(targetFolder, 'manifest.json');
-		try {
-			// Load the manifest file
-			manifest = fs.readFileSync(manifestFilename, 'utf8');
-		} catch(err) {
-			logger.error(err);
-			throw err;
-		}
-	
-		// find/replace all expandable variables '{var-name}' and replace them
-		// with the ones defined in the .env file
-		manifest = envHelpers.expandVariablesWithEnvironmentVariables(manifest);
-	
-		// Now, replace the manifest file with the updated one
-		try {
-			// Write out the new file
-			fs.writeFileSync(manifestFilename, manifest, {encoding: 'utf8', flag: 'w'});
-		} catch(err) {
-			logger.error(err);
-			throw err;
-		}
-	
+	var manifest: string;
+	const manifestFilename = path.resolve(targetFolder, 'manifest.json');
+	try {
+		// Load the manifest file
+		manifest = fs.readFileSync(manifestFilename, 'utf8');
+	} catch(err) {
+		logger.error(err);
+		throw err;
+	}
+
+	// find/replace all expandable variables '{var-name}' and replace them
+	// with the ones defined in the .env file
+	manifest = envHelpers.expandVariablesWithEnvironmentVariables(manifest);
+
+	// Now, replace the manifest file with the updated one
+	try {
+		// Write out the new file
+		fs.writeFileSync(manifestFilename, manifest, {encoding: 'utf8', flag: 'w'});
+	} catch(err) {
+		logger.error(err);
+		throw err;
+	}
 	
 	// Rebuild the textures_list.json
 	const texturesPath = path.resolve(sourcePath, 'textures');
@@ -189,7 +249,7 @@ function _prepareResourcePackFolder(exeType: string, force: boolean) {
 	// Now, write out the new textures_list.json file
 	try {
 		// Write out the new file
-		fs.writeFileSync(textureListFilename, JSON.stringify(textureList), {encoding: 'utf8', flag: 'w'});
+		fs.writeFileSync(textureListFilename, JSON.stringify(textureList, null, 2), {encoding: 'utf8', flag: 'w'});
 	} catch(err) {
 		logger.error(err);
 		throw err;
@@ -227,7 +287,7 @@ function _prepareResourcePackFolder(exeType: string, force: boolean) {
 		// Now re-write the file 
 		try {
 			// Write out the modified file
-			fs.writeFileSync(behaviorPackManifestFilename, JSON.stringify(behaviorPackManifest), {encoding: 'utf8', flag: 'w'});
+			fs.writeFileSync(behaviorPackManifestFilename, JSON.stringify(behaviorPackManifest, null, 2), {encoding: 'utf8', flag: 'w'});
 		} catch(err) {
 			logger.error(err);
 			throw err;
