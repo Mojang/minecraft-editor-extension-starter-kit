@@ -91,6 +91,30 @@ task('clean', () => {
 	});
 });
 
+task('superclean', () => {
+	rimraf('node_modules', {}, () => {});
+	rimraf('.yarn/cache', {}, () => {});
+	rimraf('.yarn/install-state.gz', {}, () => {});
+	rimraf('yarn.lock', {}, () => {});
+	const behaviorPackFolderWin32 = envHelpers.getBehaviorPackFolder('WIN32');
+	if(behaviorPackFolderWin32) {
+		rimraf(behaviorPackFolderWin32, {}, () => {});
+	}
+	const behaviorPackFolderUWP = envHelpers.getBehaviorPackFolder('UWP');
+	if(behaviorPackFolderUWP) {
+		rimraf(behaviorPackFolderUWP, {}, () => {});
+	}
+	const resourcePackFolderWin32 = envHelpers.getResourcePackFolder('WIN32');
+	if(resourcePackFolderWin32) {
+		rimraf(resourcePackFolderWin32, {}, () => {});
+	}
+	const resourcePackFolderUWP = envHelpers.getResourcePackFolder('UWP');
+	if(resourcePackFolderUWP) {
+		rimraf(resourcePackFolderUWP, {}, () => {});
+	}
+});
+
+task('nuke', series('clean', 'superclean'));
 /*
   Internal function to create and prepare the resource pack folder,
   and modify the assets contained within to match with the settings

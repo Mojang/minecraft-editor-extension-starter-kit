@@ -47,6 +47,7 @@
 		"prepare-win32": "just-scripts prepare --exetype win32 --forceprepare",
 		"prepare-uwp": "just-scripts prepare --exetype uwp --forceprepare",
 		"clean": "just-scripts clean",
+		"nuke": "just-scripts nuke",
 		"build-uwp": "just-scripts build --exetype uwp",
 		"build-win32": "just-scripts build --exetype win32",
 		"enablemcloopback": "CheckNetIsolation.exe LoopbackExempt -a -p=S-1-15-2-1958404141-86561845-1752920682-3514627264-368642714-62675701-733520436",
