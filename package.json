@@ -32,14 +32,14 @@
 	},
 	"dependencies": {
 		"@mojang/core-utilities": "file:./libraries/@mojang-core-utilities-0.0.1.tgz",
-		"@mojang/minecraft-editor": "file:./libraries/@mojang-minecraft-editor-0.0.1.tgz",
+		"@mojang/minecraft-editor": "file:./libraries/@mojang-minecraft-editor-0.0.2.tgz",
 		"@mojang/minecraft-editor-bindings": "file:./libraries/@mojang-minecraft-editor-bindings-0.0.1.tgz",
 		"@mojang/minecraft-editor-events": "file:./libraries/@mojang-minecraft-editor-events-0.0.1.tgz",
 		"tslib": "^2.4.0"
 	},
 	"resolutions": {
 		"@mojang/core-utilities": "file:./libraries/@mojang-core-utilities-0.0.1.tgz",
-		"@mojang/minecraft-editor": "file:./libraries/@mojang-minecraft-editor-0.0.1.tgz",
+		"@mojang/minecraft-editor": "file:./libraries/@mojang-minecraft-editor-0.0.2.tgz",
 		"@mojang/minecraft-editor-bindings": "file:./libraries/@mojang-minecraft-editor-bindings-0.0.1.tgz",
 		"@mojang/minecraft-editor-events": "file:./libraries/@mojang-minecraft-editor-events-0.0.1.tgz"
 	},
