@@ -4,3 +4,11 @@
 ## comment on the same line, use TABs.
 
 sampleextension.string=This is a sample text string for localization
+roadExtension.toolRailTitle=Road Tool (Ctrl + R).
+roadExtension.toolRailDescription=Creates roads.
+roadExtension.paneTitle=Road Settings
+roadExtension.widthLabel=Width
+roadExtension.blockTypeLabel=Fill Block Type
+roadExtension.runLabel=Run!!
+roadExtension.clearLabel=Clear
+
