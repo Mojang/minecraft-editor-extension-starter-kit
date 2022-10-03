@@ -80,3 +80,12 @@ Below are the most common scripts, but refer to the package.json file for up to 
 | `yarn clean`                        | Cleans all output folders.                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `yarn build-uwp`      | Build for quick development for **UWP**. <br/>This creates JS files into `%LOCALAPPDATA%\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\com.mojang\development_behavior_packs`.
 | `yarn build-win32` | Build for quick development for **Win32 x64**. <br/>This creates JS files into `%APPDATA%\MinecraftPE\games\com.mojang\development_behavior_packs`.    |
+
+# FAQ
+
+## I have downloaded update type assets with a new tarball, how do I install them?
+Delete the existing types tarball and copy the new tarball into the ./libraries folder. Then, run
+```
+yarn cache clean --all
+```
+This will clean up yarn's global cache so that the new tarball can be installed without appearing as a duplicate. Then simply starts again from [instructions above](#steps-to-prepare).
