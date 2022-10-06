@@ -17,8 +17,8 @@ module.exports = {
     },
     externalsType: 'module',
     externals: {
-        'mojang-minecraft': 'mojang-minecraft',
-        'mojang-editor': 'mojang-editor',
+        '@minecraft/server': '@minecraft/server',
+        '@minecraft/server-editor': '@minecraft/server-editor',
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js'],
