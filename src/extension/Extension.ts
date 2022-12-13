@@ -1,9 +1,8 @@
 import {
     ActionTypes,
     createPaneBindingObject,
-    IPlayerUISession,
     IPropertyPane,
-    registerEditorExtension,
+    registerEditorExtension
 } from '@minecraft/server-editor';
 
 declare var __EXTENSION_NAME__: string; // defined in webpack.config (read from .env)
@@ -23,7 +22,7 @@ function showConsoleMessage() {
 export function registerExtension() {
     const extensionObject = registerEditorExtension(
         __EXTENSION_NAME__,
-        (uiSession: IPlayerUISession) => {
+        uiSession => {
             const player = uiSession.extensionContext.player;
             const playerName = player.name;
             console.log('Initializing extension [' + __EXTENSION_NAME__ + '] for player [' + playerName + ']' );
@@ -53,9 +52,12 @@ export function registerExtension() {
                     showMyPropertyPane(extensionPane);
                 }
             }))
+
+            // Return objects with the IDisposable interface for things you'd like automatically cleaned up when a player leaves
+            return [];
         },
 
-        (uiSession: IPlayerUISession) => {
+        uiSession => {
             const player = uiSession.extensionContext.player;
             const playerName = player.name;
             console.log('Shutting down extension [' + __EXTENSION_NAME__ + '] for player [' + playerName + ']' );
