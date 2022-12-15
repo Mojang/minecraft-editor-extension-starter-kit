@@ -81,14 +81,14 @@ export function registerExtension() {
                 }
             }))
 
-            const playerJoinStatusBar = uiSession.createStatusBarItem(EditorStatusBarAlignment.Left, 40);
+            const playerJoinStatusBar = uiSession.createStatusBarItem(EditorStatusBarAlignment.Right, 30);
             playerJoinStatusBar.text = `Welcome to editor ${player.name}`;
 
             // Return objects with the IDisposable interface for things you'd like automatically cleaned up when
             // an extension is shutdown. The following is a simple example of this. This serves as an alternative to
             // explicit cleanup in the shutdown function for more complex scenarios
             const onCleanDisposable: IDisposable = {teardown: () => {
-                player.runCommandAsync(`/say A player has left. The menu item has now been clicked ${MENU_CLICKED_TIMES_ALL_PLAYERS} across all players in the current multiplayer session.`)
+                player.runCommandAsync(`say A player has left. The menu item has now been clicked ${MENU_CLICKED_TIMES_ALL_PLAYERS} across all players in the current multiplayer session.`)
             }};
 
             return [onCleanDisposable];
