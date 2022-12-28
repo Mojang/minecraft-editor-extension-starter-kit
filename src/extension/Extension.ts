@@ -81,14 +81,11 @@ export function registerExtension() {
                 }
             }))
 
-            const playerJoinStatusBar = uiSession.createStatusBarItem(EditorStatusBarAlignment.Right, 30);
-            playerJoinStatusBar.text = `Welcome to editor ${player.name}`;
-
             // Return objects with the IDisposable interface for things you'd like automatically cleaned up when
             // an extension is shutdown. The following is a simple example of this. This serves as an alternative to
             // explicit cleanup in the shutdown function for more complex scenarios
             const onCleanDisposable: IDisposable = {teardown: () => {
-                player.runCommandAsync(`say A player has left. The menu item has now been clicked ${MENU_CLICKED_TIMES_ALL_PLAYERS} across all players in the current multiplayer session.`)
+                console.log(`Running disposable clean up for player [${playerName}]. Num times player clicked is ${storage.NUM_TIMES_PLAYER_CLICKED}.`);
             }};
 
             return [onCleanDisposable];
@@ -100,7 +97,7 @@ export function registerExtension() {
             const playerName = player.name;
 
             // Example usage of IPlayerUISession scratch storage to access this players specific data that was saved during activation.
-            console.log(`Shutting down extension [${__EXTENSION_NAME__}] for player [${playerName}]. This player clicked the menu items ${uiSession.scratchStorage?.NUM_TIMES_PLAYER_CLICKED} times in the session.`);
+            console.log(`Shutting down extension [${__EXTENSION_NAME__}] for player [${playerName}]. Num times player clicked is ${uiSession.scratchStorage?.NUM_TIMES_PLAYER_CLICKED ?? 0}. Global click count is ${MENU_CLICKED_TIMES_ALL_PLAYERS}.`);
         }
     );
 
