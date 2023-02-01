@@ -7,6 +7,9 @@
     "version": [ 0, 0, 1 ],
     "min_engine_version": [ 1, 14, 0 ]
   },
+  "capabilities": [
+    "editorExtension"
+  ],
   "modules": [
     {
       "description": "{MC_EXTENSION_NAME} Resource Module",
