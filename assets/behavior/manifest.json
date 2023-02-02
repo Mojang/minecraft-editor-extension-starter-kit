@@ -17,6 +17,9 @@
       "entry": "scripts/{MC_EXTENSION_NAME}.js"
     }
   ],
+  "capabilities": [
+    "editorExtension"
+  ],
   "dependencies": [
     {
       "module_name": "@minecraft/server-editor",
