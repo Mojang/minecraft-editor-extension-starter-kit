@@ -1,9 +1,0 @@
-# Ignore source and temp folders as well as build only files
-src
-temp
-.turbo
-just.config.ts
-vite.config.ts
-tsconfig.json
-.eslintrc.js
-*.tgz

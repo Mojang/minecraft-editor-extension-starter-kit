@@ -1,0 +1,46 @@
+{
+	"name": "EditorExtensionStarterKit",
+	"version": "0.1.0",
+	"productName": "Minecraft Editor Extension Package",
+	"description": "Minecraft Editor Extension Package",
+	"private": true,
+	"main": "lib/index.js",
+	"types": "lib/editor.d.ts",
+	"engines": {
+		"node": ">=14.0.0 < 16.0.0",
+		"yarn": ">=3.2.1"
+	},
+	"repository": {
+		"url": "https://github.com/Mojang/EditorExtensionStarterKit"
+	},
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com"
+	},
+	"devDependencies": {
+		"@minecraft/server": "1.1.0-beta.1.19.60-preview.23",
+		"@types/node": "^12.12.7",
+		"dotenv": "16.0.1",
+		"fs-extra": "^10.1.0",
+		"just-scripts": "^2.0.0",
+		"rimraf": "^3.0.2",
+		"ts-loader": "^9.3.1",
+		"ts-node": "^10.9.1",
+		"tsconfig": "*",
+		"typescript": "^4.7.2",
+		"webpack": "^5.74.0"
+	},
+	"dependencies": {
+		"@minecraft/server-editor": "file:./libraries/minecraft-server-editor-0.1.0-beta.tgz",
+		"tslib": "^2.4.0"
+	},
+	"scripts": {
+		"prepare-win32": "just-scripts prepare --exetype win32 --forceprepare",
+		"prepare-uwp": "just-scripts prepare --exetype uwp --forceprepare",
+		"clean": "just-scripts clean",
+		"nuke": "just-scripts nuke",
+		"build-uwp": "just-scripts build --exetype uwp",
+		"build-win32": "just-scripts build --exetype win32",
+		"enablemcloopback": "CheckNetIsolation.exe LoopbackExempt -a -p=S-1-15-2-1958404141-86561845-1752920682-3514627264-368642714-62675701-733520436",
+		"enablemcpreviewloopback": "CheckNetIsolation.exe LoopbackExempt -a -p=S-1-15-2-424268864-5579737-879501358-346833251-474568803-887069379-4040235476"
+	}
+}

@@ -1,91 +1,74 @@
-# Creator Editor Extension Starter Kit
+# Minecraft Bedrock Editor Extension Starter Kit
 
-Editor extensions allow the creator to extend the functionality of the Minecraft Editor using specially defined editor Extensions written primarily in Typescript/JavaScript.
+This starter kit is intended to get you up and running in writing your own Minecraft Bedrock Editor extensions.
 
-This starter kit should provide everything you need to get started writing your own extension code, including preparing behavior packs in the correct destination folders where the various Minecraft executable types can find them.
+An Editor Extension is basically a way to allow creators to extend the basic Editor experience and to empower you to write your own custom tools to create cool, fun and engaging Minecraft worlds.
 
-Currently, we support
-- ### Win32
-- ### UWP
+The Editor Extension Starter Kit assumes that the creator has at least a rudimentary knowledge of typescript and is somewhat comfortable with the command line.  In addition, some basic knowledge of `git` would be useful.
 
-Further build targets will be supported as required.
+## Before you begin 
 
-# Development tools
+In order to begin, you will need to make sure you have the following software installed
 
-Ensure that you have `Visual Studio Code` and `yarn` installed
-(TODO: Expand on these instructions)
+### Required
+- [Node.js](https://nodejs.org/en/download) - Node.js provides a full command line driven build environment and tool chain for building scripts for Minecraft Bedrock Scripts (and Editor Extensions) and is a basic requirement
+  
+### Recommended
+- [Visual Studio Code](https://code.visualstudio.com/) - We recommend installing this code editor for developing Minecraft Bedrock Editor Extensions.  Visual Studio Code supports syntax highlighting for JavaScript and Typescript, as well as a full debugging experience for Minecraft Bedrock scripts
+  
 
-# Steps to prepare
+Also - before you begin, have the following information on hand:
+- Where to download (clone) the Bedrock Editor Extension Kit installer
+- Where to install the project for your new Bedrock Editor Extension
+- Do you want to start with a blank project, or use a template?
+- Will you need any icons or text assets for your new extension?
 
-To first create a new extension, `unzip` the contents of the starter kit to a folder on your hard drive where you will be developing.  This can be anywhere, but make sure it's somewhere that gets regularly backed up.
-e.g.
-<br>
-- `Documents\Minecraft\My Editor Extensions\my-new-extension`
+(If you're just starting out, we would recommend creating a folder in "`My Documents`" (maybe call it `minecraft-dev`).  For the purposes of starting out, we'll make that the root of your development environment)
 
-<br>
-Open `Visual Studio Code` and select `Open Folder`.<br>
-Select the path you where you chose to extract the files.
-<br><br>
+## Downloading
 
-Next thing you need to do is locate the `.env` file in the project window in `Visual Studio Code` (on the left pane) - open it, and set the values to the various fields to your preferences.
-<br><br>
+Navigate to `https://github.com/Mojang/minecraft-editor/BedrockEditorExtensionkit` and clone the repository
 
-Next, open a `Terminal` in `Visual Studio Code` and type
-- `yarn install`
+*(insert clone instructions)*
 
-(This should install all the dependent tools required by the compiler)
+## Installing
 
-And now type
-- `yarn prepare-win32` (or) `yarn prepare-uwp` (depending on the executable version of Minecraft you're using)
-
-(This should create a new folder in your `Minecraft\development_behavior_packs` folder)
-
-### TODO: Eventually remove `Win32` - External creators will only ever use uwp (until something better comes along)
-
-To compile your extension, type
-- `yarn build-win32` or `yarn build-uwp`
-
-(This will compile the `TypeScript` files into JavaScript, and place them in the destination behavior pack)
-
-Start `Minecraft` in Editor Mode, and create a new world.  Browse to the `Behavior Packs` section and you should see your new behavior pack in the `available packs`.  Activate it, and load the world.
-
-## Your new Editor Extension is now loaded and working
-
------------------------------------
-
-## Debugging
-
--   Follow previous step to build files and put into package output. Today by default the bundle has inline source maps.
-
-Execute `reload` command in game:
-
-> /reload
-
--   From Visual Studio Code press **F5** to make debugger to start listening. Debugger configuration is at `launch.json`.
--   From game run this command:
-    > /script debugger connect localhost 19144
-
-### Known issues
-
-- `--watch` option should not be used - the updated build artifacts won't be copied to the destination folder
+Open Windows PowerShell from the Windows Start Menu, and navigate to the location on your hard drive where you cloned the `BedrockEditorExtensionKit` repository.
 
 
-## Available Scripts
-
-Below are the most common scripts, but refer to the package.json file for up to date scripts that are available.
-
-| Command                             | Description                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `yarn build`                        | Regular build. This creates JS files into `lib` directory and a webpack bundle into the dist directory.                                                                                                                                                                                                                                             |
-| `yarn clean`                        | Cleans all output folders.                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `yarn build-uwp`      | Build for quick development for **UWP**. <br/>This creates JS files into `%LOCALAPPDATA%\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\com.mojang\development_behavior_packs`.
-| `yarn build-win32` | Build for quick development for **Win32 x64**. <br/>This creates JS files into `%APPDATA%\MinecraftPE\games\com.mojang\development_behavior_packs`.    |
-
-# FAQ
-
-## I have downloaded update type assets with a new tarball, how do I install them?
-Delete the existing types tarball and copy the new tarball into the ./libraries folder. Then, run
+Type the following
+```bat
+node -v
 ```
-yarn cache clean --all
+
+If this fails in any way, please ensure you have [Node.js](https://nodejs.org/en/download) installed correctly.
+
+```bat
+./install.cmd
 ```
-This will clean up yarn's global cache so that the new tarball can be installed without appearing as a duplicate. Then simply starts again from [instructions above](#steps-to-prepare).
+
+Using the information you prepared in the [Before you begin](#before-you-begin) section, follow the prompts and answer the questions.
+
+At the end of the process, you should have a new folder containing all the files, folders and  assets required to start your new Minecraft Bedrock Editor Extension.
+
+## Open it your new project
+
+Open Visual Studio Code, and select `File > Open Folder` and select the folder that you chose to install your new Extension project (i.e. `My Documents\minecraft-dev\example1`)
+
+Down the left hand side you will see the file explorer, showing all of the files in your project.
+
+Go to the top menu bar and select `Terminal > New Terminal` (or hit `CTRL+~`).
+At the command line, type
+```bash
+npm install yarn
+```
+Check that `yarn` installed correctly by typing (you should have a version on or above `v3.2.1`)
+```bash
+yarn --version
+```
+
+Once `node` and `yarn` are installed, all the other tools can be installed by the project itself
+```bash
+yarn install
+```
+(This will process your project settings and install all of the tools and symbols required by the Extension kit)
