@@ -14,6 +14,7 @@ In order to begin, you will need to make sure you have the following software in
 - [Node.js](https://nodejs.org/en/download) - Node.js provides a full command line driven build environment and tool chain for building scripts for Minecraft Bedrock Scripts (and Editor Extensions) and is a basic requirement
   
 ### Recommended
+- [Git](https://gitforwindows.org/) - We recommend installing Git as a method of fetching the latest starter kit changes, or storing your project where it won't get lost in the event of a system failure.  Git isn't required (there are many other alternative solutions like SVN, Perforce, etc), but Git is the one Mojang uses
 - [Visual Studio Code](https://code.visualstudio.com/) - We recommend installing this code editor for developing Minecraft Bedrock Editor Extensions.  Visual Studio Code supports syntax highlighting for JavaScript and Typescript, as well as a full debugging experience for Minecraft Bedrock scripts
   
 

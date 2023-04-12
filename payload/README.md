@@ -1,14 +1,8 @@
 # Creator Editor Extension Starter Kit
 
-Editor extensions allow the creator to extend the functionality of the Minecraft Editor using specially defined editor Extensions written primarily in Typescript/JavaScript.
+Editor extensions allow any creator to extend the functionality of the Minecraft Editor using specially defined editor Extensions written primarily in Typescript.
 
 This starter kit should provide everything you need to get started writing your own extension code, including preparing behavior packs in the correct destination folders where the various Minecraft executable types can find them.
-
-Currently, we support
-- ### Win32
-- ### UWP
-
-Further build targets will be supported as required.
 
 # Development tools
 

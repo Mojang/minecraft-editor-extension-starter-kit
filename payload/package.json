@@ -1,15 +1,11 @@
 {
-	"name": "EditorExtensionStarterKit",
+	"name": ">>MC_EXTENSION_NAME<<",
 	"version": "0.1.0",
-	"productName": "Minecraft Editor Extension Package",
-	"description": "Minecraft Editor Extension Package",
+	"productName": ">>MC_EXTENSION_NAME<<",
+	"description": ">>MC_EXTENSION_NAME<<",
 	"private": true,
 	"main": "lib/index.js",
 	"types": "lib/editor.d.ts",
-	"engines": {
-		"node": ">=14.0.0 < 16.0.0",
-		"yarn": ">=3.2.1"
-	},
 	"repository": {
 		"url": "https://github.com/Mojang/EditorExtensionStarterKit"
 	},
@@ -34,12 +30,10 @@
 		"tslib": "^2.4.0"
 	},
 	"scripts": {
-		"prepare-win32": "just-scripts prepare --exetype win32 --forceprepare",
-		"prepare-uwp": "just-scripts prepare --exetype uwp --forceprepare",
+		"prepare": "just-scripts prepare --exetype uwp --forceprepare",
 		"clean": "just-scripts clean",
 		"nuke": "just-scripts nuke",
-		"build-uwp": "just-scripts build --exetype uwp",
-		"build-win32": "just-scripts build --exetype win32",
+		"build": "just-scripts build --exetype uwp",
 		"enablemcloopback": "CheckNetIsolation.exe LoopbackExempt -a -p=S-1-15-2-1958404141-86561845-1752920682-3514627264-368642714-62675701-733520436",
 		"enablemcpreviewloopback": "CheckNetIsolation.exe LoopbackExempt -a -p=S-1-15-2-424268864-5579737-879501358-346833251-474568803-887069379-4040235476"
 	}
