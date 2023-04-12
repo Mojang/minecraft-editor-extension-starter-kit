@@ -1,0 +1,139 @@
+<h1 id="minecraft-bedrock-editor-extension-starter-kit">Minecraft
+Bedrock Editor Extension Starter Kit</h1>
+<p>The Minecraft Bedrock Editor Extension Starter Kit is intended to get
+you up and running in writing your own Minecraft Bedrock Editor
+extensions.</p>
+<p>An Editor Extension is basically a way to allow creators to extend
+the basic Editor experience and to empower you to write your own custom
+tools to create cool, fun and engaging Minecraft worlds.</p>
+<p>The Minecraft Bedrock Editor Extension Starter Kit assumes that the
+creator has at least a rudimentary knowledge of typescript and is
+somewhat comfortable with the command line. In addition, some basic
+knowledge of <code>git</code> would be useful (but not required).</p>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>In order to begin, you will need to make sure you have the following
+software installed</p>
+<h3 id="required">Required</h3>
+<ul>
+<li><a href="https://nodejs.org/en/download">Node.js</a> - Node.js
+provides a full command line driven build environment and tool chain for
+building scripts for Minecraft Bedrock Scripts (and Editor Extensions)
+and is a basic requirement</li>
+</ul>
+<h3 id="recommended">Recommended</h3>
+<ul>
+<li><a href="https://gitforwindows.org/">Git</a> - We recommend
+installing Git as a method of fetching the latest starter kit changes,
+or storing your project where it won’t get lost in the event of a system
+failure. Git isn’t required (there are many other alternative solutions
+like SVN, Perforce, etc), but Git is the one Mojang uses</li>
+<li><a href="https://code.visualstudio.com/">Visual Studio Code</a> - We
+recommend installing this code editor for developing Minecraft Bedrock
+Editor Extensions. Visual Studio Code supports syntax highlighting for
+JavaScript and Typescript, as well as a full debugging experience for
+Minecraft Bedrock scripts</li>
+</ul>
+<p>Also - before you begin, have the following information on hand: -
+Where to download (clone) the Bedrock Editor Extension Kit installer -
+Where to install the project for your new Bedrock Editor Extension - Do
+you want to start with a blank project, or use a template? - Will you
+need any icons or text assets for your new extension?</p>
+<p>(If you’re just starting out, we would recommend creating a folder in
+“<code>My Documents</code>” (maybe call it <code>minecraft-dev</code>).
+For the purposes of starting out, we’ll make that the root of your
+development environment)</p>
+<h2 id="downloading">Downloading</h2>
+<p>Navigate to
+<code>https://github.com/Mojang/minecraft-editor/BedrockEditorExtensionkit</code>
+and either clone the repository to a location on your hard drive (use
+your knowledge of <code>git</code> here), or download the kit as a
+<code>ZIP</code> file and uncompress it to a temporary location.</p>
+<h2 id="installing">Installing</h2>
+<p>Open Windows PowerShell from the Windows Start Menu, and navigate to
+the location on your hard drive where you placed the Extension Kit
+Installer.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">./</span>install<span class="op">.</span><span class="fu">ps1</span></span></code></pre></div>
+<p>Using the information you prepared in the <a
+href="#before-you-begin">Before you begin</a> section, follow the
+prompts and answer the questions.</p>
+<p>At the end of the process, you should have a new folder containing
+all the files, folders and assets required to start writing your new
+Minecraft Bedrock Editor Extension.</p>
+<h2 id="open-your-new-project">Open your new project</h2>
+<p>Open Visual Studio Code, and select
+<code>File &gt; Open Folder</code> and select the folder that you chose
+to install your new Extension project
+(i.e. <code>My Documents\minecraft-dev\example1</code>)</p>
+<p>Down the left hand side you will see the file explorer, showing all
+of the files in your project.</p>
+<p>Go to the top menu bar and select
+<code>Terminal &gt; New Terminal</code> (or hit
+<code>CTRL+~</code>).</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">yarn</span> install</span></code></pre></div>
+<p>This will process your project settings and install all of the tools
+and symbols required by the Extension kit.</p>
+<p>The first step is to prepare a behavior pack destination (and
+resource pack destination if you chose to install any assets) - these
+will be deployed to the Minecraft
+<code>development_behavior_packs</code> and
+<code>developement_resource_packs</code> folders. These are folders that
+live in tandem with your Minecraft worlds and various other Minecraft
+files.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">yarn</span> prepare</span></code></pre></div>
+<p>You can open a file explorer and check if you like. Open a Windows
+File Explorer window and paste</p>
+<pre class="bat"><code>%LOCALAPPDATA%\Packages\Microsoft.MinecraftWindowsBeta_8wekyb3d8bbwe\LocalState\games\com.mojang</code></pre>
+<p>into the address bar. You should see a number of folders in
+there…</p>
+<pre><code>  behavior_packs
+  development_behavior_packs
+  development_resource_packs
+  development_skin_packs
+  minecraftWorlds
+  minecraftpe
+  resource_packs
+  skin_packs
+  world_templates</code></pre>
+<p>If you look inside <code>development_behavior_packs</code> you should
+see a folder with the name of your new extension. (If you chose to add
+assets, there should be a matching folder in
+<code>development_resource_packs</code> too)</p>
+<p>The <code>prepare</code> step is only really needed if you ever add
+new assets (textures, text strings, custom files) to your extension - it
+basically copies the folders from
+<code>&lt;install_location&gt;\assets\</code> to the
+<code>development</code> packs folders where Minecraft can find
+them.</p>
+<h2 id="development-cycle">Development Cycle</h2>
+<p>The development cycle is relatively straight forward.<br> Open Visual
+Studio Code and write some TypeScript. Open a <code>New Terminal</code>
+in Visual Studio Code (make sure you’re in the root of your new
+extension project) and type</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">yarn</span> build</span></code></pre></div>
+<p>This will run the TypeScript compiler and compile your extension
+source code. If it compiles successfully, the compiled code will be
+deployed to the <code>development_behavior_packs</code> folder, ready
+for Minecraft.</p>
+<h2 id="open-minecraft-preview">Open Minecraft (Preview)</h2>
+<p>Currently, Bedrock Editor is only available in Preview editions of
+Minecraft Bedrock - you need to make sure that you’ve installed the
+Preview edition from the Microsoft Store (or Minecraft Installer)</p>
+<p>To open Minecraft in Editor mode, you need to start the game using a
+special <code>Protocol Activation</code> method. Press the Windows Key
+and <code>R</code> key together - this will launch the
+<code>Windows Run Dialog</code> Enter the string</p>
+<pre class="bat"><code>minecraft.exe:?Editor=true</code></pre>
+<p>and hit ENTER. The Minecraft Preview edition should start up in
+Editor mode (you can tell it’s Editor mode because the usual
+<code>Play Game</code> and <code>Settings</code> buttons are missing,
+and you’re immediately presented with a <code>Create Project</code>
+screen).</p>
+<p>Create a new Editor Project (give it any name you want), but before
+launching it - go to the <code>Behavior Packs</code> tab and navigate to
+<code>Available Packs</code>. You should see your new Editor Extension
+in that list. Add the behavior pack to your world project (and add the
+Resource pack if you chose to add assets) - then launch the world.</p>

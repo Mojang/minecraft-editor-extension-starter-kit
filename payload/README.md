@@ -1,28 +1,23 @@
 # Creator Editor Extension Starter Kit
 
-Editor extensions allow any creator to extend the functionality of the Minecraft Editor using specially defined editor Extensions written primarily in Typescript.
+The Minecraft Bedrock Editor Extension Starter Kit is intended to get you up and running in writing your own Minecraft Bedrock Editor extensions.
 
-This starter kit should provide everything you need to get started writing your own extension code, including preparing behavior packs in the correct destination folders where the various Minecraft executable types can find them.
+An Editor Extension is basically a way to allow creators to extend the basic Editor experience and to empower you to write your own custom tools to create cool, fun and engaging Minecraft worlds.
 
-# Development tools
+The Minecraft Bedrock Editor Extension Starter Kit assumes that the creator has at least a rudimentary knowledge of typescript and is somewhat comfortable with the command line.  In addition, some basic knowledge of `git` would be useful (but not required).
 
-Ensure that you have `Visual Studio Code` and `yarn` installed
-(TODO: Expand on these instructions)
+## Before you begin 
 
-# Steps to prepare
+In order to begin, you will need to make sure you have the following software installed
 
-To first create a new extension, `unzip` the contents of the starter kit to a folder on your hard drive where you will be developing.  This can be anywhere, but make sure it's somewhere that gets regularly backed up.
-e.g.
-<br>
-- `Documents\Minecraft\My Editor Extensions\my-new-extension`
+### Required
+- [Node.js](https://nodejs.org/en/download) - Node.js provides a full command line driven build environment and tool chain for building scripts for Minecraft Bedrock Scripts (and Editor Extensions) and is a basic requirement
+  
+### Recommended
+- [Git](https://gitforwindows.org/) - We recommend installing Git as a method of fetching the latest starter kit changes, or storing your project where it won't get lost in the event of a system failure.  Git isn't required (there are many other alternative solutions like SVN, Perforce, etc), but Git is the one Mojang uses
+- [Visual Studio Code](https://code.visualstudio.com/) - We recommend installing this code editor for developing Minecraft Bedrock Editor Extensions.  Visual Studio Code supports syntax highlighting for JavaScript and Typescript, as well as a full debugging experience for Minecraft Bedrock scripts
 
-<br>
-Open `Visual Studio Code` and select `Open Folder`.<br>
-Select the path you where you chose to extract the files.
-<br><br>
-
-Next thing you need to do is locate the `.env` file in the project window in `Visual Studio Code` (on the left pane) - open it, and set the values to the various fields to your preferences.
-<br><br>
+## Developing your Editor Extension
 
 Next, open a `Terminal` in `Visual Studio Code` and type
 - `yarn install`
