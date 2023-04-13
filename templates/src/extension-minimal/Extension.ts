@@ -5,25 +5,10 @@ import {
     IDisposable,
     IPlayerUISession,
     IPropertyPane,
-    registerEditorExtension
+    registerEditorExtension,
 } from '@minecraft/server-editor';
 
 declare var __EXTENSION_NAME__: string; // defined in webpack.config (read from .env)
-
-function showMyPropertyPane(pane: IPropertyPane) {
-    pane.show();
-}
-
-function showConsoleMessage() {
-    console.warn('Use console warn to print to console');
-}
-
-/**
- * Global state can be used to share data across all players. This should be purely data as it is
- * not managed by the multiplayer system. For example, here we can use to track how often editor UI
- * was clicked across all players and rendered in the UI during shutdown.
- */
-let MENU_CLICKED_TIMES_ALL_PLAYERS = 0;
 
 /**
  * Per player storage can be attached to the IPlayerUISession type in a type safe manner for anything
@@ -33,6 +18,14 @@ let MENU_CLICKED_TIMES_ALL_PLAYERS = 0;
  */
 type PerPlayerStorage = {
     NUM_TIMES_PLAYER_CLICKED: number;
+};
+
+function showConsoleMessage() {
+    console.warn('Use console warn to print to console');
+}
+
+function incrementClickValue(storage: PerPlayerStorage) {
+    storage.NUM_TIMES_PLAYER_CLICKED++;
 }
 
 /**
@@ -42,69 +35,103 @@ type PerPlayerStorage = {
 export function registerExtension() {
     const extensionObject = registerEditorExtension<PerPlayerStorage>(
         __EXTENSION_NAME__,
+
+        // Provide a function closure which is executed when each player connects to the server
+        // The uiSession object holds the context for the extension and the player
         uiSession => {
             const player = uiSession.extensionContext.player;
             const playerName = player.name;
-            console.log('Initializing extension [' + __EXTENSION_NAME__ + '] for player [' + playerName + ']' );
+            console.log(
+                `Initializing extension [${uiSession.extensionContext.extensionName}] for player [${playerName}]`
+            );
 
-            // Example usage of initializing scratch storage that is associated with this specific player's UI
-            const storage: PerPlayerStorage  = {
-                NUM_TIMES_PLAYER_CLICKED: 0
+            // Initialize the player specific, custom extension storage structure with whatever
+            // the extension needs to store, and assign it to the `uiSession.scratchStorage` variable.
+            // Using this in combination with JavaScript closure captures, you can access this player/extension
+            // storage area in whatever events you need it
+            const storage: PerPlayerStorage = {
+                NUM_TIMES_PLAYER_CLICKED: 0,
             };
             uiSession.scratchStorage = storage;
 
-            // Creates an example of adding a menu item to the UI
-            const extensionMenu = uiSession.createMenu({
-                name: 'Extension Menu'
+            // Create a basic property pane with a button.  Property panes are the basic panels on to which you
+            // can attach buttons, sliders and various other UI elements.
+            // When you create a property pane, you bind it with an object which contains the values which represent
+            // the contents of the UI elements you bind to the pane.  The binding object is a 'property bag' - a simple
+            // key/value pair collection which the UI elements modify when they are actioned.
+            // E.g. if you were to create a slider, the slider would be bound to a property 'mySlider' for example, and
+            // when you adjust the slider, you can inspect the binding object property 'mySlider' for the current value.
+            const extensionPane = uiSession.createPropertyPane({
+                titleStringId: 'Extension Pane',
+                titleAltText: 'Extension Pane',
             });
-            
-            // Creates an extension pane with data bound to the pane
-            const extensionPane = uiSession.createPropertyPane({titleStringId: 'Extension Pane', titleAltText: 'Extension Pane'});
             const paneData = {
-                label: 'This is an editor extension property pane!'
+                label: 'This is an editor extension property pane!',
+                mySliderValue: 0,
             };
             createPaneBindingObject(extensionPane, paneData);
-            extensionPane.addButtonAndBindAction(
-                uiSession.actionManager.createAction({actionType:ActionTypes.NoArgsAction, onExecute: () => { showConsoleMessage() }}),
-                {titleStringId: 'Click me!', titleAltText: 'Click me!', visible: true});
 
-            // Adds a menu item to show the property pane using actions
-            extensionMenu.addItem({
-                name: 'Show My Property Pane'
-            },
-            uiSession.actionManager.createAction({
+            // Creating UI elements like buttons and sliders require a couple of simple steps.
+            // - Create an action (a function declaration of what you want to happen when the element is actioned)
+            // - Create the UI element and bind it to the action
+            // (You can define a single action and bind it to many UI elements if you wish)
+
+            const buttonAction = uiSession.actionManager.createAction({
                 actionType: ActionTypes.NoArgsAction,
                 onExecute: () => {
-                    showMyPropertyPane(extensionPane);
-                    MENU_CLICKED_TIMES_ALL_PLAYERS++;
-                    storage.NUM_TIMES_PLAYER_CLICKED++;
-                }
-            }))
+                    showConsoleMessage();
+                    incrementClickValue(storage);
+                },
+            });
 
-            // Return objects with the IDisposable interface for things you'd like automatically cleaned up when
-            // an extension is shutdown. The following is a simple example of this. This serves as an alternative to
-            // explicit cleanup in the shutdown function for more complex scenarios
-            const onCleanDisposable: IDisposable = {teardown: () => {
-                console.log(`Running disposable clean up for player [${playerName}]. Num times player clicked is ${storage.NUM_TIMES_PLAYER_CLICKED}.`);
-            }};
+            // Now create a button and bind the action you want to execute when it's pressed
+            extensionPane.addButtonAndBindAction(buttonAction, {
+                titleStringId: 'Click me!',
+                titleAltText: 'Click me!',
+                visible: true,
+            });
 
-            return [onCleanDisposable];
+            // Create a menu entry and add it to the main menu along the top
+            const extensionMenu = uiSession.createMenu({
+                name: 'My Extension',
+            });
+
+            // Adds a child menu item to show the property pane
+            // Note - we're creating an action too, which can be executed when the menu
+            // item is selected
+            extensionMenu.addItem(
+                {
+                    name: 'Show My Property Pane',
+                },
+                uiSession.actionManager.createAction({
+                    actionType: ActionTypes.NoArgsAction,
+                    onExecute: () => {
+                        extensionPane.show();
+                        incrementClickValue(storage);
+                    },
+                })
+            );
+
+            // Normally we return a collection of IDisposable objects that the extension system will clean
+            // up and dispose of on shutdown.  We don't have any in this example, so let's just return
+            // and empty collection
+            return [];
         },
 
+        // Provide a function which is executed when the player disconnects from the server
+        // This is where the extension would normally clean up any resources it created/loaded during activation
         (uiSession: IPlayerUISession<PerPlayerStorage>) => {
             // Do any explicit cleanup when a player is leaving and the extension instance is shutting down
             const player = uiSession.extensionContext.player;
             const playerName = player.name;
 
-            // Example usage of IPlayerUISession scratch storage to access this players specific data that was saved during activation.
-            console.log(`Shutting down extension [${__EXTENSION_NAME__}] for player [${playerName}]. Num times player clicked is ${uiSession.scratchStorage?.NUM_TIMES_PLAYER_CLICKED ?? 0}. Global click count is ${MENU_CLICKED_TIMES_ALL_PLAYERS}.`);
+            console.log(
+                `Shutting down extension [${uiSession.extensionContext.extensionName}] for player [${playerName}]`
+            );
+        },
+        {
+            description: 'Minimal Sample Extension',
+            notes: 'Insert any notes, ownership info, etc here.  http://alturl.com/p749b',
         }
     );
-
-    if (extensionObject) {
-        extensionObject.description = 'Insert a useful description of your extension';
-        extensionObject.notes = 'http://alturl.com/p749b';
-    } else {
-        throw `Failed to register the extension [${__EXTENSION_NAME__}]`;
-    }
 }

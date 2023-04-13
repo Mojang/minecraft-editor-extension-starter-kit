@@ -21,7 +21,8 @@
 #   - Copy `payload` folder contents to Install Path
 #   - Copy `templates/.env.template` to Install Path as `.env`
 #       - Modify all entries within `.env` file with requisite values
-#   - Install yarn if required (within scope of project path)
+#   - Copy `package.json` and alter any entries within
+#   - Install yarn
 #   - Open VSCode at project path
 #   - Open browser at Minecraft Editor hub
 
@@ -205,6 +206,10 @@ Use the folder selector to find a location into which we can install your new pr
     return $projectLocationResponse;
 }
 
+function RefreshEnvironmentAfterInstall() {
+    $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
+}
+
 # Clear the screen, and start asking questions
 Clear-Host
 
@@ -238,6 +243,8 @@ while (-not $minecraftPreviewInstalled) {
     Write-Host "Use the Microsoft Store App to download Minecraft Preview for Windows, and install from there"
     Start-Process "https://apps.microsoft.com/store/detail/minecraft-preview-for-windows/9p5x4qvlc2xr"
     Get-AnyResponse("Waiting... Press ENTER when Minecraft Preview has been installed")
+
+    RefreshEnvironmentAfterInstall
     $minecraftPreviewInstalled = Get-AppxPackage -Name "Microsoft.MinecraftWindowsBeta" -ErrorAction SilentlyContinue
 }
 Write-Host "[ $(if($minecraftPreviewInstalled) {'INSTALLED'} else {'NOT INSTALLED'}) ] Minecraft Preview"
@@ -252,6 +259,8 @@ while (-not $nodeInstalled) {
     Write-Host "Download and install Node.js from this website and return to this installer when you're done"
     Start-Process "https://nodejs.org/en/download"
     Get-AnyResponse("Waiting... Press ENTER when Node.js has been installed")
+
+    RefreshEnvironmentAfterInstall
     $nodeInstalled = Get-Command node -ErrorAction SilentlyContinue
 }
 Write-Host "[ $(if($nodeInstalled) {'INSTALLED'} else {'NOT INSTALLED'}) ] Node.js"
@@ -266,6 +275,8 @@ while (-not $vscodeInstalled) {
     Write-Host "Download and install Visual Studio Code from this website and return to this installer when you're done"
     Start-Process "https://code.visualstudio.com/"
     Get-AnyResponse("Waiting... Press ENTER when Visual Studio Code has been installed")
+
+    RefreshEnvironmentAfterInstall
     $vscodeInstalled = Get-Command code -ErrorAction SilentlyContinue
 }
 Write-Host "[ $(if($vscodeInstalled) {'INSTALLED'} else {'NOT INSTALLED'}) ] Visual Studio Code"
@@ -280,6 +291,8 @@ while (-not $gitInstalled) {
     Write-Host "Download and install Git from this website and return to this installer when you're done"
     Start-Process "https://gitforwindows.org/"
     Get-AnyResponse("Waiting... Press ENTER when Git has been installed")
+
+    RefreshEnvironmentAfterInstall    
     $gitInstalled = Get-Command git -ErrorAction SilentlyContinue
 }
 Write-Host "[ $(if($gitInstalled) {'INSTALLED'} else {'NOT INSTALLED'}) ] Git"
@@ -291,6 +304,8 @@ Get-AnyResponse("OK, let's continue -- press ENTER")
 
 $validProjectAndLocation = $false
 do {
+    Clear-Host
+
     $projectName = Get-ChooseProjectName
 
     $projectLocationResponse = Get-ChooseProjectLocation
@@ -362,6 +377,8 @@ I'll open it up and you take a look inside.  Come back and choose whether or not
 
 } while (!$validProjectAndLocation)
 
+Clear-Host
+
 $resourcesRequired = Get-YesNoResponse("Do you plan on adding any Resources to your extension? (Icons, Textures, text strings, etc?) (Y/N)")
 if ($resourcesRequired -eq 'Y') {
     $resourcesRequired = "Yes"
@@ -372,8 +389,9 @@ else {
 
 $extensionType = Get-ExtensionTypeResponse
 
-Write-Host "Project '${projectName}' will be installed to '${projectLocation}'"
+Clear-Host
 
+Write-Host "Project '${projectName}' will be installed to '${projectLocation}'"
 Write-Host "`nPreparing installation...`n"
 
 # Now, let's start copying files from the payload to the destination folder
@@ -440,10 +458,21 @@ catch {
     exit
 }
 
-Write-Host "[ Setting up Node.js and yarn command line tools]"
+Write-Host "[ Setting up Node.js and yarn command line tools ]"
 try {
     Push-Location $projectLocation
-    npm install yarn
+    npm install -g yarn
+}
+catch {
+    Write-Error "There was an issue installing yarn from npm and building the yarn cache - you may have to do it by hand"
+}
+finally {
+    Pop-Location
+}
+
+Write-Host "[ Setting up dev dependencies using yarn ]"
+try {
+    Push-Location $projectLocation
     yarn install
 }
 catch {

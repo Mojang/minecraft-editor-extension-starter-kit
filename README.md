@@ -39,6 +39,11 @@ Open Windows PowerShell from the Windows Start Menu, and navigate to the locatio
 ```powershell
 ./install.ps1
 ```
+- (If you see a script permissions error when attempting to run the installer, you may have to change your Execution Privileges in Powershell - Please read [Set-ExecutionPolicy](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-7.3) at Microsoft.com).  You may have to change your current script permissions to allow the installer to run (only do this if you're having a problem running it)
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser Unrestricted
+```
+
 
 Using the information you prepared in the [Before you begin](#before-you-begin) section, follow the prompts and answer the questions.
 
@@ -101,7 +106,7 @@ To open Minecraft in Editor mode, you need to start the game using a special `Pr
 Press the Windows Key and `R` key together - this will launch the `Windows Run Dialog`
 Enter the string
 ```bat
-minecraft.exe:?Editor=true
+minecraft:?Editor=true
 ```
 and hit ENTER.  The Minecraft Preview edition should start up in Editor mode (you can tell it's Editor mode because the usual `Play Game` and `Settings` buttons are missing, and you're immediately presented with a `Create Project` screen).
 
