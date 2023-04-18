@@ -43,7 +43,7 @@ task('copyBuildToTarget', () => {
 	try{
 		// check that our destination scripts folder exists
 		if(!fs.existsSync(targetFolder)) {
-			fs.mkdirSync(targetFolder);
+			fs.mkdirSync(targetFolder, {recursive: true});
 		}
 	} catch(err) {
 		logger.error(err);
@@ -198,7 +198,7 @@ function _prepareResourcePackFolder(exeType: string, force: boolean) {
 	try {
 		if (!fs.existsSync(targetFolder)) {
 			logger.info('Creating resource pack folder [' + targetFolder + ']');
-			fs.mkdirSync(targetFolder);
+			fs.mkdirSync(targetFolder, {recursive: true});
 		}
 		else {
 			// Resource Pack folder exists - no need to carry on unless we're
@@ -341,7 +341,7 @@ function _prepareBehaviorPackFolder(exeType: string, force: boolean) {
 	try {
 		if (!fs.existsSync(targetFolder)) {
 			logger.info('Creating behavior pack folder [' + targetFolder + ']');
-			fs.mkdirSync(targetFolder);
+			fs.mkdirSync(targetFolder, {recursive: true});
 		}
 		else {
 			// Behavior Pack folder exists - no need to carry on unless we're

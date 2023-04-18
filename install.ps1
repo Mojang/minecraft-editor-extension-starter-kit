@@ -246,6 +246,17 @@ while (-not $minecraftPreviewInstalled) {
 
     RefreshEnvironmentAfterInstall
     $minecraftPreviewInstalled = Get-AppxPackage -Name "Microsoft.MinecraftWindowsBeta" -ErrorAction SilentlyContinue
+
+    if($minecraftPreviewInstalled) {
+        Write-Host @"
+Please launch the game at least once before continuing. 
+You can close it again once you're done - it just needs to run once in order to get a chance to set up various
+internal folders and settings.
+"@
+
+        Get-AnyResponse("Waiting... Press ENTER when Minecraft Preview has finished launching")
+    }
+
 }
 Write-Host "[ $(if($minecraftPreviewInstalled) {'INSTALLED'} else {'NOT INSTALLED'}) ] Minecraft Preview"
 
@@ -444,6 +455,17 @@ catch {
     exit;
 }
 
+Write-Host "[ Deploying README files ]"
+try {
+    $readme = Join-Path -Path $PSScriptRoot -ChildPath "README.*"
+    Copy-Item -Path $readme -Destination $projectLocation
+}
+catch {
+    Write-Error "There was an issue copying the README files to the extension folder"
+    Write-Error $_
+    exit
+}
+
 Write-Host "[ Deploying Extension Template ]"
 
 $templateSource = Join-Path -Path $PSScriptRoot -ChildPath "templates/src/extension-$extensionType/*"
@@ -496,6 +518,6 @@ Have fun!
 
 "@
 
-$readmeLocation = Join-Path -Path $projectLocation -ChildPath "GettingStarted.html"
+$readmeLocation = Join-Path -Path $projectLocation -ChildPath "README.html"
 Start-Process "$readmeLocation"
 exit

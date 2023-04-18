@@ -30,7 +30,7 @@
 		"tslib": "^2.4.0"
 	},
 	"scripts": {
-		"prepare": "just-scripts prepare --exetype uwp --forceprepare",
+		"prepare": "CheckNetIsolation.exe LoopbackExempt -a -p=S-1-15-2-424268864-5579737-879501358-346833251-474568803-887069379-4040235476 && just-scripts prepare --exetype uwp --forceprepare",
 		"clean": "just-scripts clean",
 		"nuke": "just-scripts nuke",
 		"build": "just-scripts build --exetype uwp",

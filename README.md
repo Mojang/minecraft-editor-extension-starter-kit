@@ -12,6 +12,7 @@ In order to begin, you will need to make sure you have the following software in
 
 ### Required
 - [Node.js](https://nodejs.org/en/download) - Node.js provides a full command line driven build environment and tool chain for building scripts for Minecraft Bedrock Scripts (and Editor Extensions) and is a basic requirement
+- [Minecraft Preview](https://apps.microsoft.com/store/detail/minecraft-preview-for-windows/9p5x4qvlc2xr) - Minecraft Preview Edition needs to be downloaded from the Microsoft Store and installed.  The game has to have been run at least once (in order to set up various internal folders and settings)
   
 ### Recommended
 - [Git](https://gitforwindows.org/) - We recommend installing Git as a method of fetching the latest starter kit changes, or storing your project where it won't get lost in the event of a system failure.  Git isn't required (there are many other alternative solutions like SVN, Perforce, etc), but Git is the one Mojang uses
