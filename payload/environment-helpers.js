@@ -64,7 +64,7 @@ export function getBehaviorPackName() {
   if (!packName) {
     throw "Unable to resolve Behavior Pack Name from .env file";
   }
-  return packName;
+  return packName + " [BP]";
 }
 
 export function getResourcePackName() {
@@ -72,7 +72,7 @@ export function getResourcePackName() {
   if (!packName) {
     throw "Unable to resolve Resource Pack Name from .env file";
   }
-  return packName;
+  return packName + " [RP]";
 }
 
 export function getBehaviorPackFolder(exePrefix) {

@@ -23,7 +23,8 @@
 		"ts-node": "^10.9.1",
 		"tsconfig": "*",
 		"typescript": "^4.7.2",
-		"webpack": "^5.74.0"
+		"webpack": "^5.74.0",
+		"archiver": "^5.3.1"
 	},
 	"dependencies": {
 		"@minecraft/server-editor": "file:./libraries/minecraft-server-editor-0.1.0-beta.tgz",
@@ -34,6 +35,7 @@
 		"clean": "just-scripts clean",
 		"nuke": "just-scripts nuke",
 		"build": "just-scripts build --exetype uwp",
+		"make-addon": "just-scripts make-addon --exetype uwp",
 		"enablemcloopback": "CheckNetIsolation.exe LoopbackExempt -a -p=S-1-15-2-424268864-5579737-879501358-346833251-474568803-887069379-4040235476"
 	}
 }
