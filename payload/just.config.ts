@@ -458,7 +458,11 @@ async function _createAddon(extensionArchivePath: string, bpPath: string, bpName
     await new Promise((resolve, reject) => {
         archive.pipe(stream);
         archive.directory(bpPath, bpName);
-        archive.directory(rpPath, rpName);
+
+        // Resource packs are optional
+        if(fs.existsSync(rpPath)) {
+            archive.directory(rpPath, rpName);
+        }
         archive.on('error', err => {
             throw err;
         });
