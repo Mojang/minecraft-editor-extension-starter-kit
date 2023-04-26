@@ -267,24 +267,35 @@ while (-not $minecraftPreviewInstalled) {
     }
 
     Write-Host "Use the Microsoft Store App to download Minecraft Preview for Windows, and install from there"
-    Start-Process "https://apps.microsoft.com/store/detail/minecraft-preview-for-windows/9p5x4qvlc2xr"
+    Start-Process "https://www.xbox.com/en-us/games/store/minecraft-preview-for-windows/9p5x4qvlc2xr"
     Get-AnyResponse("Waiting... Press ENTER when Minecraft Preview has been installed")
 
     RefreshEnvironmentAfterInstall
     $minecraftPreviewInstalled = Get-AppxPackage -Name "Microsoft.MinecraftWindowsBeta" -ErrorAction SilentlyContinue
 
-    if($minecraftPreviewInstalled) {
-        Write-Host @"
+    # Try an alternative download page if nothing was installed
+    if (-not $minecraftPreviewInstalled) {
+        Write-Host "If you're having problems downloading the Preview edition, try this page..."
+        Start-Process "https://www.microsoft.com/store/productId/9P5X4QVLC2XR"        
 
-Please launch the game at least once before continuing. 
-You can close it again once you're done - it just needs to run once in order to get a chance to set up various
-internal folders and settings.
+        Get-AnyResponse("Waiting... Press ENTER when Minecraft Preview has been installed")
 
-"@
-
-        Get-AnyResponse("Waiting... Press ENTER when Minecraft Preview has finished launching")
+        RefreshEnvironmentAfterInstall
+        $minecraftPreviewInstalled = Get-AppxPackage -Name "Microsoft.MinecraftWindowsBeta" -ErrorAction SilentlyContinue
     }
 
+    # If it was installed, run it at least once - so that all the com.mojang folders get
+    # created
+    if ($minecraftPreviewInstalled) {
+        Write-Host @"
+    
+Please launch the game at least once before continuing. 
+You can close it again once you're done - it just needs to run once in order to get a chance to set up various internal folders and settings.
+    
+"@
+    
+        Get-AnyResponse("Waiting... Press ENTER when Minecraft Preview has finished launching")
+    }
 }
 Write-Host "[ $(if($minecraftPreviewInstalled) {'INSTALLED'} else {'NOT INSTALLED'}) ] Minecraft Preview"
 
@@ -594,7 +605,8 @@ if (-not $vscodeInstalled) {
     
     $readmeLocation = Join-Path -Path $projectLocation -ChildPath "README.html"
     Start-Process "$readmeLocation"
-} else {
+}
+else {
     # if VSCode IS installed, open it at the project location, and open the README.md file by default
     $readmeLocation = Join-Path -Path $projectLocation -ChildPath "README.md"
     code $projectLocation $readmeLocation
