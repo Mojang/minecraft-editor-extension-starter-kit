@@ -72,15 +72,17 @@ In addition, some basic knowledge of <code>git</code> would be useful (but not r
 <p>On left hand side of the screen you will see the file explorer window, showing all of the files in your project.  Feel free to explore the files (don&#39;t change anything yet!)</p>
 <p>Go to the top menu bar and select <code>Terminal &gt; New Terminal</code> (or hit <code>CTRL+~</code>).<br>(Our tools should work in any of the different terminal flavors, but we generally favor either <code>Powershell</code> or <code>Git Bash</code>)  </p>
 <p>Type the following into the terminal</p>
-<pre><code class="language-bash">yarn install
+<pre><code class="language-bash">npm install
 </code></pre>
-<p><em>On some systems this isn&#39;t working, and it&#39;s not obvious why.  If this happens, you can skip using yarn and use <code>npm run</code> instead</em></p>
-<pre><code class="language-bash">npm run install
-</code></pre>
-<p>This will process your project settings and install all of the tools and symbols required by the Extension kit.</p>
+<p><strong>NOTE</strong>
+<em>Technically, the installer does this during the install process - but if you ever change any of the version numbers, dependencies or anything like that - you need to re-run the <code>install</code> step to ensure that everything is up to date</em>  </p>
+<p>This will process your project settings and install all of the tools and symbols required by the Extension kit.  </p>
+<p>&nbsp;</p>
 <p>The first step is to prepare a behavior pack destination (and resource pack destination if you chose to install any assets) - these will be deployed to the Minecraft <code>development_behavior_packs</code> and <code>developement_resource_packs</code> folders (these are folders that live in tandem with your Minecraft worlds and various other Minecraft files)</p>
-<pre><code class="language-bash">yarn prepare
+<pre><code class="language-bash">npm run prepare
 </code></pre>
+<p><strong>NOTE</strong>
+<em>If you ever add any additional asset files to your project (sprites, textures, icons, strings, etc), then you need to remember to run the <code>prepare</code> step.  This ensures that all of your assets have been deployed to a location where Minecraft can find them</em></p>
 <p>You can open a file explorer and check if you like. (probably wise, first time around ;) )  </p>
 <p>Open a Windows File Explorer window and paste</p>
 <pre><code class="language-bat">%LOCALAPPDATA%\Packages\Microsoft.MinecraftWindowsBeta_8wekyb3d8bbwe\LocalState\games\com.mojang
@@ -96,15 +98,16 @@ In addition, some basic knowledge of <code>git</code> would be useful (but not r
   skin_packs
   world_templates
 </code></pre>
-<p>(This is a super handy folder to remember if you&#39;re actively developing for Minecraft.  You should probably make a shortcut to it!)  </p>
+<p><strong>This is a super handy folder to remember if you&#39;re actively developing for Minecraft.  You should probably make a shortcut to it!</strong></p>
+<p>&nbsp;</p>
 <p>If you look inside <code>development_behavior_packs</code> you should see a folder with the name of your new extension. (If you chose to add assets, there should be a matching folder in <code>development_resource_packs</code> too)</p>
-<p>The <code>prepare</code> step is only really needed the first time, or if you ever add new assets (textures, text strings, custom files) to your extension - it basically copies the folders from <code>&lt;install_location&gt;\assets\</code> to the <code>development</code> packs folders where Minecraft can find them.  It also does some clever indexing of the folder contents and creates some manifest files required by the game -- so remember: add or change ANY new assets (sprites, textures, strings, etc) - run <code>prepare</code></p>
+<p>The <code>prepare</code> step is only really needed the first time, or if you ever add new assets (textures, text strings, custom files) to your extension - it basically copies the folders from <code>&lt;install_location&gt;\assets\</code> to the <code>development</code> packs folders where Minecraft can find them.  It does some indexing of the folder contents and creates the manifest files required by the game -- so remember: if you add or change ANY new assets (sprites, textures, strings, etc) - run the <code>prepare</code> step.</p>
 <h2 id="development-cycle">Development Cycle</h2>
 <h1 id="-2"></h1>
 <p>The development cycle is relatively straight forward.<br>Open Visual Studio Code and write some TypeScript.<br>Open a <code>New Terminal</code> in Visual Studio Code (make sure you&#39;re in the root of your new extension project) and type</p>
-<pre><code class="language-bash">yarn build
+<pre><code class="language-bash">npm run build
 </code></pre>
-<p>This will run the TypeScript compiler and compile your extension source code.  If it compiles successfully, the compiled code will be deployed to the <code>development_behavior_packs\&lt;my extension name [BP]\scripts</code> folder, ready for Minecraft.</p>
+<p>This will run the TypeScript compiler and compile your extension source code.  If it compiles successfully, the compiled code will be deployed to the <code>development_behavior_packs\&lt;my extension name [BP]\scripts</code> folder, ready for Minecraft.  </p>
 <h2 id="open-minecraft-preview">Open Minecraft (Preview)</h2>
 <h1 id="-3"></h1>
 <p>Currently, Bedrock Editor is only available in Preview editions of Minecraft Bedrock - you need to make sure that you&#39;ve installed the Preview edition from the Microsoft Store (or Minecraft Installer)</p>
@@ -124,7 +127,7 @@ Enter the string</li>
 <ol start="3">
 <li>Using the Extension Starter Kit build scripts.<br>Go to the Visual Studio terminal and type</li>
 </ol>
-<pre><code class="language-bash">yarn launch
+<pre><code class="language-bash">npm run launch
 </code></pre>
 <p>The Minecraft Preview edition should start up in Editor mode (you can tell it&#39;s Editor mode because the usual <code>Play Game</code> and <code>Settings</code> buttons are missing, and you&#39;re immediately presented with a <code>Create Project</code> screen).</p>
 <p>&nbsp;</p>
@@ -134,7 +137,10 @@ Add the behavior pack to your world project (and add the Resource pack if you ch
 <h2 id="making-changes">Making Changes</h2>
 <h1 id="-4"></h1>
 <p>The only time you should ever need to restart Minecraft is if you add any new assets (sprites, icons, text, etc) -- The Editor environment supports &quot;hot-reloading&quot; of compiled script changes.  </p>
-<p>For example - create a simple Extension and load it into the Editor using all of the steps above.  Once the game is running and your extension is loaded, return to Visual Studio Code (DON&#39;T close the game, leave it running!) and make a simple change that will be visible and re-compile it.<br>Return to the game and hit the <code>/</code> (forward slash) key and type <code>/reload</code><br>You&#39;ll see the Editor quickly disappear and reload, and !voila! - your newly changed script will have been loaded.  Try it out to confirm!</p>
+<p>For example - create a simple Extension and load it into the Editor using all of the steps above.  Once the game is running and your extension is loaded, return to Visual Studio Code (DON&#39;T close the game, leave it running!) and make a simple change that will be visible and re-compile it.<br>Return to the game and hit the <code>/</code> (forward slash) key and type </p>
+<pre><code>/reload
+</code></pre>
+<p>You&#39;ll see the Editor quickly disappear and reload, and !voila! - your newly changed script will have been loaded.  Try it out to confirm!</p>
 <h2 id="debugging">Debugging</h2>
 <h1 id="-5"></h1>
 <p>Sometimes, even the best of us need to debug our code to see where we&#39;ve gone wrong.
@@ -158,11 +164,13 @@ Often, the simplest way of debugging is to insert lots of &quot;debug output&quo
 </ol>
 <p>For additional information regarding debugging, the debugger or the script system - you should read through the official documentation at  </p>
 <p><a href="https://aka.ms/MinecraftCreatorDocs">Learn at Microsoft</a></p>
+<p>also, check out Debugger specific documentation at</p>
+<p><a href="https://aka.ms/mcscriptdebugging">Microsoft Minecraft Visual Studio Code Debugger</a></p>
 <h2 id="ok-ive-made-something-cool">OK, I&#39;ve made something COOL!</h2>
 <h1 id="-6"></h1>
 <p>Once you&#39;ve made a cool extension, you&#39;re going to want to show it off, right?<br>In that case, you can use the packaging tools to make a <code>.mceditoraddon</code> file -- this is a packaged up version of your extension that is perfect for distributing to your buddies or other Minecraft Editor users.</p>
 <p>Open a Terminal at the root of your Extension project and type</p>
-<pre><code class="language-bash">yarn make-addon
+<pre><code class="language-bash">npm run make-addon
 </code></pre>
 <p>This will build your project, and package up the resource and behavior packs.
 The resultant <code>.mceditoraddon</code> file will be created in the <code>./dist</code> folder inside your Extension project folder.<br>Just copy it, email it, pop it on your OneDrive - whatever you want.</p>

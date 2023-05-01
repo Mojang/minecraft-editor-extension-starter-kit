@@ -98,20 +98,22 @@ Go to the top menu bar and select `Terminal > New Terminal` (or hit `CTRL+~`).
 
 Type the following into the terminal
 ```bash
-yarn install
+npm install
 ```
-*On some systems this isn't working, and it's not obvious why.  If this happens, you can skip using yarn and use `npm run` instead*
-```bash
-npm run install
-```
+**NOTE**
+*Technically, the installer does this during the install process - but if you ever change any of the version numbers, dependencies or anything like that - you need to re-run the `install` step to ensure that everything is up to date*  
 
-This will process your project settings and install all of the tools and symbols required by the Extension kit.
+This will process your project settings and install all of the tools and symbols required by the Extension kit.  
+
+&nbsp;
 
 The first step is to prepare a behavior pack destination (and resource pack destination if you chose to install any assets) - these will be deployed to the Minecraft `development_behavior_packs` and `developement_resource_packs` folders (these are folders that live in tandem with your Minecraft worlds and various other Minecraft files)
 
 ```bash
-yarn prepare
+npm run prepare
 ```
+**NOTE**
+*If you ever add any additional asset files to your project (sprites, textures, icons, strings, etc), then you need to remember to run the `prepare` step.  This ensures that all of your assets have been deployed to a location where Minecraft can find them*
 
 You can open a file explorer and check if you like. (probably wise, first time around ;) )  
 
@@ -131,11 +133,13 @@ into the address bar.  You should see a number of folders in there...
   skin_packs
   world_templates
 ```
-(This is a super handy folder to remember if you're actively developing for Minecraft.  You should probably make a shortcut to it!)  
+**This is a super handy folder to remember if you're actively developing for Minecraft.  You should probably make a shortcut to it!**
+
+&nbsp;
 
 If you look inside `development_behavior_packs` you should see a folder with the name of your new extension. (If you chose to add assets, there should be a matching folder in `development_resource_packs` too)
 
-The `prepare` step is only really needed the first time, or if you ever add new assets (textures, text strings, custom files) to your extension - it basically copies the folders from `<install_location>\assets\` to the `development` packs folders where Minecraft can find them.  It also does some clever indexing of the folder contents and creates some manifest files required by the game -- so remember: add or change ANY new assets (sprites, textures, strings, etc) - run `prepare`
+The `prepare` step is only really needed the first time, or if you ever add new assets (textures, text strings, custom files) to your extension - it basically copies the folders from `<install_location>\assets\` to the `development` packs folders where Minecraft can find them.  It does some indexing of the folder contents and creates the manifest files required by the game -- so remember: if you add or change ANY new assets (sprites, textures, strings, etc) - run the `prepare` step.
 
 ## Development Cycle
 #
@@ -143,10 +147,10 @@ The development cycle is relatively straight forward.
 Open Visual Studio Code and write some TypeScript.  
 Open a `New Terminal` in Visual Studio Code (make sure you're in the root of your new extension project) and type
 ```bash
-yarn build
+npm run build
 ```
 
-This will run the TypeScript compiler and compile your extension source code.  If it compiles successfully, the compiled code will be deployed to the `development_behavior_packs\<my extension name [BP]\scripts` folder, ready for Minecraft.
+This will run the TypeScript compiler and compile your extension source code.  If it compiles successfully, the compiled code will be deployed to the `development_behavior_packs\<my extension name [BP]\scripts` folder, ready for Minecraft.  
 
 ## Open Minecraft (Preview)
 #
@@ -170,7 +174,7 @@ Start-Process shell:AppsFolder\$(Get-AppxPackage -name "Microsoft.MinecraftWindo
 3. Using the Extension Starter Kit build scripts.  
    Go to the Visual Studio terminal and type
 ```bash
-yarn launch
+npm run launch
 ```
 
 
@@ -189,7 +193,10 @@ Your extension should be loaded into the Editor environment
 The only time you should ever need to restart Minecraft is if you add any new assets (sprites, icons, text, etc) -- The Editor environment supports "hot-reloading" of compiled script changes.  
 
 For example - create a simple Extension and load it into the Editor using all of the steps above.  Once the game is running and your extension is loaded, return to Visual Studio Code (DON'T close the game, leave it running!) and make a simple change that will be visible and re-compile it.  
-Return to the game and hit the `/` (forward slash) key and type `/reload`  
+Return to the game and hit the `/` (forward slash) key and type 
+```
+/reload
+```
 You'll see the Editor quickly disappear and reload, and !voila! - your newly changed script will have been loaded.  Try it out to confirm!
 
 ## Debugging
@@ -223,6 +230,10 @@ For additional information regarding debugging, the debugger or the script syste
 
 [Learn at Microsoft](https://aka.ms/MinecraftCreatorDocs)
 
+also, check out Debugger specific documentation at
+
+[Microsoft Minecraft Visual Studio Code Debugger](https://aka.ms/mcscriptdebugging)
+
 ## OK, I've made something COOL!
 #
 
@@ -231,7 +242,7 @@ In that case, you can use the packaging tools to make a `.mceditoraddon` file --
 
 Open a Terminal at the root of your Extension project and type
 ```bash
-yarn make-addon
+npm run make-addon
 ```
 
 This will build your project, and package up the resource and behavior packs.

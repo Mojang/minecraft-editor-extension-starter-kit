@@ -1,6 +1,5 @@
 {
 	"name": ">>MC_EXTENSION_NAME<<",
-    "packageManager": "yarn@3.2.1",
 	"version": "0.1.0",
 	"productName": ">>MC_EXTENSION_NAME<<",
 	"description": ">>MC_EXTENSION_NAME<<",
@@ -8,8 +7,7 @@
 	"main": "lib/index.js",
 	"types": "lib/editor.d.ts",
     "engines": {
-        "node": ">=14.0.0 < 16.0.0",
-        "yarn": ">=3.2.1"
+        "node": ">=14.0.0 < 18.16.0"
     },
 	"repository": {
 		"url": "https://github.com/Mojang/EditorExtensionStarterKit"
@@ -18,7 +16,7 @@
 		"registry": "https://npm.pkg.github.com"
 	},
 	"devDependencies": {
-		"@minecraft/server": "1.1.0-beta.1.19.60-preview.23",
+		"@minecraft/server": "1.3.0-beta.1.20.0-preview.22",
         "@types/node": "^12.12.7",
         "eslint": "^8.20.0",
         "glob": "^8.0.3",

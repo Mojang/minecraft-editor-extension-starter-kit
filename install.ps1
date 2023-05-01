@@ -3,7 +3,7 @@
 # Summary:
 # - Check pre-requisites
 #   - Minecraft (UWP Preview App)
-#   - Node.js (& yarn)
+#   - Node.js
 # - Check Optionals
 #   - Visual Studio Code
 #   - Git
@@ -22,7 +22,6 @@
 #   - Copy `templates/.env.template` to Install Path as `.env`
 #       - Modify all entries within `.env` file with requisite values
 #   - Copy `package.json` and alter any entries within
-#   - Install yarn
 #   - Open VSCode at project path
 #   - Open browser at Minecraft Editor hub
 
@@ -552,29 +551,16 @@ catch {
     exit
 }
 
-# Make sure that yarn is installed into the node environment
-Write-Host "[ Setting up Node.js and yarn command line tools ]"
-try {
-    Push-Location $projectLocation
-    npm install -g yarn
-}
-catch {
-    Write-Error "There was an issue installing yarn from npm and building the yarn cache - you may have to do it by hand"
-}
-finally {
-    Pop-Location
-}
-
-# Run yarn install to make sure that all the dev tool dependencies are all set up
+# Run npm install to make sure that all the dev tool dependencies are all set up
 # and everything is cached in the lock file
 
-Write-Host "[ Setting up dev dependencies using yarn ]"
+Write-Host "[ Setting up dev dependencies ]"
 try {
     Push-Location $projectLocation
-    yarn install
+    npm install
 }
 catch {
-    Write-Error "There was an issue installing yarn from npm and building the yarn cache - you may have to do it by hand"
+    Write-Error "There was an issue installing npm package cache - you may have to do it by hand"
 }
 finally {
     Pop-Location
