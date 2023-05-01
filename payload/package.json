@@ -7,7 +7,7 @@
 	"main": "lib/index.js",
 	"types": "lib/editor.d.ts",
     "engines": {
-        "node": ">=14.0.0 < 18.16.0"
+        "node": ">=14.0.0 <=18.16.0"
     },
 	"repository": {
 		"url": "https://github.com/Mojang/EditorExtensionStarterKit"
