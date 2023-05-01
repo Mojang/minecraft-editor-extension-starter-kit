@@ -1,5 +1,7 @@
 # Minecraft Bedrock Editor Extension Starter Kit
 
+Test
+
 The Minecraft Bedrock Editor Extension Starter Kit is intended to get you up and running in writing your own Minecraft Bedrock Editor extensions.
 
 An Editor Extension is basically a way to allow creators to extend the basic Editor experience and to empower you to write your own custom tools to create cool, fun and engaging Minecraft worlds using the Bedrock Editor.
