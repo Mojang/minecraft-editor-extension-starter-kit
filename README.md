@@ -176,7 +176,7 @@ This will run the TypeScript compiler and compile your extension source code.  I
 ### Open Minecraft (Preview)
 Currently, Bedrock Editor is only available in Preview editions of Minecraft Bedrock - you need to make sure that you've installed the Preview edition from the Microsoft Store (or Minecraft Installer). Here is [information on installing Preview](https://learn.microsoft.com/en-us/minecraft/creator/documents/editorinstallation#install-minecraft-preview).
 
-There are a couple of methods to open Minecraft (Preview) in Editor mode:
+There are a few methods to open Minecraft (Preview) in Editor mode:
 1. Start the Preview version of the game in Editor mode using `Powershell`.  
    - Go to a `Powershell` command prompt (either in Windows or in Visual Studio Code) and type
    - Press the Windows Key and `R` key together - this will launch the `Windows Run Dialog`
@@ -197,7 +197,7 @@ Start-Process shell:AppsFolder\$(Get-AppxPackage -name "Microsoft.MinecraftWindo
 npm run launch
 ```
 
-The Minecraft Preview edition should start up in Editor mode (you can tell it's Editor mode because the usual `Play Game` and `Settings` buttons are missing, and you're immediately presented with a `Create Project` screen).
+Minecraft Preview should start up in Editor mode. You can tell it's Editor mode because the usual `Play Game` and `Settings` buttons are missing, and you're immediately presented with a `Create Project` screen.
 
 &nbsp;
 
