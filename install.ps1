@@ -92,7 +92,7 @@ function Get-ExtensionTypeResponse {
     Write-Host @"
 
 What kind of Minecraft Bedrock Editor Extension would you like to deploy?
- 1. Full functional example (lots of bells & whistles)
+ 1. Fully functional example (lots of bells & whistles)
  2. Minimal example (just to get an idea how it works)
  3. Empty (just the bare minimum - I know what I'm doing!)
 
@@ -109,7 +109,7 @@ What kind of Minecraft Bedrock Editor Extension would you like to deploy?
             return "empty"
         }
         else {
-            Write-Host "That's an invalid response... try again"
+            Write-Host "That's an invalid response. Try again."
             continue
         }
     }
@@ -126,7 +126,7 @@ function Get-ValidatedName {
         $isValid = $name -match '^[_a-zA-Z][_a-zA-Z0-9\-]{0,14}$'
         
         if (-not $isValid) {
-            Write-Host "Invalid name. Please enter a name that is 16 characters long (or less), begins with a letter or underscore and contains only alphanumeric characters, underscores or minus sign"
+            Write-Host "Invalid name. Please enter a name that is 16 characters long (or fewer), begins with a letter or underscore, and contains only alphanumeric characters, underscores, or minus signs."
         }
     } while (-not $isValid)
 
@@ -156,7 +156,7 @@ function Get-ValidatedProjectFolderDialog {
 
             $selectedDriveLetter = (Split-Path -Qualifier $selectedFolder).TrimEnd(':')
             if (!($selectedDriveLetter.Equals($applicationDriveLetter))) {
-                $message = "Project location should really be on the same drive as Minecraft`nChoose a different location"
+                $message = "Project location should really be on the same drive as Minecraft`n. Please choose a different location."
                 $title = "Warning"
                 $buttons = [System.Windows.Forms.MessageBoxButtons]::OK
                 [System.Windows.Forms.MessageBox]::Show($message, $title, $buttons)
@@ -180,8 +180,7 @@ function Get-ChooseProjectName() {
     Write-Host @"
 
 Let's choose a name for your new Minecraft Bedrock Editor Extension project.
-We recommend you keep it relatively short (16 characters or less), and only include numbers, letters, minus signs or
-underscores.
+We recommend you keep it relatively short (16 characters or fewer), begins with a letter or underscore, and contains only alphanumeric characters, underscores, or minus signs.
 This will be used to name your project folder AND the resource and behavior packs which will contain your
 extension, so choose wisely.
 (Or just choose something like 'myExtension1' - it's up to you!)
@@ -197,13 +196,10 @@ extension, so choose wisely.
 function Get-ChooseProjectLocation() {
     Write-Host @"
 
-OK, now we need to choose an install location into which '${projectName}' will be created.
+Now we need to choose an install location into which '${projectName}' will be created.
 This can be anywhere on your computer.
 
 Important Note: 
-This is a little embarrassing, but there's a bug in some of the open-source software we rely on during the
-build stage of our extension projects.  
-It's not something we can fix, so we have to work around it.
 We recommend that you choose a project install location which is on the '${applicationDriveLetter}:\' drive,
 otherwise building and debugging of Minecraft Bedrock Editor Extensions may not work properly.
 
@@ -233,7 +229,7 @@ if ( !(validateCurrentLocation) ) {
 This doesn't appear to be a valid install location (or there are files missing from the starter kit).
 
 Ensure that you are running the install script from the extension kit installer folder.
-If you continue to encounter issues - just delete this whole folder and re-download it from Github.
+If you continue to encounter issues - just delete this whole folder and re-download it from GitHub.
 
 "@
     exit
@@ -250,24 +246,24 @@ asked a few questions to help guide us through the process.
 There are some key pieces of software required to get us going, so we're going to check that 
 they're installed (and if not, give you a chance to install them).
 
-Remember - If, at any time during this process, you want to stop - hit CTRL+C to break out.
+Remember: If at any time during this process you want to stop, hit CTRL+C to break out.
 
-Here we go...
+Here we go!
 
-Checking Pre-Requisites...
+Checking prerequisites...
 
 "@
 
 $minecraftPreviewInstalled = Get-AppxPackage -Name "Microsoft.MinecraftWindowsBeta" -ErrorAction SilentlyContinue
 while (-not $minecraftPreviewInstalled) {
-    $response = Get-YesNoResponse("Minecraft Preview is a requirment to continue - do you want to continue? (Y/N)");
+    $response = Get-YesNoResponse("Minecraft Preview is a requirement to continue. Do you want to continue? (Y/N)");
     if ($response -ne 'Y') {
         exit
     }
 
-    Write-Host "Use the Microsoft Store App to download Minecraft Preview for Windows, and install from there"
+    Write-Host "Use the Microsoft Store App to download Minecraft Preview for Windows, and install from there."
     Start-Process "https://www.xbox.com/en-us/games/store/minecraft-preview-for-windows/9p5x4qvlc2xr"
-    Get-AnyResponse("Waiting... Press ENTER when Minecraft Preview has been installed")
+    Get-AnyResponse("Waiting...Press ENTER when Minecraft Preview has been installed.")
 
     RefreshEnvironmentAfterInstall
     $minecraftPreviewInstalled = Get-AppxPackage -Name "Microsoft.MinecraftWindowsBeta" -ErrorAction SilentlyContinue
@@ -277,7 +273,7 @@ while (-not $minecraftPreviewInstalled) {
         Write-Host "If you're having problems downloading the Preview edition, try this page..."
         Start-Process "https://www.microsoft.com/store/productId/9P5X4QVLC2XR"        
 
-        Get-AnyResponse("Waiting... Press ENTER when Minecraft Preview has been installed")
+        Get-AnyResponse("Waiting... Press ENTER when Minecraft Preview has been installed.")
 
         RefreshEnvironmentAfterInstall
         $minecraftPreviewInstalled = Get-AppxPackage -Name "Microsoft.MinecraftWindowsBeta" -ErrorAction SilentlyContinue
@@ -289,11 +285,11 @@ while (-not $minecraftPreviewInstalled) {
         Write-Host @"
     
 Please launch the game at least once before continuing. 
-You can close it again once you're done - it just needs to run once in order to get a chance to set up various internal folders and settings.
+You can close it again once you're done. The game just needs to run once in order to get a chance to set up various internal folders and settings.
     
 "@
     
-        Get-AnyResponse("Waiting... Press ENTER when Minecraft Preview has finished launching")
+        Get-AnyResponse("Waiting... Press ENTER when Minecraft Preview has finished launching.")
     }
 }
 Write-Host "[ $(if($minecraftPreviewInstalled) {'INSTALLED'} else {'NOT INSTALLED'}) ] Minecraft Preview"
@@ -301,13 +297,13 @@ Write-Host "[ $(if($minecraftPreviewInstalled) {'INSTALLED'} else {'NOT INSTALLE
 
 $nodeInstalled = Get-Command node -ErrorAction SilentlyContinue
 while (-not $nodeInstalled) {
-    $response = Get-YesNoResponse("Node.js is a requirment to continue - do you want to continue? (Y/N)");
+    $response = Get-YesNoResponse("Node.js is a requirment to continue. Do you want to continue? (Y/N)");
     if ($response -ne 'Y') {
         exit
     }
-    Write-Host "Download and install Node.js from this website and return to this installer when you're done"
+    Write-Host "Download and install Node.js from this website and return to this installer when you're done."
     Start-Process "https://nodejs.org/en/download"
-    Get-AnyResponse("Waiting... Press ENTER when Node.js has been installed")
+    Get-AnyResponse("Waiting... Press ENTER when Node.js has been installed.")
 
     RefreshEnvironmentAfterInstall
     $nodeInstalled = Get-Command node -ErrorAction SilentlyContinue
@@ -317,13 +313,13 @@ Write-Host "[ $(if($nodeInstalled) {'INSTALLED'} else {'NOT INSTALLED'}) ] Node.
 
 $vscodeInstalled = Get-Command code -ErrorAction SilentlyContinue
 while (-not $vscodeInstalled) {
-    $response = Get-YesNoResponse("Visual Studio Code is STRONGLY recommended - do you want to continue? (Y/N)");
+    $response = Get-YesNoResponse("Visual Studio Code is STRONGLY recommended. Do you want to continue? (Y/N)");
     if ($response -ne 'Y') {
         break
     }
-    Write-Host "Download and install Visual Studio Code from this website and return to this installer when you're done"
+    Write-Host "Download and install Visual Studio Code from this website and return to this installer when you're done."
     Start-Process "https://code.visualstudio.com/"
-    Get-AnyResponse("Waiting... Press ENTER when Visual Studio Code has been installed")
+    Get-AnyResponse("Waiting... Press ENTER when Visual Studio Code has been installed.")
 
     RefreshEnvironmentAfterInstall
     $vscodeInstalled = Get-Command code -ErrorAction SilentlyContinue
@@ -333,13 +329,13 @@ Write-Host "[ $(if($vscodeInstalled) {'INSTALLED'} else {'NOT INSTALLED'}) ] Vis
 
 $gitInstalled = Get-Command git -ErrorAction SilentlyContinue
 while (-not $gitInstalled) {
-    $response = Get-YesNoResponse("Installing 'Git' is recommended but not required - do you want to continue? (Y/N)");
+    $response = Get-YesNoResponse("Installing 'Git' is recommended but not required. Do you want to continue? (Y/N)");
     if ($response -ne 'Y') {
         break
     }
-    Write-Host "Download and install Git from this website and return to this installer when you're done"
+    Write-Host "Download and install Git from this website and return to this installer when you're done."
     Start-Process "https://gitforwindows.org/"
-    Get-AnyResponse("Waiting... Press ENTER when Git has been installed")
+    Get-AnyResponse("Waiting... Press ENTER when Git has been installed.")
 
     RefreshEnvironmentAfterInstall    
     $gitInstalled = Get-Command git -ErrorAction SilentlyContinue
@@ -366,24 +362,24 @@ do {
         @"
 
 The folder '$projectLocation' already exists.  
-Why don't you take a quick look inside and make sure there's nothing you don't want to lose.
+Take a quick look inside to make sure there isn't anything you don't want to lose.
 If you choose to continue with installation at this location, the contents will be destroyed!
 
 "@
 
-        $response = Get-YesNoResponse("Do you want to continue (Y) or choose a new location (N)")
+        $response = Get-YesNoResponse("Do you want to continue (Y) or choose a new location (N)?")
         if ($response -eq 'N') {
             # Back to choose name
             continue
         }
         Write-Host @"
-I'll open it up and you take a look inside.
-Come back and choose whether or not to continue.
+Let's open it up so you can take a look inside.
+Then come back and choose whether or not to continue.
 "@
         # Open a file explorer at the new location
         Invoke-Item $projectLocation
 
-        $response = Get-YesNoResponse("Are you really sure you want to use this location? (Y/N)")
+        $response = Get-YesNoResponse("Are you really sure you want to use this location? (Y/N)?")
         if ($response -eq 'N') {
             # Back to choose name
             continue
@@ -398,7 +394,7 @@ Come back and choose whether or not to continue.
             Remove-Item -Path "$projectLocation\*" -Recurse -ErrorAction Stop
         }
         catch {
-            Write-Error "Clearing out the folder failed with an error.  Recommend you choose a new location."
+            Write-Error "Clearing out the folder failed with an error.  We recommend you choose a new location."
             Write-Error $_
             continue
         }
@@ -411,7 +407,7 @@ Come back and choose whether or not to continue.
             New-Item -ItemType Directory -Path $projectLocation -ErrorAction Stop | Out-Null
         }
         catch {
-            Write-Error "An error occurred creating the new project install folder.  Recommend you choose a new location."
+            Write-Error "An error occurred creating the new project install folder.  We recommend you choose a new location."
             Write-Error $_
             continue
         }
@@ -424,7 +420,7 @@ Come back and choose whether or not to continue.
         Remove-Item -Path $testFilePath -Force
     }
     catch {
-        Write-Error "There appears to be issues writing to that location.  You should choose a different one."
+        Write-Error "There appears to be issues writing to that location.  Please choose a different one."
         Write-Error $_
         continue;
     }
@@ -437,14 +433,14 @@ Clear-Host
 
 Write-Host @"
 
-Do you plan on adding any Resources to your extension? (Icons, Textures, text strings, etc?)
+Do you plan on adding any Resources to your extension? This could include icons, textures, text strings, etc.?)
 
-If your project will require new icons, sprites, text strings or any loadable data - then you should choose YES
-to this question.
-If you plan on just doing something simple that doesn't require any of that, then you can just answer NO.
-If you are not sure, just say YES - there's no harm in it.
-All this does is creates an empty resource pack for your new assets - you can add it manually later, but you need
-to remember to add manifest dependencies and stuff, so it's easier if you just say YES now if you're not sure.
+Choose YES if your project will require new icons, sprites, text strings, or any loadable data, or if you're not sure (there's no harm in this).
+
+Choose NO if you plan on just doing something simple that doesn't require any additional Resources. 
+
+All this does is creates an empty resource pack for your new assets, which you can also add manually later. However, you'll also need
+to remember to add manifest dependencies, so it's easier if you just say YES now if you're not sure.
 
 "@
 
@@ -475,7 +471,7 @@ try {
     Copy-Item -Path $sourcePayload -Destination $projectLocation -Recurse
 }
 catch {
-    Write-Error "There was an issue copying the files to the project folder"
+    Write-Error "There was an issue copying the files to the project folder."
     Write-Error $_
     exit
 }
@@ -519,7 +515,7 @@ try {
     Set-Content -Path $packageJsonLocation -Value $sourcePackageJson -Force -ErrorAction Continue
 }
 catch {
-    Write-Error "There was an issue setting up the default environment template"
+    Write-Error "There was an issue setting up the default environment template."
     Write-Error $_
     exit;
 }
@@ -531,7 +527,7 @@ try {
     Copy-Item -Path $readme -Destination $projectLocation
 }
 catch {
-    Write-Error "There was an issue copying the README files to the extension folder"
+    Write-Error "There was an issue copying the README files to the extension folder."
     Write-Error $_
     exit
 }
@@ -546,7 +542,7 @@ try {
     Copy-Item -Path $templateSource -Destination $templateDest -Recurse
 }
 catch {
-    Write-Error "There was an issue copying the template project files to the extension folder"
+    Write-Error "There was an issue copying the template project files to the extension folder."
     Write-Error $_
     exit
 }
@@ -560,7 +556,7 @@ try {
     npm install
 }
 catch {
-    Write-Error "There was an issue installing npm package cache - you may have to do it by hand"
+    Write-Error "There was an issue installing npm package cache. You may have to do it manually."
 }
 finally {
     Pop-Location
@@ -580,7 +576,7 @@ and test the extension in the Minecraft Bedrock Editor
 
 Have fun!
 
-Hit ENTER to open Visual Studio Code the README and start creating!!
+Hit ENTER to open Visual Studio Code the README and start creating!
 
 "@
 
