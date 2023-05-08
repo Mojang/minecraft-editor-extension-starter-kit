@@ -1,0 +1,236 @@
+<h1 id="minecraft-bedrock-editor-extension-starter-kit">Minecraft Bedrock Editor Extension Starter Kit</h1>
+<h3 id="contents">Contents</h3>
+<ul>
+<li><a href="#prep-work">Prep work</a></li>
+<li><a href="#download--install">Download &amp; install</a></li>
+<li><a href="#starting-development">Starting development</a></li>
+<li><a href="#development-cycle">Development cycle</a></li>
+<li><a href="#making-changes">Making changes</a></li>
+<li><a href="#sharing-your-editor-extension">Sharing your Editor Extension</a></li>
+</ul>
+<h1 id=""></h1>
+<p>The Minecraft Bedrock Editor Extension Starter Kit is intended to get you up and running in writing your own Minecraft Bedrock Editor extensions.</p>
+<p>An Editor Extension is our way of empowering creators to extend the basic Editor experience by writing custom tools that will make it easier to create cool, fun, and engaging Minecraft worlds. </p>
+<p>The Minecraft Bedrock Editor Extension Starter Kit assumes that the creator has at least a rudimentary knowledge of JavaScript AND TypeScript, and is somewhat comfortable with the command line. In addition, some basic knowledge of <code>git</code> would be useful (but not required).</p>
+<blockquote>
+<p><strong>Note to non-Windows users:</strong>  </p>
+<ul>
+<li><em>Currently the Minecraft Bedrock Editor Extension kit only works in a Windows environment.  The underlying code and tools may well be available for other platforms, but some of the utilities we use to simplify the process assume Windows code and data paths.</em></li>
+<li><em>If you are experienced with other operating systems and development environments, there&#39;s nothing stopping you from taking the basic principles of this kit and setting up your own pipeline (we may well do it ourselves in the future, but just not yet).</em></li>
+</ul>
+</blockquote>
+<h1 id="-1"></h1>
+<h2 id="prep-work">Prep work</h2>
+<p><em>Throughout the install process, you will need an active internet connection.  The installer actively downloads open-source tooling, libraries and symbols and won&#39;t work if the remote servers cannot be contacted.</em></p>
+<p>In order to begin, you will need to make sure you have the following software installed (don&#39;t worry if you don&#39;t - the Extension Kit installer will step you through the various requirements): </p>
+<p>&nbsp;</p>
+<h3 id="required">Required</h3>
+<ul>
+<li><p><a href="https://nodejs.org/en/download">Node.js</a> - <code>Node.js</code> provides a full command line driven build environment and tool chain for building scripts for Minecraft Bedrock Scripts (and Editor Extensions) and is a basic requirement.  </p>
+</li>
+<li><p><a href="https://apps.microsoft.com/store/detail/minecraft-preview-for-windows/9p5x4qvlc2xr">Minecraft Preview</a> - Minecraft Preview Edition needs to be downloaded from the Microsoft Store and installed.  The game has to have been run at least once (in order to set up various internal folders and settings).</p>
+</li>
+</ul>
+<p>&nbsp;</p>
+<h3 id="recommended">Recommended</h3>
+<ul>
+<li><a href="https://code.visualstudio.com/">Visual Studio Code</a> - We STRONGLY recommend installing this code editor for developing Minecraft Bedrock Editor Extensions. Visual Studio Code supports syntax highlighting for JavaScript and Typescript, as well as a full source-level debugging experience for Minecraft Bedrock scripts, as well as formatting and error detection tools.</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> <em>The Editor Starter Kit installs a special <code>.vscode</code> file into any new project which sets up a number of recommended Visual Studio Code extensions that should make your development experience easier (code checkers, formatters and a special Minecraft Script Debugger).  When you eventually start Visual Studio Code with an Editor Extension project - make sure you install all the recommended extensions when prompted.</em></p>
+</blockquote>
+<ul>
+<li><a href="https://gitforwindows.org/">Git</a> - We recommend installing Git as a method of fetching the latest starter kit changes, or storing your project where it won&#39;t get lost in the event of a system failure.  Git isn&#39;t required (there are many other alternative solutions like SVN, Perforce, etc), but Git is the one Mojang uses.  <br>This is only a recommendation, and you don&#39;t have to install it if you&#39;re not comfortable or familiar with it.</li>
+</ul>
+<p>&nbsp;</p>
+<h3 id="information-to-have-ready">Information to have ready</h3>
+<ul>
+<li>Where to download (clone) the Bedrock Editor Extension Kit installer<ul>
+<li>This can be anywhere, but we&#39;d generally recommend somewhere you can refer back to it and use it again for any new projects you want to create.</li>
+</ul>
+</li>
+<li>Where to install the project for your new Bedrock Editor Extension<ul>
+<li>This can be anywhere on your local drive, but we generally recommend a single place where you normally keep all of your projects and working samples.  Something like <code>C:\dev</code>.</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> <em>There&#39;s currently a bug in one of the open-source packages we use that causes some issues when your extension project is on a different drive letter from the game - so we&#39;d recommend keeping any projects you create on the <code>C:\</code> drive.  This won&#39;t be permanent, but at this time we don&#39;t have a fix for it.</em></p>
+</blockquote>
+<ul>
+<li>Do you want to start with a blank project, or use a template?<ul>
+<li>We supply a few different sample templates including an empty one.  Each of the samples show some aspect of the Editor Extension system.  If you know what you&#39;re doing, just choose the empty one - it does the bare minimum to get you up and running.</li>
+</ul>
+</li>
+<li>Will you need any icons or text assets for your new extension?<ul>
+<li>If you need to add any additional icons or text strings or anything else that might be loaded - then it needs to live in a resource pack.  (Resource Packs and Behavior Packs are paired up, and have dependencies on each other).  <br>If you have any doubts, then just answer <code>YES</code> when prompted.</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> <em>If you&#39;re just starting out, we would recommend creating a folder in &quot;<code>My Documents</code>&quot; (maybe call it <code>minecraft-dev</code>).  For the purposes of starting out, we&#39;ll make that the root of your development environment).</em></p>
+</blockquote>
+<p>&nbsp;</p>
+<h2 id="download--install">Download &amp; install</h2>
+<h3 id="download">Download</h3>
+<h3 id="dave-todo----need-a-valid-link-placeholder">DAVE TODO -- Need a valid link (placeholder)</h3>
+<h3 id="dave-todo----need-a-valid-link-for-the-packagejson-repository-url">DAVE TODO -- Need a valid link for the package.json repository URL</h3>
+<p>&nbsp;</p>
+<p>Navigate to <code>https://github.com/Mojang/minecraft-editor/BedrockEditorExtensionkit</code> (<strong>Question from Chloete: This will be the minecraft-editor repo, right?</strong>) and either clone the repository to a location on your hard drive (using your knowledge of <code>git</code>), or download the kit as a <code>ZIP</code> file and unip it to the root of your development folder.</p>
+<p>&nbsp;</p>
+<h3 id="install">Install</h3>
+<p>Open Windows PowerShell from the Windows Start Menu (or use WIN+R keys and type <code>powershell</code>).  </p>
+<p>Navigate to the location on your hard drive where you placed the Extension Kit Installer. If you downloaded the kit as a <code>ZIP</code> file, ensure you navigate to the unzipped folder location.</p>
+<pre><code class="language-powershell">cd c:\dev            &lt;&lt; Use the development folder name you chose here &gt;&gt;
+.\install.ps1
+</code></pre>
+<h3 id="dave-todo----if-i-get-the-ps1-signed-we-can-get-rid-of-the-execution-policy-section">DAVE TODO -- If I get the PS1 signed, we can get rid of the Execution Policy section</h3>
+<blockquote>
+<p><strong>Troubleshooting tip:</strong> If you see a script permissions error when attempting to run the installer, you may have to change your Execution Privileges in Powershell. Please read <a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-7.3">Set-ExecutionPolicy</a> at Microsoft.com. You may have to change your current script permissions to allow the installer to run (only do this if you&#39;re having a problem running it) using: </p>
+<pre><code class="language-powershell">Set-ExecutionPolicy -Scope CurrentUser Unrestricted
+</code></pre>
+</blockquote>
+<p>Using the information you prepared in the <a href="#before-you-begin">Before you begin</a> section, follow the prompts and answer the questions.</p>
+<blockquote>
+<p><strong>Note:</strong> <em>If you ARE installing any prerequisite packages - please make sure you ALWAYS choose to add the tool to the <code>PATH</code> (so that any command line systems can locate the tools) - some steps may not complete correctly if the tools cannot be found.</em></p>
+</blockquote>
+<p>At the end of the process, you should have a new folder containing all the files, folders and  assets required to start writing your new Minecraft Bedrock Editor Extension.</p>
+<h1 id="-2"></h1>
+<h2 id="starting-development">Starting development</h2>
+<h3 id="open-your-new-project">Open your new project</h3>
+<p>Open Visual Studio Code, and select <code>File &gt; Open Folder</code> and select the folder that you choose to install your new Extension project (e.g. <code>c:\dev\myNewProject</code>).</p>
+<p>On left hand side of the screen you will see the file explorer window, showing all of the files in your project.  Feel free to explore the files (don&#39;t change anything yet)! </p>
+<p>Go to the top menu bar and select <code>Terminal &gt; New Terminal</code> (or hit <code>CTRL+~</code>).<br>(Our tools should work in any of the different terminal flavors, but we generally favor either <code>Powershell</code> or <code>Git Bash</code>).</p>
+<p>Type the following into the terminal: </p>
+<pre><code class="language-bash">npm install
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> <em>Technically, the installer does this during the install process - but if you ever change any of the version numbers, dependencies or anything like that - you need to re-run the <code>install</code> step to ensure that everything is up to date.</em>  </p>
+</blockquote>
+<p>This will process your project settings and install all of the tools and symbols required by the Extension kit.  </p>
+<p>&nbsp;</p>
+<h3 id="choose-behavior-pack-destination">Choose behavior pack destination</h3>
+<p>The first step is to prepare a behavior pack destination (and resource pack destination if you chose to install any assets). These will be deployed to the Minecraft <code>development_behavior_packs</code> and <code>developement_resource_packs</code> folders. These are folders that live in tandem with your Minecraft worlds and various other Minecraft files.</p>
+<pre><code class="language-bash">npm run prepare
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> <em>If you ever add any additional asset files to your project (sprites, textures, icons, strings, etc), then you need to remember to run the <code>prepare</code> step.  This ensures that all of your assets have been deployed to a location where Minecraft can find them</em></p>
+</blockquote>
+<p>You can open a file explorer and check if you like. (Probably wise to do this the first time around ;) ).  </p>
+<p>Open a Windows File Explorer window and paste: </p>
+<pre><code class="language-bat">%LOCALAPPDATA%\Packages\Microsoft.MinecraftWindowsBeta_8wekyb3d8bbwe\LocalState\games\com.mojang
+</code></pre>
+<p>into the address bar.  You should see a number of folders in there...</p>
+<pre><code>  behavior_packs
+  development_behavior_packs
+  development_resource_packs
+  development_skin_packs
+  minecraftWorlds
+  minecraftpe
+  resource_packs
+  skin_packs
+  world_templates
+</code></pre>
+<blockquote>
+<p><strong>Tip:</strong> <em>This is a super handy folder to remember if you&#39;re actively developing for Minecraft.  You should probably make a shortcut to it!</em></p>
+</blockquote>
+<p>If you look inside <code>development_behavior_packs</code> you should see a folder with the name of your new extension. If you chose to add assets, there should be a matching folder in <code>development_resource_packs</code> too.</p>
+<p>The <code>prepare</code> step is only really needed the first time, or if you ever add new assets (textures, text strings, custom files) to your extension - it basically copies the folders from <code>&lt;install_location&gt;\assets\</code> to the <code>development</code> packs folders where Minecraft can find them.  It does some indexing of the folder contents and creates the manifest files required by the game -- so remember: if you add or change ANY new assets (sprites, textures, strings, etc) - run the <code>prepare</code> step.</p>
+<h1 id="-3"></h1>
+<h2 id="development-cycle">Development cycle</h2>
+<h3 id="write-and-build">Write and build</h3>
+<ol>
+<li>Open Visual Studio Code and write some TypeScript.  </li>
+<li>Open a <code>New Terminal</code> in Visual Studio Code (make sure you&#39;re in the root of your new extension project) and type</li>
+</ol>
+<pre><code class="language-bash">npm run build
+</code></pre>
+<p>This will run the TypeScript compiler and compile your extension source code.  If it compiles successfully, the compiled code will be deployed to the <code>development_behavior_packs\&lt;my extension name [BP]\scripts</code> folder, ready for Minecraft.  </p>
+<p>&nbsp;</p>
+<h3 id="open-minecraft-preview">Open Minecraft (Preview)</h3>
+<p>Currently, Bedrock Editor is only available in Preview editions of Minecraft Bedrock - you need to make sure that you&#39;ve installed the Preview edition from the Microsoft Store (or Minecraft Installer). Here is <a href="https://learn.microsoft.com/en-us/minecraft/creator/documents/editorinstallation#install-minecraft-preview">information on installing Preview</a>.</p>
+<p>There are a few methods to open Minecraft (Preview) in Editor mode:</p>
+<ol>
+<li>Start the Preview version of the game in Editor mode using <code>Powershell</code>.  <ul>
+<li>Go to a <code>Powershell</code> command prompt (either in Windows or in Visual Studio Code) and type</li>
+<li>Press the Windows Key and <code>R</code> key together - this will launch the <code>Windows Run Dialog</code></li>
+<li>Enter the string</li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-powershell">Start-Process shell:AppsFolder\$(Get-AppxPackage -name &quot;Microsoft.MinecraftWindowsBeta&quot; | Select-Object -ExpandProperty PackageFamilyName)!App -ArgumentList &quot;Editor=true&quot;
+</code></pre>
+<ol start="2">
+<li>Using the Extension Starter Kit helper script.  <ul>
+<li>Go to the Visual Studio <code>Powershell</code> terminal and type:</li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-powershell">.\launch-editor.ps1
+</code></pre>
+<ol start="3">
+<li>Using the Extension Starter Kit build scripts.  <ul>
+<li>Go to the Visual Studio terminal and type</li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-bash">npm run launch
+</code></pre>
+<p>Minecraft Preview should start up in Editor mode. You can tell it&#39;s Editor mode because the usual <code>Play Game</code> and <code>Settings</code> buttons are missing, and you&#39;re immediately presented with a <code>Create Project</code> screen.</p>
+<p>&nbsp;</p>
+<h3 id="review-your-extension">Review your extension</h3>
+<p>Once Bedrock Editor is open in Minecraft Preview, create a new project and give it any name you want. Before you leave project creation, go to the <code>Behavior Packs</code> tab and navigate to <code>Available Packs</code>.  You should see your new Editor Extension in that list. Activate the behavior pack in your world project (and don&#39;t forget to also add the Resource pack if you chose to add assets).  </p>
+<p>Launch the project. Your extension should be loaded into the Editor environment! </p>
+<h1 id="-4"></h1>
+<h2 id="making-changes">Making Changes</h2>
+<h3 id="hot-reloading-to-see-script-changes">&quot;Hot-reloading&quot; to see script changes</h3>
+<p>The only time you should ever need to restart Minecraft is if you add any new assets (sprites, icons, text, etc.). The Editor environment supports &quot;hot-reloading&quot; of compiled script changes using the <code>/reload</code> command.  </p>
+<blockquote>
+<p><strong>Example:</strong> Create a simple Extension and load it into the Editor using all of the steps above.  Once the game is running and your extension is loaded, return to Visual Studio Code (DON&#39;T close the game, leave it running!) and make a simple change that will be visible and re-compile it.
+Return to the game and hit the <code>/</code> (forward slash) key and type </p>
+</blockquote>
+<pre><code>/reload
+</code></pre>
+<blockquote>
+<p>You&#39;ll see the Editor quickly disappear and reload, and !voila! - your newly changed script will have been loaded.  Try it out to confirm!</p>
+</blockquote>
+<p>&nbsp;</p>
+<h3 id="debugging-with-output">Debugging with output</h3>
+<p>Even the best of us need to debug our code to see where we&#39;ve gone wrong. Often, the simplest way of debugging is to insert lots of &quot;debug output&quot;...  throughout your extension, you can insert the JavaScript command: </p>
+<pre><code class="language-js">console.log(`Got as far as initialization`);
+</code></pre>
+<p><em>(or some message to that effect).</em><br>You should see your messages appear in the Log Window. This can often help you determine how far your code got (you can even dump the values of variables and internal states to the output window to help you find your problem).</p>
+<p>&nbsp;</p>
+<h3 id="debugging-with-a-debugger">Debugging with a debugger</h3>
+<p>Sometimes this just isn&#39;t enough and you need to use a debugger to step through your code.  The Minecraft Bedrock JavaScript engine supports full source-level debugging.</p>
+<ol>
+<li>Find the <code>Run &amp; Debug (CTRL+SHIFT+D)</code> icon in the Visual Studio Code side bar, and press it</li>
+<li>A new set of panels should open on the left side of the screen, and you should see a drop-down combo box at the top.  This is the <code>debugger configuration</code> selector</li>
+<li>Choose the <code>Debug Editor Extension</code> configuration and hit green <code>PLAY</code> button (<code>F5</code>)</li>
+<li>The debugger will start <code>listening</code> for a connection from the game.</li>
+<li>Open the Minecraft Editor</li>
+<li>Hit the <code>/</code> (forward slash) key and type<pre><code>/script debugger connect localhost 19144 
+</code></pre>
+</li>
+<li>You should see a message both on the game and in Visual Studio code about a connection being made</li>
+<li>Now you&#39;re ready to debug.</li>
+</ol>
+<p>For additional information regarding debugging, the debugger or the script system - you should read through the <a href="https://aka.ms/MinecraftCreatorDocs">official general Bedrock Creator documentation</a> or <a href="https://aka.ms/mcscriptdebugging">debugger specific documentation</a>. </p>
+<h1 id="-5"></h1>
+<h2 id="sharing-your-editor-extension">Sharing your Editor Extension</h2>
+<h3 id="as-an-mceditoraddon-file">As an .mceditoraddon file</h3>
+<p>Once you&#39;ve made a cool extension, you&#39;re going to want to show it off, right?! </p>
+<p>In that case, you can use the packaging tools to make a <code>.mceditoraddon</code> file -- this is a packaged up version of your extension that is perfect for distributing to your buddies or other Minecraft Editor users.</p>
+<p>Open a Terminal at the root of your Extension project and type</p>
+<pre><code class="language-bash">npm run make-addon
+</code></pre>
+<p>This will build your project, and package up the resource and behavior packs. The resultant <code>.mceditoraddon</code> file will be created in the <code>./dist</code> folder inside your Extension project folder. Just copy it, email it, pop it on your OneDrive - whatever and wherever you want.</p>
+<p>Anyone will be able to double-click open the file and it will automatically be installed into their Minecraft development folders for them to include in their own Editor projects.</p>
+<p>&nbsp;</p>
+<h3 id="in-the-public-bedrock-editor-github-forum">In the public Bedrock Editor GitHub forum</h3>
+<p>If you do something really cool, let us know on the <a href="https://github.com/Mojang/minecraft-editor/discussions/categories/show-tell">Mojang Minecraft Editor Github Forum</a> - post some pics and let us see what you created! </p>
+<p>This is also the place for Editor and Editor Extension related questions, feedback, and bugs - we encourage you to report any bugs you find so that we can make the project better! We read everything posted there, and we&#39;ll address them as fast as we can.</p>
+<p>If you have a fantastic idea for an Editor Extension, but feel that the API doesn&#39;t expose the functions you need, <em>please</em> get in touch with us to let us know what we&#39;re missing! The Editor and its API is by no means finished. It&#39;s constantly evolving, and we&#39;re really excited to add new functionality and new ways for you to create, as informed by you.</p>
+<p>&nbsp;</p>
+<h3 id="on-social-media">On social media</h3>
+<p>Make sure to add #BedrockEditor to ensure it catches our eye! </p>

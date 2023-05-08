@@ -1,0 +1,5 @@
+# Do not change this file - it is used as part of the installer/upgrade
+# and any changes here will potentially result in lost work or leave the project
+# in a broken state
+
+0.1.0-beta

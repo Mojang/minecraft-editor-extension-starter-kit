@@ -1,6 +1,0 @@
-## Comments can be added anywhere on a valid line by starting with '##'
-##
-## Note, trailing spaces will NOT be trimmed. If you want room between the end of the string and the start of a
-## comment on the same line, use TABs.
-
-sampleextension.string=This is a sample text string for localization
