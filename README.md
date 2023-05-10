@@ -33,7 +33,6 @@ In order to begin, you will need to make sure you have the following software in
 - [Node.js](https://nodejs.org/en/download) - `Node.js` provides a full command line driven build environment and tool chain for building scripts for Minecraft Bedrock Scripts (and Editor Extensions) and is a basic requirement.  
   
 - [Minecraft Preview](https://apps.microsoft.com/store/detail/minecraft-preview-for-windows/9p5x4qvlc2xr) - Only Minecraft Preview builds currently supports the Minecraft Bedrock Editor. You can download this from the Microsoft Store or directly from the Minecraft Launcher.  We recommend that you run the preview edition at least once before running the installer to ensure that all of the working directories are set up on your computer.
-
 &nbsp;
 
 ### Recommended

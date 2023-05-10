@@ -215,7 +215,7 @@ This can be anywhere on your computer.
 
 Important Note: 
 We recommend that you choose a project install location which is on the '${applicationDriveLetter}:\' drive,
-otherwise there may be issues with building and debugging your Extension
+otherwise there may be issues with building and debugging your Extension.
 
 Use the folder selector to find a location into which we can install your new project...
 
