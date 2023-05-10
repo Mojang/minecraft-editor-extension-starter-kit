@@ -367,7 +367,7 @@ import {
     return uiSession.toolRail.addTool({
         displayStringLocId: 'portalGenerator.displayName',
         displayString: 'Portal Generator (CTRL + SHIFT + P)',
-        icon: '',
+        icon: 'pack://textures/editor/sample-icon.png',
         tooltipLocId: 'portalGenerator.toolTip',
         tooltip: 'Creates portals',
     });
