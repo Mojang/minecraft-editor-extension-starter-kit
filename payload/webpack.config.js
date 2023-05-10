@@ -6,10 +6,11 @@ const { webpack, DefinePlugin, SourceMapDevToolPlugin } = require('webpack');
 const ExtensionName = envHelpers.getExtensionName();
 const BehaviorPackName = envHelpers.getBehaviorPackName();
 
-module.exports = {
+module.exports = (_, argv) => ({
     entry: './src/index.ts',
     mode: 'development',
     devtool: false,
+    watch: argv.watch,
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: ExtensionName + '.js',
@@ -35,11 +36,11 @@ module.exports = {
     plugins: [
         new DefinePlugin({
             __EXTENSION_NAME__: JSON.stringify(ExtensionName),
-            __BEHAVIOR_PACK_NAME__: JSON.stringify(BehaviorPackName)
+            __BEHAVIOR_PACK_NAME__: JSON.stringify(BehaviorPackName),
         }),
         new SourceMapDevToolPlugin({
             filename: `${ExtensionName}.js.map`,
             moduleFilenameTemplate: '[absolute-resource-path]',
         }),
-    ]
-};
+    ],
+});

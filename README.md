@@ -220,6 +220,13 @@ The only time you should ever need to restart Minecraft is if you add any new as
 ```
 > You'll see the Editor quickly disappear and reload, and !voila! - your newly changed script will have been loaded.  Try it out to confirm!
 
+To facilitate development, you can also place your compilation into watch mode as well. To do this, run
+```bash
+npm run build -- --watch
+```
+
+This will have your build monitor for changes to any typescript files. When changes are detected, it will automatically recompile and redeploy the files, so that when you reload from within game it picks up your changes automatically.
+
 &nbsp;
 
 ### Debugging with output
