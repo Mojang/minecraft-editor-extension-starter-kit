@@ -27,16 +27,18 @@
 
 $osDescription = [System.Runtime.InteropServices.RuntimeInformation]::OSDescription
 if (-not ($osDescription -match "Windows")) {
-    Clear-Host
-    Write-Host @"
+    $osDescription = [System.Environment]::OSVersion
+    if (-not ($osDescription -match "Windows")) {
+        Clear-Host
+        Write-Host @"
 The Minecraft Bedrock Editor Extension Kit is currently only designed to work in Windows environments.
 If you really want to start developing Minecraft Bedrock Editor Extensions, then you should 
 investigate either using a Windows PC, or installing Windows in a Virtual Machine Environment.
 Thanks for trying though!
 "@
-    exit
+        exit
+    }
 }
-
 
 $projectName = $null
 $projectLocation = $null
