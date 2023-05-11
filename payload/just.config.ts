@@ -15,24 +15,7 @@ option('exetype');
 // various environment variables to be injected
 option('forceprepare');
 
-task('bundle', () => {
-    return webpackTask();
-});
-
-task('prepare', () => {
-    const exeType: string = (argv().exetype as string).toUpperCase();
-    if (!exeType) {
-        throw 'No exetype option specified - unknown target platform';
-    }
-
-    const forcePrepare: boolean = argv().forceprepare ? (argv().forceprepare as boolean) : false;
-
-    _prepareBehaviorPackFolder(exeType, forcePrepare);
-    _prepareResourcePackFolder(exeType, forcePrepare);
-    _prepareVSCode(exeType);
-});
-
-task('copyBuildToTarget', () => {
+function copyBuildToTarget() {
     const exeType: string = (argv().exetype as string).toLowerCase();
     if (!exeType) {
         throw 'No exetype option specified - unknown target platform';
@@ -72,9 +55,40 @@ task('copyBuildToTarget', () => {
         }
         logger.info('Copy Success');
     });
+}
+
+task('bundle', () => {
+    let hasShownWatchMethod = false;
+    return webpackTask({
+        onCompile: (err, stats) => {
+            if (!hasShownWatchMethod) {
+                logger.info('\nWatching for changes...');
+                hasShownWatchMethod = true;
+            }
+
+            if (!err && !stats.hasErrors()) {
+                logger.info('\nBuild completed, deploying to output...');
+
+                copyBuildToTarget();
+            }
+        },
+    });
 });
 
-task('build', series('prepare', 'bundle', 'copyBuildToTarget'));
+task('prepare', () => {
+    const exeType: string = (argv().exetype as string).toUpperCase();
+    if (!exeType) {
+        throw 'No exetype option specified - unknown target platform';
+    }
+
+    const forcePrepare: boolean = argv().forceprepare ? (argv().forceprepare as boolean) : false;
+
+    _prepareBehaviorPackFolder(exeType, forcePrepare);
+    _prepareResourcePackFolder(exeType, forcePrepare);
+    _prepareVSCode(exeType);
+});
+
+task('build', series('prepare', 'bundle'));
 
 task('clean', () => {
     rimraf('temp', {}, () => {
@@ -122,8 +136,8 @@ task('compressTarget', async () => {
         throw 'No exetype option specified - unknown target platform';
     }
 
-	const bpName = envHelpers.getBehaviorPackName();
-	const rpName = envHelpers.getResourcePackName();
+    const bpName = envHelpers.getBehaviorPackName();
+    const rpName = envHelpers.getResourcePackName();
     const bpFolder = envHelpers.getBehaviorPackFolder(exeType);
     const rpFolder = envHelpers.getResourcePackFolder(exeType);
     const extensionName = envHelpers.getExtensionName() + '.mceditoraddon';
@@ -131,7 +145,7 @@ task('compressTarget', async () => {
 
     await _createAddon(extensionArchivePath, bpFolder, bpName, rpFolder, rpName);
 
-	console.log(`.mceditoraddon has been created at "${extensionArchivePath}"`)
+    console.log(`.mceditoraddon has been created at "${extensionArchivePath}"`);
 });
 
 task('make-addon', series('build', 'compressTarget'));
@@ -447,7 +461,13 @@ function _getFileList(dirName: string, extensions: string[], pathPrefix: string)
     return files;
 }
 
-async function _createAddon(extensionArchivePath: string, bpPath: string, bpName: string, rpPath: string, rpName: string) {
+async function _createAddon(
+    extensionArchivePath: string,
+    bpPath: string,
+    bpName: string,
+    rpPath: string,
+    rpName: string
+) {
     const stream = fs.createWriteStream(extensionArchivePath);
     const archive = archiver.create('zip', { zlib: { level: 9 } });
 
@@ -460,7 +480,7 @@ async function _createAddon(extensionArchivePath: string, bpPath: string, bpName
         archive.directory(bpPath, bpName);
 
         // Resource packs are optional
-        if(fs.existsSync(rpPath)) {
+        if (fs.existsSync(rpPath)) {
             archive.directory(rpPath, rpName);
         }
         archive.on('error', err => {
