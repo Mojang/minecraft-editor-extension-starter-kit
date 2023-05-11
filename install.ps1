@@ -6,7 +6,6 @@
 #   - Node.js
 # - Check Optionals
 #   - Visual Studio Code
-#   - Git
 #
 # - Ask some questions
 #   - Extension Name (Validate length and char contents)
@@ -16,8 +15,6 @@
 #   - Check install path - is it on the same drive as Minecraft?
 
 # - Actions
-#   - Install Node.js if required
-#   - Install Visual Studio Code if required
 #   - Copy `payload` folder contents to Install Path
 #   - Copy `templates/.env.template` to Install Path as `.env`
 #       - Modify all entries within `.env` file with requisite values
@@ -72,14 +69,32 @@ function validateCurrentLocation() {
 
 
 function Get-YesNoResponse {
-    param([string]$prompt)
+    param(
+        [string]$prompt,
+        [string]$default
+    )
+    
+    $default = $default.ToUpper()
+    if ($default -ne 'Y' -and $default -ne 'N') {
+        $default = ""
+    }
+    if ($default.Length -gt 1) {
+        $default = $default[0]
+    }
+
     do {
         $response = Read-Host -Prompt $prompt
-        if ($response.Length -le 1) {
-            continue;
+        if ($response.Length -lt 1) {
+            if ($default.Length -eq 1) {
+                $response = $default
+            }
+            else {
+                continue
+            }
         }
         $response = $response.toUpper()[0];
     } while ($response -ne 'Y' -and $response -ne 'N')
+
     return $response
 }
 
@@ -182,10 +197,9 @@ function Get-ChooseProjectName() {
     Write-Host @"
 
 Let's choose a name for your new Minecraft Bedrock Editor Extension project.
-We recommend you keep it relatively short (16 characters or fewer), begins with a letter or underscore, and contains only alphanumeric characters, underscores, or minus signs.
+We recommend you keep it relatively short (16 characters or less), begins with a letter or underscore, and contains only alphanumeric characters, underscores, or minus signs.
 This will be used to name your project folder AND the resource and behavior packs which will contain your
-extension, so choose wisely.
-(Or just choose something like 'myExtension1' - it's up to you!)
+extension.
 
 "@
 
@@ -198,12 +212,12 @@ extension, so choose wisely.
 function Get-ChooseProjectLocation() {
     Write-Host @"
 
-Now we need to choose an install location into which '${projectName}' will be created.
+Choose an install location into which '${projectName}' will be created.
 This can be anywhere on your computer.
 
 Important Note: 
 We recommend that you choose a project install location which is on the '${applicationDriveLetter}:\' drive,
-otherwise building and debugging of Minecraft Bedrock Editor Extensions may not work properly.
+otherwise there may be issues with building and debugging your Extension.
 
 Use the folder selector to find a location into which we can install your new project...
 
@@ -228,7 +242,7 @@ Clear-Host
 if ( !(validateCurrentLocation) ) {
     Write-Error @"
 
-This doesn't appear to be a valid install location (or there are files missing from the starter kit).
+This doesn't appear to be a valid install source (or there are files missing from the starter kit).
 
 Ensure that you are running the install script from the extension kit installer folder.
 If you continue to encounter issues - just delete this whole folder and re-download it from GitHub.
@@ -236,6 +250,7 @@ If you continue to encounter issues - just delete this whole folder and re-downl
 "@
     exit
 }
+
 
 Write-Host @"
 
@@ -246,7 +261,7 @@ Before we begin creating a new Minecraft Bedrock Editor Extension Project, you'r
 asked a few questions to help guide us through the process.
 
 There are some key pieces of software required to get us going, so we're going to check that 
-they're installed (and if not, give you a chance to install them).
+they're installed.
 
 Remember: If at any time during this process you want to stop, hit CTRL+C to break out.
 
@@ -256,103 +271,29 @@ Checking prerequisites...
 
 "@
 
+Get-AnyResponse("Hit ENTER to continue")
+
+Clear-Host
+
+
+# Check to see if Minecraft Preview is installed, and give the user a chance to do so
 $minecraftPreviewInstalled = Get-AppxPackage -Name "Microsoft.MinecraftWindowsBeta" -ErrorAction SilentlyContinue
-while (-not $minecraftPreviewInstalled) {
-    $response = Get-YesNoResponse("Minecraft Preview is a requirement to continue. Do you want to continue? (Y/N)");
-    if ($response -ne 'Y') {
-        exit
-    }
-
-    Write-Host "Use the Microsoft Store App to download Minecraft Preview for Windows, and install from there."
-    Start-Process "https://www.xbox.com/en-us/games/store/minecraft-preview-for-windows/9p5x4qvlc2xr"
-    Get-AnyResponse("Waiting...Press ENTER when Minecraft Preview has been installed.")
-
-    RefreshEnvironmentAfterInstall
-    $minecraftPreviewInstalled = Get-AppxPackage -Name "Microsoft.MinecraftWindowsBeta" -ErrorAction SilentlyContinue
-
-    # Try an alternative download page if nothing was installed
-    if (-not $minecraftPreviewInstalled) {
-        Write-Host "If you're having problems downloading the Preview edition, try this page..."
-        Start-Process "https://www.microsoft.com/store/productId/9P5X4QVLC2XR"        
-
-        Get-AnyResponse("Waiting... Press ENTER when Minecraft Preview has been installed.")
-
-        RefreshEnvironmentAfterInstall
-        $minecraftPreviewInstalled = Get-AppxPackage -Name "Microsoft.MinecraftWindowsBeta" -ErrorAction SilentlyContinue
-    }
-
-    # If it was installed, run it at least once - so that all the com.mojang folders get
-    # created
-    if ($minecraftPreviewInstalled) {
-        Write-Host @"
-    
-Please launch the game at least once before continuing. 
-You can close it again once you're done. The game just needs to run once in order to get a chance to set up various internal folders and settings.
-    
-"@
-    
-        Get-AnyResponse("Waiting... Press ENTER when Minecraft Preview has finished launching.")
-    }
-}
 Write-Host "[ $(if($minecraftPreviewInstalled) {'INSTALLED'} else {'NOT INSTALLED'}) ] Minecraft Preview"
 
 
+# Check to see if Node.js is installed
 $nodeInstalled = Get-Command node -ErrorAction SilentlyContinue
-while (-not $nodeInstalled) {
-    $response = Get-YesNoResponse("Node.js is a requirment to continue. Do you want to continue? (Y/N)");
-    if ($response -ne 'Y') {
-        exit
-    }
-    Write-Host "Download and install Node.js from this website and return to this installer when you're done."
-    Start-Process "https://nodejs.org/en/download"
-    Get-AnyResponse("Waiting... Press ENTER when Node.js has been installed.")
-
-    RefreshEnvironmentAfterInstall
-    $nodeInstalled = Get-Command node -ErrorAction SilentlyContinue
-}
 Write-Host "[ $(if($nodeInstalled) {'INSTALLED'} else {'NOT INSTALLED'}) ] Node.js"
 
 
 $vscodeInstalled = Get-Command code -ErrorAction SilentlyContinue
-while (-not $vscodeInstalled) {
-    $response = Get-YesNoResponse("Visual Studio Code is STRONGLY recommended. Do you want to continue? (Y/N)");
-    if ($response -ne 'Y') {
-        break
-    }
-    Write-Host "Download and install Visual Studio Code from this website and return to this installer when you're done."
-    Start-Process "https://code.visualstudio.com/"
-    Get-AnyResponse("Waiting... Press ENTER when Visual Studio Code has been installed.")
-
-    RefreshEnvironmentAfterInstall
-    $vscodeInstalled = Get-Command code -ErrorAction SilentlyContinue
-}
 Write-Host "[ $(if($vscodeInstalled) {'INSTALLED'} else {'NOT INSTALLED'}) ] Visual Studio Code"
-
-
-$gitInstalled = Get-Command git -ErrorAction SilentlyContinue
-while (-not $gitInstalled) {
-    $response = Get-YesNoResponse("Installing 'Git' is recommended but not required. Do you want to continue? (Y/N)");
-    if ($response -ne 'Y') {
-        break
-    }
-    Write-Host "Download and install Git from this website and return to this installer when you're done."
-    Start-Process "https://gitforwindows.org/"
-    Get-AnyResponse("Waiting... Press ENTER when Git has been installed.")
-
-    RefreshEnvironmentAfterInstall    
-    $gitInstalled = Get-Command git -ErrorAction SilentlyContinue
-}
-Write-Host "[ $(if($gitInstalled) {'INSTALLED'} else {'NOT INSTALLED'}) ] Git"
-
-Get-AnyResponse("OK, let's continue -- press ENTER")
 
 # OK, let's sit in a loop and ensure that we end up with a validated destination folder location
 # and project name for the extension
 
 $validProjectAndLocation = $false
 do {
-    Clear-Host
-
     $projectName = Get-ChooseProjectName
 
     $projectLocationResponse = Get-ChooseProjectLocation
@@ -360,28 +301,31 @@ do {
     $projectLocation = Join-Path -Path $projectLocationResponse.target -ChildPath $projectName
     if (Test-Path -Path $projectLocation) {
 
-        Write-Host 
-        @"
+        $promptString = @"
 
 The folder '$projectLocation' already exists.  
 Take a quick look inside to make sure there isn't anything you don't want to lose.
 If you choose to continue with installation at this location, the contents will be destroyed!
 
+Open the folder and check (y/N)?
 "@
 
-        $response = Get-YesNoResponse("Do you want to continue (Y) or choose a new location (N)?")
+        $response = Get-YesNoResponse $promptString "N"
         if ($response -eq 'N') {
             # Back to choose name
             continue
         }
-        Write-Host @"
-Let's open it up so you can take a look inside.
-Then come back and choose whether or not to continue.
+
+        $promptString = @"
+Opening the folder for you to check.  Take a look inside and come back and
+choose whether you want to continue.
+
+Continue and delete everything (y/N)?
 "@
         # Open a file explorer at the new location
         Invoke-Item $projectLocation
 
-        $response = Get-YesNoResponse("Are you really sure you want to use this location? (Y/N)?")
+        $response = Get-YesNoResponse $promptString "N"
         if ($response -eq 'N') {
             # Back to choose name
             continue
@@ -431,30 +375,11 @@ Then come back and choose whether or not to continue.
 
 } while (!$validProjectAndLocation)
 
-Clear-Host
 
-Write-Host @"
-
-Do you plan on adding any Resources to your extension? This could include icons, textures, text strings, etc.?)
-
-Choose YES if your project will require new icons, sprites, text strings, or any loadable data, or if you're not sure (there's no harm in this).
-
-Choose NO if you plan on just doing something simple that doesn't require any additional Resources. 
-
-All this does is creates an empty resource pack for your new assets, which you can also add manually later. However, you'll also need
-to remember to add manifest dependencies, so it's easier if you just say YES now if you're not sure.
-
-"@
-
-$resourcesRequired = Get-YesNoResponse("Will you need custom assets? (Y/N)")
-if ($resourcesRequired -eq 'Y') {
-    $resourcesRequired = "Yes"
-}
-else {
-    $resourcesRequired = "No"
-}
+$resourcesRequired = "Yes"
 
 $extensionType = Get-ExtensionTypeResponse
+
 
 # START THE INSTALL PROCESS!
 # --------------------------------------------------------------------------
@@ -462,12 +387,24 @@ $extensionType = Get-ExtensionTypeResponse
 Clear-Host
 
 Write-Host ""
-Write-Host "Project '${projectName}' will be installed to '${projectLocation}'"
+Write-Host ""
+
+$promptString = @"
+
+Project '${projectName}' will be installed to '${projectLocation}'.
+Do you want to proceed? (y/N)
+
+"@
+$confirmContinue = Get-YesNoResponse $promptString "N"
+if ($confirmContinue -ne 'Y') {
+    exit
+}
+
 Write-Host "`nPreparing installation...`n"
 
 # Now, let's start copying files from the payload to the destination folder
 
-Write-Host "[ Deploying Build Pipeline ]"
+Write-Host "[ Deploying Build Tools ]"
 $sourcePayload = Join-Path -Path $PSScriptRoot -ChildPath "payload\*"
 try {
     Copy-Item -Path $sourcePayload -Destination $projectLocation -Recurse
