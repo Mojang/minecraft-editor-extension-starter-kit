@@ -85,7 +85,7 @@ export function registerExtension() {
             });
 
             // Now create a button and bind the action you want to execute when it's pressed
-            extensionPane.addButtonAndBindAction(buttonAction, {
+            extensionPane.addButton(buttonAction, {
                 titleStringId: 'Click me!',
                 titleAltText: 'Click me!',
                 visible: true,
