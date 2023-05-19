@@ -297,14 +297,19 @@ function addToolSettingsPane(uiSession: IPlayerUISession, tool: IModalTool) {
         uiSession.extensionContext.transactionManager.trackBlockChangeList(affectedBlocks.map(x => x.location));
 
         // Apply changes
+        let invalidBlockCount = 0;
         affectedBlocks.forEach(item => {
             const block = player.dimension.getBlock(item.location);
             if (block) {
                 block.setPermutation(item.newBlock);
             } else {
-                uiSession.log.warning('Invalid block!');
+                ++invalidBlockCount;
             }
         });
+
+        if (invalidBlockCount > 0) {
+            uiSession.log.warning(`There were ${invalidBlockCount} invalid blocks while placing a tree!`);
+        }
 
         // End transaction
         uiSession.extensionContext.transactionManager.commitOpenTransaction();
@@ -370,7 +375,7 @@ function addToolSettingsPane(uiSession: IPlayerUISession, tool: IModalTool) {
 }
 
 /**
- * Create a new tool rail item for portal generator
+ * Create a new tool rail item for tree generator
  */
 function addTool(uiSession: IPlayerUISession) {
     return uiSession.toolRail.addTool({
@@ -385,11 +390,11 @@ function addTool(uiSession: IPlayerUISession) {
 //#endregion
 
 /**
- * Register Portal Generator extension
+ * Register Tree Generator extension
  */
 export function registerExtension() {
     registerEditorExtension(
-        'PortalGenerator',
+        'TreeGenerator',
         (uiSession: IPlayerUISession) => {
             uiSession.log.debug(`Initializing ${uiSession.extensionContext.extensionName} extension`);
 
@@ -418,6 +423,6 @@ export function registerExtension() {
         (uiSession: IPlayerUISession) => {
             uiSession.log.debug(`Shutting down ${uiSession.extensionContext.extensionName} extension`);
         },
-        { description: 'Tool for generating portals' }
+        { description: 'Tool for placing trees' }
     );
 }
