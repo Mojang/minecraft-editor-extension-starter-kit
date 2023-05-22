@@ -76,26 +76,35 @@
 <p>&nbsp;</p>
 <h3 id="install">Install</h3>
 <p>Open Windows PowerShell from the Windows Start Menu (or use WIN+R keys and type <code>powershell</code>).  </p>
+<blockquote>
+<p><strong>Note:</strong> Just to complicate things, there can be multiple version of PowerShell on your computer.<br><code>PowerShell</code> (<code>powershell.exe</code>) is built into <code>Windows</code>, but there&#39;s a newer version (<code>PowerShell Core</code> (<code>pwsh.exe</code>)) that can be downloaded and installed.<br>Whenever we refer to <code>PowerShell</code>, we&#39;re talking about the default <code>Windows</code> install (<code>PowerShell.exe</code>) and not the newer <code>Core</code> version.<br>You can use either one, but use them consistently; Sometimes, commands which you execute on one version will not carry their settings through to the other - so pick one and stick with it (or just use the default <code>powershell.exe</code>)</p>
+</blockquote>
+<p>&nbsp;</p>
 <p>Navigate to the location on your hard drive where you placed the Extension Kit Installer. If you downloaded the kit as a <code>ZIP</code> file, ensure you navigate to the unzipped folder location.</p>
 <pre><code class="language-powershell">cd c:\mcdev\EditorExtensionStarterKit     &lt;&lt; Use the development folder name you chose here &gt;&gt;
 .\install.ps1
 </code></pre>
 <blockquote>
-<p><strong>Troubleshooting tip:</strong> If you see a script permissions error when attempting to run the installer, you may have to change your Execution Privileges in Powershell. Please read <a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-7.3">Set-ExecutionPolicy</a> at Microsoft.com.<br>You may have to change your current script permissions to allow the installer to run (only do this if you&#39;re having a problem running it) using: </p>
+<p><strong>Troubleshooting tip:</strong> If you see a script permissions error when attempting to run the installer, you may have to change your Execution privileges in PowerShell. Please read the article <a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-7.3">Set-ExecutionPolicy at Microsoft.com</a>.<br>You may have to change your current script permissions to allow the installer to run (only do this if you&#39;re having a problem running it) using: </p>
 <pre><code class="language-powershell">Set-ExecutionPolicy -Scope CurrentUser Unrestricted
 </code></pre>
 </blockquote>
 <p>Using the information you prepared in the <a href="#before-you-begin">Before you begin</a> section, follow the prompts and answer the questions.</p>
 <blockquote>
-<p><strong>Note:</strong> <em>If you ARE installing any prerequisite packages - please make sure you ALWAYS choose to add the tool to the <code>PATH</code> (so that any command line systems can locate the tools) - some steps may not complete correctly if the tools cannot be found.</em></p>
+<p><strong>Note:</strong> <em>If you do need to install any prerequisite packages - please make sure you ALWAYS choose to add the tool to the <code>PATH</code> (so that any command line systems can locate the tools) - some installer steps may not complete correctly if the tools cannot be found.</em></p>
 </blockquote>
 <p>At the end of the process, you should have a new folder containing all the files, folders and  assets required to start writing your new Minecraft Bedrock Editor Extension.</p>
+<blockquote>
+<p><strong>Note:</strong> We recommend running the installer script from a <code>PowerShell</code> terminal (not a terminal within an integrated environment like <code>Visual Studio Code</code>) - the installer pops up a couple of helper dialogs, and sometimes they will appear behind your integrated environment and you won&#39;t know that they&#39;re there - so just to be safe, open a fresh <code>PowerShell</code> from the <code>Windows</code> Start Menu and run the installer from that.  </p>
+<p>Alternatively, you can always right-click the <code>install.ps1</code> script in <code>Windows Explorer</code> and select <code>Run in PowerShell</code> and that should be fine too.</p>
+</blockquote>
+<p>&nbsp;</p>
 <h1 id="-2"></h1>
 <h2 id="starting-development">Starting development</h2>
 <h3 id="open-your-new-project">Open your new project</h3>
 <p>Open Visual Studio Code, and select <code>File &gt; Open Folder</code> and select the folder that you choose to install your new Extension project (e.g. <code>c:\mcdev\myNewProject</code>).</p>
 <p>On left hand side of the screen you will see the file explorer window, showing all of the files in your project.  Feel free to explore the files (don&#39;t change anything yet)! </p>
-<p>Go to the top menu bar and select <code>Terminal &gt; New Terminal</code> (or hit <code>CTRL+~</code>).<br>(Our tools should work in any of the different terminal flavors, but we generally favor either <code>Powershell</code> or <code>Git Bash</code>).</p>
+<p>Go to the top menu bar and select <code>Terminal &gt; New Terminal</code> (or hit <code>CTRL+~</code>).<br>(Our tools should work in any of the different terminal flavors, but we generally favor either <code>PowerShell</code> or <code>Git Bash</code>).</p>
 <p>Type the following into the terminal: </p>
 <pre><code class="language-bash">npm install
 </code></pre>
@@ -130,7 +139,7 @@
 <p><strong>Tip:</strong> <em>This is a super handy folder to remember if you&#39;re actively developing for Minecraft.  You should probably make a shortcut to it!</em></p>
 </blockquote>
 <p>If you look inside <code>development_behavior_packs</code> you should see a folder with the name of your new extension. There should be a matching folder in <code>development_resource_packs</code> too.</p>
-<p>The <code>prepare</code> step is only really needed the first time, or if you ever add new assets (textures, text strings, custom files) to your extension - it basically copies the folders from <code>&lt;install_location&gt;\assets\</code> to the <code>development</code> packs folders where Minecraft can find them.  It does some indexing of the folder contents and creates the manifest files required by the game -- so remember: if you add or change ANY new assets (sprites, textures, strings, etc) - run the <code>prepare</code> step.</p>
+<p>The <code>prepare</code> step is only really needed the first time, or if you ever add new assets (textures, text strings, custom files) to your extension - it basically copies the folders from <code>&lt;install_location&gt;\assets\</code> to the <code>development</code> packs folders where Minecraft can find them.  It does some handy indexing of the folder contents and creates the manifest files required by the game -- so remember: if you add or change ANY new assets (sprites, textures, strings, etc) - run the <code>prepare</code> step.</p>
 <h1 id="-3"></h1>
 <h2 id="development-cycle">Development cycle</h2>
 <h3 id="write-and-build">Write and build</h3>
@@ -144,9 +153,6 @@
 <p>&nbsp;</p>
 <h3 id="open-minecraft-preview">Open Minecraft (Preview)</h3>
 <p>Currently, Bedrock Editor is only available in Preview editions of Minecraft Bedrock - you need to make sure that you&#39;ve installed the Preview edition from the Microsoft Store (or Minecraft Installer). Here is <a href="https://learn.microsoft.com/en-us/minecraft/creator/documents/editorinstallation#install-minecraft-preview">information on installing Preview</a>.</p>
-<blockquote>
-<h1 id="note-for-editor-script-jam---were-going-to-use-a-custom-preview-build---so-please-reach-out-to-dacowan-or-chloe-for-the-installer-or-have-a-look-in-evt-ftl-jams">Note: For Editor Script Jam - we&#39;re going to use a custom Preview build - so please reach out to @dacowan or @chloe for the installer, or have a look in #evt-ftl-jams</h1>
-</blockquote>
 <p>There are a few methods to open Minecraft (Preview) in Editor mode:</p>
 <ol>
 <li>Using the Extension Starter Kit build scripts.  <ul>
@@ -158,23 +164,13 @@
 </code></pre>
 <ol start="2">
 <li>Using the Extension Starter Kit helper script.  <ul>
-<li>Go to the Visual Studio <code>Powershell</code> terminal and type:</li>
+<li>Go to the Visual Studio <code>PowerShell</code> terminal and type:</li>
 </ul>
 </li>
 </ol>
 <pre><code class="language-powershell">.\launch-editor.ps1
 </code></pre>
 <p>(You can create a shortcut to this file on your desktop or Start Menu to make it easier)  </p>
-<ol start="3">
-<li>Start the Preview version of the game in Editor mode using <code>Powershell</code>.  <ul>
-<li>Go to a <code>Powershell</code> command prompt (either in Windows or in Visual Studio Code) and type</li>
-<li>Press the Windows Key and <code>R</code> key together - this will launch the <code>Windows Run Dialog</code></li>
-<li>Enter the string</li>
-</ul>
-</li>
-</ol>
-<pre><code class="language-powershell">Start-Process shell:AppsFolder\$(Get-AppxPackage -name &quot;Microsoft.MinecraftWindowsBeta&quot; | Select-Object -ExpandProperty PackageFamilyName)!App -ArgumentList &quot;Editor=true&quot;
-</code></pre>
 <p>Minecraft Preview should start up in Editor mode. You can tell it&#39;s Editor mode because the usual <code>Play Game</code> and <code>Settings</code> buttons are missing, and you&#39;re immediately presented with a <code>Create Project</code> screen.</p>
 <p>&nbsp;</p>
 <h3 id="test-your-extension">Test your extension</h3>
@@ -193,6 +189,10 @@ Return to the game and hit the <code>/</code> (forward slash) key and type </p>
 <blockquote>
 <p>You&#39;ll see the Editor quickly disappear and reload, and !voila! - your newly changed script will have been loaded.  Try it out to confirm!</p>
 </blockquote>
+<p>To facilitate development, you can also place your compilation into watch mode as well. To do this, run</p>
+<pre><code class="language-bash">npm run build -- --watch
+</code></pre>
+<p>This will have your build monitor for changes to any typescript files. When changes are detected, it will automatically recompile and redeploy the files, so that when you reload from within game it picks up your changes automatically.</p>
 <p>&nbsp;</p>
 <h3 id="debugging-with-output">Debugging with output</h3>
 <blockquote>

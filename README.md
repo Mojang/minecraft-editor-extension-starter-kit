@@ -75,6 +75,13 @@ and either clone the repository to a location on your hard drive or download the
 
 Open Windows PowerShell from the Windows Start Menu (or use WIN+R keys and type `powershell`).  
 
+> **Note:** Just to complicate things, there can be multiple version of PowerShell on your computer.  
+> `PowerShell` (`powershell.exe`) is built into `Windows`, but there's a newer version (`PowerShell Core` (`pwsh.exe`)) that can be downloaded and installed.  
+> Whenever we refer to `PowerShell`, we're talking about the default `Windows` install (`PowerShell.exe`) and not the newer `Core` version.  
+> You can use either one, but use them consistently; Sometimes, commands which you execute on one version will not carry their settings through to the other - so pick one and stick with it (or just use the default `powershell.exe`)
+
+&nbsp;
+
 Navigate to the location on your hard drive where you placed the Extension Kit Installer. If you downloaded the kit as a `ZIP` file, ensure you navigate to the unzipped folder location.
 
 ```powershell
@@ -83,17 +90,24 @@ cd c:\mcdev\EditorExtensionStarterKit     << Use the development folder name you
 ```
 
 
-> **Troubleshooting tip:** If you see a script permissions error when attempting to run the installer, you may have to change your Execution Privileges in Powershell. Please read [Set-ExecutionPolicy](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-7.3) at Microsoft.com.  
+> **Troubleshooting tip:** If you see a script permissions error when attempting to run the installer, you may have to change your Execution privileges in PowerShell. Please read the article [Set-ExecutionPolicy at Microsoft.com](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-7.3).  
 > You may have to change your current script permissions to allow the installer to run (only do this if you're having a problem running it) using: 
 > ```powershell
 > Set-ExecutionPolicy -Scope CurrentUser Unrestricted
 > ```
 
+
 Using the information you prepared in the [Before you begin](#before-you-begin) section, follow the prompts and answer the questions.
 
-> **Note:** *If you ARE installing any prerequisite packages - please make sure you ALWAYS choose to add the tool to the `PATH` (so that any command line systems can locate the tools) - some steps may not complete correctly if the tools cannot be found.*
+> **Note:** *If you do need to install any prerequisite packages - please make sure you ALWAYS choose to add the tool to the `PATH` (so that any command line systems can locate the tools) - some installer steps may not complete correctly if the tools cannot be found.*
 
 At the end of the process, you should have a new folder containing all the files, folders and  assets required to start writing your new Minecraft Bedrock Editor Extension.
+
+> **Note:** We recommend running the installer script from a `PowerShell` terminal (not a terminal within an integrated environment like `Visual Studio Code`) - the installer pops up a couple of helper dialogs, and sometimes they will appear behind your integrated environment and you won't know that they're there - so just to be safe, open a fresh `PowerShell` from the `Windows` Start Menu and run the installer from that.  
+> 
+> Alternatively, you can always right-click the `install.ps1` script in `Windows Explorer` and select `Run in PowerShell` and that should be fine too.
+
+&nbsp;
 
 #
 
@@ -106,7 +120,7 @@ Open Visual Studio Code, and select `File > Open Folder` and select the folder t
 On left hand side of the screen you will see the file explorer window, showing all of the files in your project.  Feel free to explore the files (don't change anything yet)! 
 
 Go to the top menu bar and select `Terminal > New Terminal` (or hit `CTRL+~`).  
-(Our tools should work in any of the different terminal flavors, but we generally favor either `Powershell` or `Git Bash`).
+(Our tools should work in any of the different terminal flavors, but we generally favor either `PowerShell` or `Git Bash`).
 
 Type the following into the terminal: 
 ```bash
@@ -150,7 +164,7 @@ Open a Windows File Explorer window and paste this into the address bar:
 
 If you look inside `development_behavior_packs` you should see a folder with the name of your new extension. There should be a matching folder in `development_resource_packs` too.
 
-The `prepare` step is only really needed the first time, or if you ever add new assets (textures, text strings, custom files) to your extension - it basically copies the folders from `<install_location>\assets\` to the `development` packs folders where Minecraft can find them.  It does some indexing of the folder contents and creates the manifest files required by the game -- so remember: if you add or change ANY new assets (sprites, textures, strings, etc) - run the `prepare` step.
+The `prepare` step is only really needed the first time, or if you ever add new assets (textures, text strings, custom files) to your extension - it basically copies the folders from `<install_location>\assets\` to the `development` packs folders where Minecraft can find them.  It does some handy indexing of the folder contents and creates the manifest files required by the game -- so remember: if you add or change ANY new assets (sprites, textures, strings, etc) - run the `prepare` step.
 
 #
 
@@ -171,8 +185,6 @@ This will run the TypeScript compiler and compile your extension source code.  I
 ### Open Minecraft (Preview)
 Currently, Bedrock Editor is only available in Preview editions of Minecraft Bedrock - you need to make sure that you've installed the Preview edition from the Microsoft Store (or Minecraft Installer). Here is [information on installing Preview](https://learn.microsoft.com/en-us/minecraft/creator/documents/editorinstallation#install-minecraft-preview).
 
-># Note: For Editor Script Jam - we're going to use a custom Preview build - so please reach out to @dacowan or @chloe for the installer, or have a look in #evt-ftl-jams
-
 There are a few methods to open Minecraft (Preview) in Editor mode:
 
 1. Using the Extension Starter Kit build scripts.  
@@ -182,19 +194,11 @@ npm run launch
 ```
 
 2. Using the Extension Starter Kit helper script.  
-   - Go to the Visual Studio `Powershell` terminal and type:
+   - Go to the Visual Studio `PowerShell` terminal and type:
 ```powershell
 .\launch-editor.ps1
 ```
 (You can create a shortcut to this file on your desktop or Start Menu to make it easier)  
-
-3. Start the Preview version of the game in Editor mode using `Powershell`.  
-   - Go to a `Powershell` command prompt (either in Windows or in Visual Studio Code) and type
-   - Press the Windows Key and `R` key together - this will launch the `Windows Run Dialog`
-   - Enter the string
-```powershell
-Start-Process shell:AppsFolder\$(Get-AppxPackage -name "Microsoft.MinecraftWindowsBeta" | Select-Object -ExpandProperty PackageFamilyName)!App -ArgumentList "Editor=true"
-```
 
 
 

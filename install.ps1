@@ -165,7 +165,7 @@ function Get-ValidatedProjectFolderDialog {
         $folderBrowserDialog.RootFolder = "MyComputer"
 
         # Display the folder selector dialog
-        $dialogResult = $folderBrowserDialog.ShowDialog()
+        $dialogResult = $folderBrowserDialog.ShowDialog((New-Object System.Windows.Forms.Form -Property @{TopMost = $true}))
 
         # Check the dialog result and get the selected folder
         if ($dialogResult -eq [System.Windows.Forms.DialogResult]::OK) {

@@ -238,7 +238,7 @@ In this example, we create a boolean ON/OFF UI element with the title "True or F
     });
 
     // Now create a button and bind the press action 
-    extensionPane.addButtonAndBindAction(buttonAction, {
+    extensionPane.addButton(buttonAction, {
         titleStringId: 'NO_ID',
         titleAltText: 'Click me!',
     });
