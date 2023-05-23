@@ -195,11 +195,8 @@ Return to the game and hit the <code>/</code> (forward slash) key and type </p>
 <p>This will have your build monitor for changes to any typescript files. When changes are detected, it will automatically recompile and redeploy the files, so that when you reload from within game it picks up your changes automatically.</p>
 <p>&nbsp;</p>
 <h3 id="debugging-with-output">Debugging with output</h3>
-<blockquote>
-<h2 id="dave---todo---change-this-to-reference-the-new-logging-api">Dave - TODO - Change this to reference the new logging API</h2>
-</blockquote>
 <p>Even the best of us need to debug our code to see where we&#39;ve gone wrong. Often, the simplest way of debugging is to insert lots of &quot;debug output&quot;...  throughout your extension, you can insert the JavaScript command: </p>
-<pre><code class="language-js">console.log(`Got as far as initialization`);
+<pre><code class="language-js">uiSession.log.debug(`Got as far as initialization`);
 </code></pre>
 <p><em>(or some message to that effect).</em><br>You should see your messages appear in the Log Window. This can often help you determine how far your code got (you can even dump the values of variables and internal states to the output window to help you find your problem).</p>
 <p>&nbsp;</p>

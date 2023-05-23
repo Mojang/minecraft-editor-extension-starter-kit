@@ -237,11 +237,9 @@ This will have your build monitor for changes to any typescript files. When chan
 
 ### Debugging with output
 
-> ## Dave - TODO - Change this to reference the new logging API
-
 Even the best of us need to debug our code to see where we've gone wrong. Often, the simplest way of debugging is to insert lots of "debug output"...  throughout your extension, you can insert the JavaScript command: 
 ```js
-console.log(`Got as far as initialization`);
+uiSession.log.debug(`Got as far as initialization`);
 ```
 *(or some message to that effect).*  
 You should see your messages appear in the Log Window. This can often help you determine how far your code got (you can even dump the values of variables and internal states to the output window to help you find your problem).
