@@ -41,6 +41,17 @@ In order to begin, you will need to make sure you have the following software in
 > **Note:** *The Editor Starter Kit installs a special `.vscode` file into any new project which sets up a number of recommended Visual Studio Code extensions that should make your development experience easier (code checkers, formatters and a special Minecraft Script Debugger).  When you eventually start Visual Studio Code with an Editor Extension project - make sure you install all the recommended extensions when prompted.*
 
 &nbsp;
+### System Settings
+We recommend configuring your `Windows` system settings to enable `developer mode`.  
+Hit the `WINDOWS` key and type `developer settings` - You should see an option to open `Developer Settings`; select this.  
+This will open a `Control Panel` screen *"Privacy & Security > For developers"*  
+- If it's not already enabled, enable the toggle `Developer Mode`.
+- Navigate to the end of the list and expand the tab `PowerShell`
+  - If it's not already enabled, enable *"Change execution policy to allow..."*
+
+If you skip this step, you may have problems executing some of the command line tools (like `CheckNetIsolation.exe` and such like).  
+
+&nbsp;
 
 ### Information to have ready
 - Where to download (or clone) the Bedrock Editor Extension Kit installer

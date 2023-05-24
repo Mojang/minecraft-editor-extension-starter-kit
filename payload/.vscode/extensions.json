@@ -3,9 +3,6 @@
     "editorconfig.editorconfig",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
-    "silvenon.mdx",
-    "streetsidesoftware.code-spell-checker",
-    "stylelint.vscode-stylelint",
     "mojang-studios.minecraft-debugger"
   ]
 }
