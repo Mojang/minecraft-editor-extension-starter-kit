@@ -2,10 +2,10 @@
 
 ## What is is?
 
-The Minecraft Bedrock Editor is a framework that is built into certain platform versions of Minecraft Bedrock Edition that is designed to allow creators to use more complex tools than simple gameplay allows to build, edit and test worlds.  
-In fact, the Editor framework is built in such a way as to allow creators to build their own tools to accomplish complex tasks.  
+The Minecraft Bedrock Editor is a framework that is built into certain platform versions of Minecraft Bedrock Edition and is designed to allow creators to use more complex tools to build, edit and test worlds than simple gameplay allows.  
+In fact, the Editor framework is built in such a way as to allow creators to build their own tools to accomplish such complex tasks.  
 
-The Minecraft Bedrock Editor (the Editor) leverages the games built-in JavaScript Scripting API in conjunction with a number of native tools built directly into the game to expose a rich environment in which creators can build and test tools which empower and enhance their editing experience.  
+The Minecraft Bedrock Editor (the Editor) leverages the game's built-in JavaScript Scripting API in conjunction with a number of native tools built directly into the game itself, to expose a rich environment in which creators can build tools which empower and enhance their editing experience.  
 
 We call these **Editor Extensions**.
 
@@ -15,11 +15,12 @@ We call these **Editor Extensions**.
 
 An Extension is a collective name for a set of resource and behavior packs which contain script and binary assets which are loaded when the Editor starts up.
 
-The Extensions are written in TypeScript and are compiled into JavaScript for loading into the game.  The compiler tools and various libraries required to do this are supplied in the [Editor Extension Starter Kit](https://github.com/dacowan/EditorExtensionStarterKit).
+The Extensions are written in TypeScript and are compiled into JavaScript ready for loading into the game.  The compiler tools and various libraries required to do this are supplied as part of the [Editor Extension Starter Kit](https://github.com/dacowan/EditorExtensionStarterKit).
 
-The behavior pack will contain the compiled scripts which will execute on the server, and the resource pack will contain the binary assets required by the Extension (icons, text files, etc).
+The behavior pack will contain the compiled scripts which execute on the server, and the resource pack will contain the binary assets required by the Extension (icons, text files, etc).
 
-For a set of install instructions and pre-requisite software that is required to start, please refer to the [Editor Extension Starter Kit README](https://github.com/dacowan/EditorExtensionStarterKit/blob/main/README.md)  
+For a set of install instructions and pre-requisite software required to start, please refer to the [Editor Extension Starter Kit README](https://github.com/dacowan/EditorExtensionStarterKit/blob/main/README.md)  
+### TODO: FIX THIS LINK ###
 
 &nbsp;
 
@@ -29,18 +30,20 @@ It's important to understand how Extensions differ from gameplay scripts.
 When Minecraft server starts up, it loads all of the scripts from all of the behavior packs in the world.  Each script is executed in turn.  This happens only once when the server loads a world.  
 > Remember that there may not be a player connected yet; in the case of a dedicated server, the world may be loaded without any players attached - you cannot assume that any players exist at this point.  
 
-Editor takes this initialization opportunity to load and execute all of the Extension scripts - but because this is a 'global' phase (and there may not be any player connected), the extensions will generally just call `registerEditorExtension`.  
+Editor takes this initialization opportunity to load and execute all of the Extension scripts - but because this is a 'global' phase (and there may not be any player connected), the extensions will generally just call `registerEditorExtension`.  (registering themselves with the system, and informing the Editor that they are Editor specific extensions).  
 
 There are two main bodies of code associated with an Extension - the `activation` and `deactivation` closures.  
 
 When a player initially connects to the server, the `activation` closure is executed.  
 When that player leaves the server, the `deactivation` closure is executed.  
 
-This will happen for all players who join the Editor server.  
+This will happen for all players who join or leave the Editor server session (irrespective of whether the server is running locally, remotely or embedded into the Minecraft game).  
+> **NOTE**: You may not be aware of this, but Minecraft ALWAYS run's in two parts; a server and a client - even when you're just running the Minecraft game. The server is the first thing to start up (even before the player is connected), and it loads the world, runs a bunch of code - and then the client (the graphical part) starts up and connects to the server.  
+Even when you're running a single application on your PC, this is the process that takes place.  
 
 Normal gameplay scripts don't have this concept of activation/deactivation - it's generally up to you to register for "player join" events, but Editor provides a lot of contextual data and interfaces by leveraging these code closures.  
 
-One of the things to remember about Editor which differs slightly from gameplay -- Editor is almost entirely player oriented; everything you do in editor is specific to the player context (each player has a collection of services that are used to manage that players editing environment, undo/redo state, clipboard, etc), so editor provides a lot more wrapping around the standard gameplay Script API to make the player the focus.  
+One of the things to remember about Editor which differs slightly from gameplay -- Editor is almost entirely player oriented; everything you do in editor is specific to a player's context (each player has a collection of services that are used to manage that players editing environment, undo/redo state, clipboard, etc), so editor provides a lot more wrapping around the standard gameplay Script API to make the player the focus of operations.  
 
 You can see this in the the `activation` closure parameter list - the first parameter is the `IPlayerUISession`.  The `IPlayerUISession` is key to all the player services, and is the main interface through which a creator will build UI elements, access Editor services, etc.
 
@@ -80,17 +83,18 @@ registerEditorExtension(
 ```
 
 You can see the concepts we've talked about displayed in the example above.  
-1. The Extension Name (This needs to be short and unique)
+
+1. The Extension name (this needs to be short and unique)
 2. The `activation` closure (and the `IPlayerUISession` object being passed in (called `uiSession`))
 3. The `deactivation` closure (with the same argument)
-4. The [optional] Extension information parameters (these fields can be used to provide handy information to the Editor and other Creators about the Extension and it's author)
+4. The *optional* Extension information parameters (these fields can be used to provide handy information to the Editor and other Creators about the Extension and it's author)
 
 If you examine the contents of the `activation` closure, you can see how the `uiSession` object is being used.  
 The first usage shows how the `uiSession` object contains the player information for whom the Extension is being activated.
 
-> Remember that this `activation` closure is executed for every player connection event, so you need to know 'which' player is the context!
+> Remember that this `activation` closure is executed for every player connection event, so the `uiSession` object contains all the information you need to identify the player who is the context of the connection event
 
-The next line grabs the players name from the player object.
+The next line grabs the players name from the player object (via the session object).
 
 The line following that sends a message to the players message log window identifying the players name.
 
@@ -100,6 +104,8 @@ The logger service is but one of many player-centric services available.
 &nbsp;
 
 As you can see the concept of Editor Extensions is actually very simple, but it provides a level of flexibility and functionality which can be very powerful.
+
+If you're unfamiliar with the concept of closures and closure capture in TypeScript - now would be a good time to go do some reading; Editor relies on closure capture almost entirely.  
 
 # UI and Tools
 
@@ -145,20 +151,24 @@ Let's start with adding a Tool Palette item
 
 ```ts
     const tool = uiSession.toolRail.addTool({
-        displayStringLocId: 'myExtension.displayName',
-        displayString: 'My Extension (CTRL + SHIFT + E)',
+        displayStringId: 'myExtension.displayName',
+        displayAltText: 'My Extension (CTRL + SHIFT + E)',
         icon: 'pack://textures/myExtension.png',
-        tooltipLocId: 'myExtension.toolTip',
-        tooltip: 'This is my extension',
+        tooltipStringId: 'myExtension.toolTip',
+        tooltipAltText: 'This is my extension',
     });
 ```
 
-Note the use of the `uiSession` object here - we're accessing the `toolRail` object and requesting to `addTool`.  
-You'll find that many of the UI parameters are `... LocId` - these hold the string labels to the UI elements, and not the actual strings.  A string label is the 'key' name of a string in the localization file - this allows you to tailor your Extension for multiple languages without adding new code.  
-For now, you can either set them or just use the string `NO_ID` and the UI element will fall back to the non-`LocId` variant (you can see in the above example there's `displayStringLocId` and `displayString` -- as well as `tooltipLocId` and `tooltip`).  
+Note the use of the `uiSession` object here - we're accessing the `toolRail` object and requesting that we `addTool` to the `toolRail`.  
+You'll find that many of the UI parameters are `... StringId` - these hold the string labels to the UI elements, and not the actual strings.  A string label is the 'key' name of a string in the localization file - this allows you to tailor your Extension for multiple languages without adding new code.  
+> If you're not familiar with the Minecraft method of localization, then this would be a good opportunity to investigate other articles.  
+
+For now, you can either set them or just use the string `NO_ID` and the UI element will fall back to the non-`StringId` variant (you can see in the above example there's `displayStringId` and `displayAltText` -- as well as `tooltipStringId` and `tooltipAltText`).  
+> The `...AltText` field is just plain text, and is used as a fallback if the `...StringId` cannot be located (or entered as `NO_ID`).  
+
 The `icon` field contains a path into the Extension resource pack and the icon file within.  
 
-
+Next, let's register some key-bindings...
 
 ```ts
     // Register a global shortcut (CTRL + SHIFT + E) to select the tool
@@ -177,16 +187,19 @@ The `icon` field contains a path into the Extension resource pack and the icon f
     );
 ```
 
-This blob of code does two things -- defines an `Action` and registers a key binding to said `Action`.  
-`Action`s are basically event definitions which can be bound to 'something' (a key press, a mouse button, a cursor move event, etc).  
+This blob of code does two things -- defines an `Action` and binds the key event to said `Action`.  
+`Action`'s are basically event definitions which can be bound to 'something' (a key press, a mouse button, a cursor move event, etc).  
 The `Action` defines two things
+
 - The `actionType`; i.e. the type of parameter that is passed into the `onExecute` closure
 - The `onExecute` closure; a code block which defines the action to be taken when the `Action` is triggered
 
-You can see here that the `uiSession` object is once again used to reference the players `inputManager` and a key binding is made (Control + Shift + E).  The binding specifies the `Action` to take when that key is activated.  
+You can see in this example that the `uiSession` object is once again used to reference the players `inputManager` and a key binding is made *(Control + Shift + E)*.  
+> It helps to read this as `Perform this action when this event is triggered`  
+
 The `Action::onExecute` contains the code that is executed (in this case, it tells the `toolRail` to set the currently selected tool `id` to be your extension's `id`).
 
-So now, you can activate your Extension using either CTRL+SHIFT+E or pressing the icon/button on the Tool Palette.
+So now, you can activate your Extension using either *(CTRL+SHIFT+E)* or pressing the icon/button on the Tool Palette.
 
 &nbsp;
 
@@ -194,8 +207,8 @@ The next common thing an Extension will want to do is open a property window (or
 
 This consists of a couple of steps...
 1. Create a property pane
-2. Create a binding object and bind it to the pane
-3. Create whatever buttons, text fields or sliders which modify the binding object
+2. Create a data source which binds the UI elements on the pane with the `data` that the UI elements are meant to represent
+3. Create whatever buttons, text fields or sliders which map to the data source
 4. Show the pane
 
 ```ts
@@ -206,17 +219,17 @@ This consists of a couple of steps...
     });
 ```
 
-This creates a property pane for our Extension and gives it a name (and a localization `Id` if required).
+This creates a property pane for our Extension and gives it a title.
 
 ```ts
     const paneData = {
         label: 'This is an editor extension property pane!',
         myBoolean: 0,
     };
-    createPaneBindingObject(extensionPane, paneData);
+    addDataSource(extensionPane, paneData);
 ```
 
-We create a binding object (we call these `PropertyBags`) which will contain the operational runtime data which is bound into the pane.  As you operate sliders, enter text fields, etc - these values will be the ones which are bound to those UI controls, and will contain the data that is synchronized from the UI elements into the runtime object.
+We create a data source object (we sometimes call these `PropertyBags`) which will contain the operational runtime data which is bound into the pane.  As you operate sliders, enter text fields, etc - these values will be the ones which are bound to those UI controls, and will contain the data that is synchronized from the UI elements into the runtime object.
 
 ```ts
     // Let's bind an ON/OFF boolean UI element
@@ -226,14 +239,15 @@ We create a binding object (we call these `PropertyBags`) which will contain the
     });
 ```
 
-In this example, we create a boolean ON/OFF UI element with the title "True or False?" and bind it to the property `myBoolean` in the `paneData`
+In this example, we create a boolean ON/OFF UI element with the title "True or False?" and bind it to the property `myBoolean` in the `paneData`.  When the user toggles the UI switch on screen, the value `myBoolean` in `paneData` will reflect the current state (`true|false`).
 
 ```ts
     // Now we can add a button!  Let's define an action for the button to execute
     const buttonAction = uiSession.actionManager.createAction({
         actionType: ActionTypes.NoArgsAction,
         onExecute: () => {
-            uiSession.log.info("I've been pressed!!!");
+            const boolString = paneData.myBoolean ? "true" : "false";
+            uiSession.log.info(`I've been pressed and the bool flag is ${boolString}`);
         },
     });
 
@@ -264,3 +278,419 @@ Feel free to experiment
 
 Of course, the other big part of an Editor tool is the `editing` part - The `IPlayerUISession` object comes into play once again.  This object provides a number of player-centric services which can be used to perform editing operations on the world.  
 
+## Logging
+
+We've already touched on the logging system with the previous examples, and there's no much to add.  Logging is an incredibly useful debugging tool during development and can be used to show the execution progress of your code, and allows you to dump useful information that might help you track down problems.  
+However, the logging system is also intended to be used to allow extensions to communicate with the user.  
+With this in mind, the logging system has a number of dedicated 'channels' which can be filtered by the user.
+- *Info* -- The *info* channel is intended to be used to inform the user of useful information (e.g. you might want to report the completion status of some operation... "you selected 123 blocks")
+- *Warning* -- The *warning* channel is intended to be used to inform the user of potential (non-fatal) problems (e.g. "You cannot perform this operation without an active selection")
+- *Error* -- The *error* channel is intended for fatal errors (e.g. "Unable to allocate memory for this operation")
+- Debug -- The *debug* channel is intended for extension developers to dump all sorts of useful debugging information that a user generally wouldn't be interested in.  This channel is not visible by default, but can be enabled by the user if they wish to see it.
+
+```ts
+    uiSession.log.info('This is an info message');
+    uiSession.log.warning('This is a warning message');
+    uiSession.log.error('This is an error message');
+    uiSession.log.debug('This is a debug message');
+```
+
+You can leverage existing JavaScript tools like `JSON.stringify` to output handy information to the log window during debugging sessions...
+```ts
+type MyData = {
+    name: string;
+    age: number;
+    address: string;
+};
+
+uiSession.log.debug(`My data is ${JSON.stringify(myData)}`);
+```
+## Cursor
+
+The editor maintains the concept of a 3D-block cursor.  The block cursor exists in the world, and is accessible through the `Cursor` object on the `ExtensionContext`. It represents a single block location in the world and exists as a 'virtual' controllable object - either indirectly controlled the mouse or directly controlled by the user using the keyboard.  
+The cursor control mode can be set by the extension depending on how the extension wants to use it.  
+The other function of the cursor is that it can either represent the block you're pointing at with the mouse (`Block Mode`) or the face of the block you're pointing at (`Adjacent Mode`).
+
+When using direct keyboard control, the cursor can be moved around using the keyboard (via the `moveBy` function on the cursor object) - but moving the mouse in any way will restore the cursor position back to the world/mouse intersection point.
+
+You can query the cursor at any time to find it's current world location.
+
+```ts
+    const cursor = uiSession.extensionContext.cursor;
+    const cursorPos = cursor.position;
+    uiSession.log.info(`Cursor is at ${cursorPos.x}, ${cursorPos.y}, ${cursorPos.z}`);
+```
+
+While there's nothing to stop you from performing your own screen/world raycast operations, the cursor provides a handy construct which provides this information in a standard way across all extensions.
+
+## Selection
+
+Selection is a key component of the Editor system and it's important to understand how it works.  A selection volume is a representation of a volume of space in the world; it does not represent the contents of that volume, only a description of the volume.  (E.g. you can make a selection volume in mid air or inside solid blocks - the selection volume is the same in both cases).  
+The selection volumes are made up of a collection of areas, each of which is a rectangular volume of (min -> max).  The selection volume is also not limited to a single contiguous volume - you can add multiple areas to the selection volume to represent a complex shape.  (E.g. you can make a selection volume which is a 3x3x3 cube, or a 3x3x3 cube with a 1x1x1 cube removed from the center).  
+Void spaces can also be added to a selection to remove space.  It's an odd concept, but it's useful for building complex shapes simply.  (i.e. if you were to build a large hollow cube using only additive volumes, you'd need to add 6 different volumes - each one representing a face of the cube.  Using void spaces, you can define the cube as a large single volume which represents the cube, and then add a single void volume inside to remove the space).
+
+Selection volumes basically consist of stacks of simple volumes (with an associated action (add or subtract)).  
+
+The Editor maintains a single selection object at all times; this is the 'primary selection' - this is the one which the UI will use to perform operations on (i.e. copy, paste, select, etc) - this primary selection cannot be destroyed (only emptied) - so it will always be available to the user.  
+
+```ts
+    const selection = uiSession.extensionContext.selectionManager.selection;  // Get the primary selection
+    selection.clear(); // clear it out (remove all areas)
+
+    selection.pushVolume({
+        action: CompoundBlockVolumeAction.Add,
+        volume: {
+            from: {x:0, y:0, z:0},
+            to: {x:10, y:10, z:10},
+        },
+    });
+```
+
+This doesn't mean that you can't create additional selection objects - often, it's preferable to create a temporary selection object to perform some operation on, and then destroy it when you're done.  
+
+```ts
+    const selection = uiSession.extensionContext.selectionManager.create();  // Create a new selection
+    
+    // Do lots of stuff with the selection object, push some volumes, etc
+
+    uiSession.extensionContext.selection.set( selection );  // Copy the temporary selection into the primary selection
+```
+
+**Note**: This is a common pattern in the Editor - the Editor maintains a single 'primary' object of many types (selection, clipboard, etc) - but you can create temporary objects of the same type to perform operations on, and then copy the temporary object into the primary object when you're done.  
+It's often preferable to do this because temporary objects are generally server-side only and do not incur any network synchronization with the client.  
+
+Because the Selection object is an ordered 'stack' of operations, it uses a method of `push`, `pop` and `peek` to manipulate the stack.  `push` adds a new volume to the top of the stack, `pop` removes the top volume from the stack and `peek` returns the top volume without removing it from the stack.  
+
+In order to iterate across a selection volume, you request a `BlockLocationIterator` - this implements a typical TypeScript iterator which allows the extension to iterate across all of the additive (non-void-space) block locations in the selection volume.  
+
+```ts
+    const selection = uiSession.extensionContext.selectionManager.selection;
+    const iterator = selection.getBlockLocationIterator();
+    for (const blockLocation of iterator) {
+        // Do something with the block location
+    }
+```
+
+If you were to use the `BlockLocationIterator` on a hollow cube selection volume, you would only get the block locations for the outer shell of the cube.  (Any block locations which are encompassed by a void space volume are skipped).  
+The `BlockLocationIterator` basically allows an extension to remain shape-agnostic.
+
+If you wanted ALL of the blocks in the selection volume, you would instead fetch the `BoundingBox` of the selection (but be aware, the `BoundingBox` may be much larger than you think - it's the smallest bounding box which encompasses all of the volumes within the selection volume).  
+
+```ts
+    const selection = uiSession.extensionContext.selectionManager.selection;
+    const boundingBox = selection.getBoundingBox();
+    const iterator = boundingBox.getBlockLocationIterator();
+    for (const blockLocation of iterator) {
+        // Do something with the block location
+    }
+```
+
+## Clipboard
+
+While the Selection system allows you to define areas of space (but not content), the Clipboard system allows you to copy/paste/manipulate the actual content of those areas.  
+Much like the "Primary Selection", there also always exists a "Primary Clipboard" - this is the clipboard which the UI will use to perform copy/paste operations.  The primary clipboard cannot be destroyed (only emptied) - so it will always be available to the user.  
+
+```ts
+// Copy an area of blocks into the clipboard, as defined by the current primary selection
+// Get the primary clipboard
+const clipboardItem = uiSession.extensionContext.clipboard;
+clipboardItem.readFromSelection(
+    uiSession.extensionContext.selectionManager.selection);
+
+// Now, write the area copied into the clipboard to a new world location
+const destination: Vector3 = {x: 10, y: 10, z: 10};
+clipboardItem.writeToWorld(destination);
+```
+
+As with the Selection system, you can create temporary clipboard objects on which to perform operations; you don't need to always use the primary clipboard.  
+
+Using the `ClipboardWriteOptions` settings structure, you can also manipulate how the clipboard data is written back to the world (i.e. mirror, offsets, rotations, etc).  
+One of the options is the concept of an `anchor` - this is a unit vector (`-1.0 <= X/Y/Z <=1`) and is used to modify the `local origin` of the clipboard item.  
+The `local origin` is the point within the clipboard item which will be placed at the `destination` location.  By default, the `local origin` is the center of the clipboard item (`{0,0,0}`), but by specifying an `anchor`, you can move the `local origin` to any point within the clipboard item (e.g. (`{0,-1,0}`) represents the bottom-center of the clipboard item).  This is a useful concept for copy/paste operations where you want to align a 'side' of the clipboard item with the destination point (imagine you copied a whole house into the clipboard - when you want to paste it into the world, you want to place it on the ground -- so you would specify an `anchor` of `{0,-1,0}` to align the bottom of the house with the ground -- now, your destination point can be any point on the world surface, and the house will 'sit' on it).  
+
+## Transactions
+
+Transactions are the basic mechanism for UNDO and REDO operations.  By creating a Transaction, an extension can basically record the world contents BEFORE any changes are made, and then also record the changes AFTER they're made.  These changes would be packaged into a transaction and stored in the 'transaction stack'.  
+When a creator performs an UNDO, the transaction stack is rolled back by a single transaction and the world state stored within that transaction is applied back into the world (restoring the world to whatever it was before the change was made).  
+Performing a REDO operation just does the reverse.  
+
+```ts
+// Fill an area of the map specified by a selection volume.  Track all the block changes in a transaction
+// then immediately undo it all
+ 
+    private performFillOperation = async (context: ExtensionContext, fillType: BlockType) => {
+        const player: Player = context.player;
+        const dimension: Dimension = player.dimension;
+        if (context.selectionManager.selection.isEmpty) {
+            context.log.error('No selection available to fill');
+            return;
+        }
+ 
+        // Open a transaction record for the fill operations
+        context.transactionManager.openTransaction('Select-Fill');
+ 
+        // Create a tracking record for any block changes that occur within a bounding rectangle
+        const bounds = context.selectionManager.selection.boundingBox;
+        context.transactionManager.trackBlockChangeArea(bounds.min, bounds.max);
+ 
+ 
+        // execute a large block operation which manually slices the iteration of block positions within
+        // a selection object into units of about 8000 invocations of the closure, to avoid the crummy
+        // script engine timeout counter.
+        // We execute this as a co-routine using the await async functionality
+        //
+        await executeLargeOperation(context.selectionManager.selection, (blockLocation: Vector3) => {
+            const block = dimension.getBlock(blockLocation);
+            if (block) {
+                block.isWaterlogged = false;
+                block.setType(fillType);
+            }
+        })
+            .catch(e => {
+                // Something catastrophic went wrong – just abandon the tracking record
+                context.log.error(e);
+                context.transactionManager.discardOpenTransaction();
+            })
+            .then(() => {
+                // Commit the open transaction (including any block changes that were found during the
+                // tracking operation
+                context.transactionManager.commitOpenTransaction();
+            });
+    };
+ 
+ 
+const vol1 = new BlockVolume({x:0, y:0, z:0}, {x:5, y:5, z:5});
+const vol2 = new BlockVolume({x:10, y:10, z:10}, {x:15, y:15, z:15});
+ 
+const selection = uiSession.extensionContext.selectionManager.createSelection();
+selection.pushVolume(SelectionBlockVolumeAction.add, vol1);
+selection.pushVolume(SelectionBlockVolumeAction.add, vol2);
+ 
+await performFillOperation(ctx, MinecraftBlockTypes.stone);
+ 
+// Then immediately undo it all
+ 
+uiSession.extensionContext.transactionManager.undo();
+
+```
+
+
+
+# Available UI Components
+
+There are a number of UI components available to you as an Editor Extension creator.
+
+## Block Picker
+(`addBlockPicker`) The block picker is a UI element that provides an on-screen component to allow the user to search through all of the currently available block types using a text-search mechanism.  You can see an example of it in the `Selection` tool; there's a block picker which allows you to choose a fill block type.  
+```ts
+// Add a block picker to the UI pane, and use it to perform a fill operation
+
+// Create a data source to bind to the property pane.  The data source 
+// will contain a property of type BlockType which is bound to the block picker
+type BlockPickerDataSource = {
+    blockType: BlockType;
+};
+
+const dataSource: BlockPickerDataSource = {
+    blockType: MinecraftBlockTypes.stone,
+};
+
+// Add the block picker to the property pane, and tell it which property in
+// the data source it should be bound to
+propertyPane.addBlockPicker(dataSource, 'blockType', {
+    titleStringId: 'NO_ID',
+    titleAltText: 'Block Type',
+});
+
+// Create an action which will perform the fill operation - note that the fill action
+// is passed the block type from the data source.
+// Whatever the user has selected in the block picker will be passed to the action
+const fillAction = uiSession.actionManager.createAction({
+    actionType: ActionTypes.NoArgsAction,
+    onExecute: () => {
+        this.performFillOperation(uiSession.extensionContext, dataSource.block).catch(
+            (e: Error) => uiSession.log.error(e.message)
+        );
+    },
+});
+
+// bind action to a button press... etc
+```
+## Bool (boolean)
+(`addBool`) Show a tick-box or toggle on screen which allows the user to switch some functionality on or off
+```ts
+// Create a data source to bind to the property pane.  The data source will
+// contain a property of type boolean which is bound to the bool component
+type BoolDataSource = {
+    boolValue: boolean;
+};
+
+const dataSource: BoolDataSource = {
+    boolValue: false,
+};
+
+// Add a toggle switch to the UI pane, and tell it which property in the data source it should
+// record it's state
+propertyPane.addBool(dataSource, 'boolValue', {
+    titleStringId: 'NO_ID',
+    titleAltText: 'On or Off?',
+});
+
+// Create an action which will perform some operation based on the bool value
+const action = uiSession.actionManager.createAction({
+    actionType: ActionTypes.NoArgsAction,
+    onExecute: () => {
+        if( dataSource.boolValue ) {
+            uiSession.log.info('The bool is true');
+        }else {
+            uiSession.log.info('The bool is false');
+        }
+    },
+});
+
+// bind action to a button press... etc
+```
+
+## Buttons
+(`addButton`) Show a button on screen which executes some *action* when pressed
+
+```ts
+// Create an action which will do something when the button is pressed
+const action = uiSession.actionManager.createAction({
+    actionType: ActionTypes.NoArgsAction,
+    onExecute: () => {
+        uiSession.log.info('You just pressed a button!!!');
+    },
+});
+
+// Add a button to the property pane, and associate it with an action
+propertyPane.addButton(action, {
+    titleStringId: 'NO_ID',
+    titleAltText: 'Press Me!',
+});
+```
+
+## Divider
+(`addDivider`) A non-interactive screen component which simply creates a horizontal divider across the width of the pane, to help visually arrange UI components into groups.  This is just a graphical element, and has no associated data or actions.
+
+```ts
+// Add a divider to the property pane
+propertyPane.addDivider();
+```
+
+## Dropdown
+(`addDropdown`) A dropdown (sometimes called a combo-box) which can be populated with any number of items and tracks which one of those items is currently selected.
+This one is a little more complicated because it must be populated with a list of items to display, so the set up stage is a little more involved
+
+```ts
+// Create a datasource which tracks the currently selected index of the item in the list
+type DropdownDataSource = {
+    selectedValueIndex: number;
+};
+
+const dataSource: DropdownDataSource = {
+    selectedValueIndex: 0,
+};
+
+// Create a list of items to display in the dropdown - it's up to you what these might be; it could be
+// a list of strings or a list of objects or world locations, etc - whatever you want to display in the
+// dropdown is up to you -- when you convert them to dropdownItems is when you need to convert it to
+// something human readable.
+const dropdownItemNames[] = ['First', 'Second', 'Third'];
+
+// Create a list of IDropdownItems with which to populate the dropdown UI control - these are what will
+// appear on screen
+const dropdownItems = dropdownItemNames.map((item, index): IDropdownItem => {
+    const item: IDropdownItem = {
+        displayAltText: `${index + 1}: ${item}`,
+        displayStringId: 'NO_ID',
+        value: index,
+    };
+    return item;
+});
+
+// Now add the dropdown to the property pane, and tell it which property in the data source it should
+// store the currently selected index.
+// Note the `onChange` event - this is executed when the user changes the selected item in the dropdown
+// to something else
+propertyPane.addDropdown(dataSource, 'selectedValueIndex', {
+    titleStringId: 'NO_ID',
+    titleAltText: 'Stored Location',
+    dropdownItems: dropdownItems,
+    onChange: (_obj: object, _property: string, _oldValue: object, _newValue: object) => {
+        const oldIndex = _oldValue as number;
+        const newIndex = _newValue as number;
+        const oldItem = dropdownItemNames[oldIndex];
+        const newItem = dropdownItemNames[newIndex];
+        uiSession.log.info(`You changed the dropdown from ${oldItem} to ${newItem}`);
+    },
+});
+
+```
+
+## Number
+(`addNumber`) A text input box which is specialized to accept only numbers.  By specifying valid ranges (*min* and *max*) the UI control can validate the input.  You can also set `showSlider` and the UI control will also display a slider bar.
+
+```ts
+// Create a data source which contains the value of the number input UI control
+type NumberDataSource = {
+    numberValue: number;
+};
+const dataSource: NumberDataSource = {
+    numberValue: 0,
+};
+// Create a number input UI control, and tell it which property in the data source it should
+// be bound to.
+// Note that the min/max fields are optional, but provide some basic validation of the input
+// Also note that this number control will display a slider bar
+propertyPane.addNumber(dataSource, 'numberValue', {
+    titleStringId: 'NO_ID',
+    titleAltText: 'My Number Value',
+    min: 0,
+    max: 100,
+    showSlider: true,
+});
+```
+## Strings
+(`addString`) A text input box which allows the user to type in a string
+```ts
+// Create a data source which contains the value of the string input UI control
+type StringDataSource = {
+    stringValue: string;
+};
+const dataSource: StringDataSource = {
+    stringValue: 'Initial String Value',
+};
+// Create a string input UI control, and tell it which property in the data source it should
+// store the string value in
+propertyPane.addString(dataSource, 'stringValue', {
+    titleStringId: 'NO_ID',
+    titleAltText: 'My String Value',
+});
+
+```
+
+## Vector 3 (XYZ)
+(`addVector3`) A specialization of the number input system, but displays 3 number components (*X*, *Y* and *Z*) of a `Vector3` - useful for input of 3D location values
+
+```ts
+// Create a data source which contains the value of the vector3 input UI control
+type Vector3DataSource = {
+    vector3Value: Vector3;
+};
+const dataSource: Vector3DataSource = {
+    vector3Value: { x: 100, y: 200, z: 300 },
+};
+// Add a vector3 UI control to the property pane, and tell it which property in the data source
+// it should store the vector3 value in.
+// Note the use of the optional range validators for each component of the vector3 - 
+// allowing the control to do some basic validation of the input
+propertyPane.addVector3(dataSource, 'vector3Value', {
+    titleStringId: 'NO_ID',
+    titleAltText: 'My Vector3 Value',
+    minX: -1000, maxX: 1000,
+    minY: -64, maxY: 256,
+    minZ: -1000, maxZ: 1000,
+});
+
+```
