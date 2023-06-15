@@ -70,15 +70,9 @@ If you skip this step, you may have problems executing some of the command line 
 
 ### Download
 
+Navigate to [Minecraft Bedrock Editor Extension Starter Kit](https://github.com/Mojang/EditorExtensionStarterKit) and either clone the repository to a location on your hard drive or download the kit as a `ZIP` file and uncompress it to the root of your development folder (i.e. `c:\mcdev\EditorExtensionStarterKit`)  
 
-> ### DAVE TODO -- Need a valid link (placeholder above)
-> ### DAVE TODO -- Need a valid link for the package.json repository URL
-&nbsp;
-
-Navigate to [Minecraft Bedrock Editor Extension Starter Kit](https://github.com/Mojang/EditorExtensionStarterKit)  
-> (**Question from Chloe: This will be the minecraft-editor repo, right?** : **Yes**)  
->
-and either clone the repository to a location on your hard drive or download the kit as a `ZIP` file and uncompress it to the root of your development folder (i.e. `c:\mcdev\EditorExtensionStarterKit`)
+You can download it directly from [Minecraft Bedrock Editor Extension Starter Downloadable Package](https://github.com/Mojang/minecraft-editor-extension-starter-kit/archive/refs/heads/main.zip) (from GitHub)
 
 &nbsp;
 
@@ -305,3 +299,10 @@ If you have a fantastic idea for an Editor Extension, but feel that the API does
 
 ### On social media
 Make sure to add #BedrockEditor to ensure it catches our eye! 
+
+<br>
+<br>
+
+# More Technical Info
+
+Now that you're up and running, you might want to know a little more about how the Editor Extension system works - check out the [Getting Started](.\gettingStarted\README.md) guide; this will help with explanations on how all the Editor systems work, what UI components you have available and how to use them.
