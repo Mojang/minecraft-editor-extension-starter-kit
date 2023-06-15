@@ -41,6 +41,7 @@ $projectName = $null
 $projectLocation = $null
 $programFilesPath = [Environment]::GetEnvironmentVariable('ProgramFiles')
 $applicationDriveLetter = (Split-Path -Qualifier $programFilesPath).TrimEnd(':')
+$templateIndex = $null
 
 Add-Type -AssemblyName System.Windows.Forms
 
@@ -63,6 +64,21 @@ function validateCurrentLocation() {
         Write-Error "Missing templates folder"
         return $false
     }
+
+    $templateIndexLocation = Join-Path -Path $installTemplates -ChildPath "sample-index.json"
+    if ( !(Test-Path -Path $templateIndexLocation) ) {
+        Write-Error "Missing sample index file"
+        return $false
+    }
+
+    # Load the sample index JSON file and convert it to a PowerShell object    
+    $templateIndex = Get-Content -Path $templateIndexLocation -Raw -ErrorAction SilentlyContinue | ConvertFrom-Json
+    if ($null -eq $templateIndex) {
+        Write-Error "Unable to load sample index file"
+        return $false
+    }
+    Write-Host "Found $($templateIndex.Count) samples"
+    $global:templateIndex = $templateIndex
 
     return $true
 }
@@ -108,28 +124,28 @@ function Get-AnyResponse {
 function Get-ExtensionTypeResponse {
     Write-Host @"
 
-What kind of Minecraft Bedrock Editor Extension would you like to deploy?
- 1. Fully functional example (lots of bells & whistles)
- 2. Minimal example (just to get an idea how it works)
- 3. Empty (just the bare minimum - I know what I'm doing!)
+Choose a template for your extension:
 
 "@
-    while ( $true ) {
-        $response = Get-AnyResponse("1, 2 or 3");
-        if ($response -eq '1') {
-            return "full"
-        }
-        elseif ($response -eq '2') {
-            return "minimal"
-        }
-        elseif ( $response -eq '3') {
-            return "empty"
-        }
-        else {
-            Write-Host "That's an invalid response. Try again."
-            continue
-        }
+    $sampleCount = 0
+    foreach ($item in $templateIndex) {
+        Write-Host( "$($sampleCount + 1). $($item.name) -- $($item.short_description)" )
+        $sampleCount++
     }
+
+    do {
+        $response = Get-AnyResponse("Which template? (1 ... $($sampleCount))");
+        $isValid = $response -match '^[1-9][0-9]*$'
+        if ($isValid) {
+            $response = [int]$response
+            if ($response -gt $sampleCount) {
+                $isValid = $false
+            }
+        }
+    } while (-not $isValid)
+
+    $sample = $templateIndex[$response - 1]
+    return $sample
 }
 
 
@@ -165,7 +181,7 @@ function Get-ValidatedProjectFolderDialog {
         $folderBrowserDialog.RootFolder = "MyComputer"
 
         # Display the folder selector dialog
-        $dialogResult = $folderBrowserDialog.ShowDialog((New-Object System.Windows.Forms.Form -Property @{TopMost = $true}))
+        $dialogResult = $folderBrowserDialog.ShowDialog((New-Object System.Windows.Forms.Form -Property @{TopMost = $true }))
 
         # Check the dialog result and get the selected folder
         if ($dialogResult -eq [System.Windows.Forms.DialogResult]::OK) {
@@ -473,12 +489,11 @@ catch {
 
 Write-Host "[ Deploying Extension Template ]"
 
-# Copy over the chosen template source example files
-$templateSource = Join-Path -Path $PSScriptRoot -ChildPath "templates/src/extension-$extensionType/*"
-$templateDest = Join-Path -Path $projectLocation -ChildPath "src/extension/"
+# The $extensionType variable is set by the Get-ExtensionTypeResponse function
+# and contains a JSON object of from the `sample-index.json` list
 try {
-    New-Item -ItemType Directory -Path $templateDest -ErrorAction SilentlyContinue -Force | Out-Null
-    Copy-Item -Path $templateSource -Destination $templateDest -Recurse
+    $templateZip = Join-Path -Path $PSScriptRoot -ChildPath "templates\$($extensionType.target_name).zip"
+    Expand-Archive -Path $templateZip -DestinationPath $projectLocation -Force
 }
 catch {
     Write-Error "There was an issue copying the template project files to the extension folder."

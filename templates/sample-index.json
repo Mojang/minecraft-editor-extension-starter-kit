@@ -1,0 +1,92 @@
+[
+	{
+		"name": "Empty",
+		"target_name": "empty",
+		"short_description": "An empty framework for creating new extensions",
+		"string_prefix": "sample.empty",
+		"entry_point": "registerEmptyExtension",
+		"assets": [],
+		"sort_order": 1,
+		"entry_file": "empty.ts"
+	},
+	{
+		"name": "Minimal",
+		"target_name": "minimal",
+		"short_description": "A very minimal example extension",
+		"string_prefix": "sample.minimal",
+		"entry_point": "registerMinimalExtension",
+		"assets": [],
+		"sort_order": 2,
+		"entry_file": "minimal.ts"
+	},
+	{
+		"name": "Camera Grapple",
+		"target_name": "camera-grapple",
+		"short_description": "A client side camera based grapple",
+		"string_prefix": "sample.cameragrapple",
+		"entry_point": "registerCameraGrapple",
+		"assets": [],
+		"sort_order": 10,
+		"entry_file": "camera-grapple.ts"
+	},
+	{
+		"name": "Dye Brush",
+		"target_name": "dye-brush",
+		"short_description": "Paint entities a different color",
+		"string_prefix": "sample.dyebrush",
+		"entry_point": "registerDyeBrushExtension",
+		"assets": [
+			"dye.*png$"
+		],
+		"sort_order": 10,
+		"entry_file": "dye-brush.ts"
+	},
+	{
+		"name": "Farm Generator",
+		"target_name": "farm-generator",
+		"short_description": "Click to create a whole field of crops & animals",
+		"string_prefix": "sample.farmgenerator",
+		"entry_point": "registerFarmGeneratorExtension",
+		"assets": [
+			"farm.*png$"
+		],
+		"sort_order": 10,
+		"entry_file": "farm-generator.ts"
+	},
+	{
+		"name": "Goto Mark",
+		"target_name": "goto-mark",
+		"short_description": "Store world locations and teleport to them",
+		"string_prefix": "sample.gotomark",
+		"entry_point": "registerGotoMarkExtension",
+		"assets": [
+			"goto.*png$"
+		],
+		"sort_order": 10,
+		"entry_file": "goto-mark.ts"
+	},
+	{
+		"name": "Portal Generator",
+		"target_name": "portal-generator",
+		"short_description": "Generate Ender & Nether portals with a click",
+		"string_prefix": "sample.portalgenerator",
+		"entry_point": "registerPortalGeneratorExtension",
+		"assets": [
+			"portal.*png$"
+		],
+		"sort_order": 10,
+		"entry_file": "portal-generator.ts"
+	},
+	{
+		"name": "Tree Generator",
+		"target_name": "tree-generator",
+		"short_description": "Generate whole trees from a single click",
+		"string_prefix": "sample.treegenerator",
+		"entry_point": "registerTreeGeneratorExtension",
+		"assets": [
+			"tree.*png$"
+		],
+		"sort_order": 10,
+		"entry_file": "tree-generator.ts"
+	}
+]
