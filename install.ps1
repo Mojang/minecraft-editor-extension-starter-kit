@@ -1,7 +1,7 @@
 # Minecraft Bedrock Editor Extension Kit
 
 # Summary:
-# - Check pre-requisites
+# - Check pre-requisites (exit out if not present)
 #   - Minecraft (UWP Preview App)
 #   - Node.js
 # - Check Optionals
@@ -10,7 +10,7 @@
 # - Ask some questions
 #   - Extension Name (Validate length and char contents)
 #   - Install Path
-#   - Requires Resources?
+#   - Pick a template
 #   - Check install path - is this an upgrade? (project already exists)
 #   - Check install path - is it on the same drive as Minecraft?
 
@@ -19,6 +19,9 @@
 #   - Copy `templates/.env.template` to Install Path as `.env`
 #       - Modify all entries within `.env` file with requisite values
 #   - Copy `package.json` and alter any entries within
+#   - Copy any README files over
+#   - Unzip the template into the Install Path
+#   - Run `npm install` in the Install Path
 #   - Open VSCode at project path
 #   - Open browser at Minecraft Editor hub
 
@@ -32,7 +35,7 @@ The Minecraft Bedrock Editor Extension Kit is currently only designed to work in
 If you really want to start developing Minecraft Bedrock Editor Extensions, then you should 
 investigate either using a Windows PC, or installing Windows in a Virtual Machine Environment.
 Thanks for trying though!
-"@
+"@  -ForegroundColor Red
         exit
     }
 }
@@ -41,30 +44,68 @@ $projectName = $null
 $projectLocation = $null
 $programFilesPath = [Environment]::GetEnvironmentVariable('ProgramFiles')
 $applicationDriveLetter = (Split-Path -Qualifier $programFilesPath).TrimEnd(':')
+$payloadFolderPath = Join-Path -Path $PSScriptRoot -ChildPath "payload"
+$installerScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "install.ps1"
+$templatesFolderPath = Join-Path -Path $PSScriptRoot -ChildPath "templates"
+$templatesSampleIndexFilePath = Join-Path -Path $templatesFolderPath -ChildPath "sample-index.json"
+$sampleTemplatesList = $null
 
 Add-Type -AssemblyName System.Windows.Forms
 
 function validateCurrentLocation() {
     # check to see if there's an install file in the current folder
-    $installScript = Join-Path -Path $PSScriptRoot -ChildPath "install.ps1"
-    if ( !(Test-Path -Path $installScript) ) {
+    if ( !(Test-Path -Path $installerScriptPath) ) {
         Write-Error "Missing installer script"
         return $false
     }
 
-    $installPayload = Join-Path -Path $PSScriptRoot -ChildPath "payload"
-    if ( !(Test-Path -Path $installPayload) ) {
+    if ( !(Test-Path -Path $payloadFolderPath) ) {
         Write-Error "Missing payload folder"
         return $false
     }
 
-    $installTemplates = Join-Path -Path $PSScriptRoot -ChildPath "templates"
-    if ( !(Test-Path -Path $installTemplates) ) {
+    if ( !(Test-Path -Path $templatesFolderPath) ) {
         Write-Error "Missing templates folder"
         return $false
     }
 
+    
+    if ( !(Test-Path -Path $templatesSampleIndexFilePath) ) {
+        Write-Error "Missing sample index file"
+        return $false
+    }
+    
     return $true
+}
+
+
+# Validate the loaded sample index JSON file and check that all the
+# sample archives are present
+function validateTemplateIndex {
+    param($templateJson)
+
+    if($null -eq $templateJson) {
+        Write-Error "Failed to load JSON sample index - check it's there, and is valid JSON"
+        return $false
+    }
+
+    $returnValue = $true
+    $templateCount = 0;
+
+    foreach ($item in $templateJson) {
+        $archiveFilename = Join-Path -Path $PSScriptRoot -ChildPath ".\templates\$($item.target_name).zip"
+        if ( !(Test-Path -Path $archiveFilename) ) {
+            Write-Error "Missing template sample $($item.target_name).zip"
+            $returnValue = $false
+        }
+        else {
+            $templateCount++
+        }
+    }
+
+    Write-Host "Found $($templateCount) samples..."
+
+    return $returnValue
 }
 
 
@@ -106,30 +147,52 @@ function Get-AnyResponse {
 
 
 function Get-ExtensionTypeResponse {
+    param($templateList)
+
+    if($null -eq $templateList) {
+        Write-Error "Failed to load JSON sample index - check it's there, and is valid JSON"
+        return $null
+    }
+
     Write-Host @"
 
-What kind of Minecraft Bedrock Editor Extension would you like to deploy?
- 1. Fully functional example (lots of bells & whistles)
- 2. Minimal example (just to get an idea how it works)
- 3. Empty (just the bare minimum - I know what I'm doing!)
+Choose a template for your extension:
+    - If you're starting out to write your own, choose 'Empty'
+    - If you're looking for an example to copy - choose one that best
+        matches what you're trying to do.
+    Check out the Editor Samples GitHub repo for a complete list of the sample templates
+        available, and what they do.
+        https://github.com/Mojang/minecraft-editor-extension-samples
 
 "@
-    while ( $true ) {
-        $response = Get-AnyResponse("1, 2 or 3");
-        if ($response -eq '1') {
-            return "full"
-        }
-        elseif ($response -eq '2') {
-            return "minimal"
-        }
-        elseif ( $response -eq '3') {
-            return "empty"
-        }
-        else {
-            Write-Host "That's an invalid response. Try again."
-            continue
-        }
+
+    $templateCount = 0
+    foreach ($item in $templateList) {
+        Write-Host "$($templateCount + 1). $($item.name) -- $($item.short_description)"
+        $templateCount++
     }
+
+    if(0 -ge $templateCount) {
+        Write-Host "Something is wrong, there are no templates to choose from"
+        return $null
+    }
+
+    Write-Host ""
+    $isValid = $false
+
+    do {
+        $response = Get-AnyResponse "Which sample template ?  (1 ... $($templateCount))"
+        $isValid = $response -match '^[1-9][0-9]*$'
+        if ($isValid) {
+            $response = [int]$response
+            if ($response -gt $templateCount) {
+                $isValid = $false
+            }
+        }
+    } while (-not $isValid)
+
+    $sample = $templateList[$response - 1]
+    return $sample
 }
 
 
@@ -165,7 +228,7 @@ function Get-ValidatedProjectFolderDialog {
         $folderBrowserDialog.RootFolder = "MyComputer"
 
         # Display the folder selector dialog
-        $dialogResult = $folderBrowserDialog.ShowDialog((New-Object System.Windows.Forms.Form -Property @{TopMost = $true}))
+        $dialogResult = $folderBrowserDialog.ShowDialog((New-Object System.Windows.Forms.Form -Property @{TopMost = $true }))
 
         # Check the dialog result and get the selected folder
         if ($dialogResult -eq [System.Windows.Forms.DialogResult]::OK) {
@@ -225,7 +288,7 @@ Use the folder selector to find a location into which we can install your new pr
 
     $projectLocationResponse = Get-ValidatedProjectFolderDialog
     if (-not $projectLocationResponse.success) {
-        Write-Host "User cancelled operation"
+        Write-Host "User cancelled operation"  -ForegroundColor Red
         exit
     }
 
@@ -236,9 +299,19 @@ function RefreshEnvironmentAfterInstall() {
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
 }
 
+###################################################################################################
+#
+# Installer Begins here
+#
+###################################################################################################
+
+
+
+
 # Clear the screen, and start asking questions
 Clear-Host
 
+# Let's check (as best we can) that nothing is missing
 if ( !(validateCurrentLocation) ) {
     Write-Error @"
 
@@ -249,6 +322,18 @@ If you continue to encounter issues - just delete this whole folder and re-downl
 
 "@
     exit
+}
+
+# Load the sample index JSON file and convert it to a PowerShell object
+#  - We're going to use the contents of this file to drive the template choice
+#
+$sampleTemplatesList = Get-Content -Path $templatesSampleIndexFilePath -Raw -ErrorAction SilentlyContinue | ConvertFrom-Json
+if ($null -eq $sampleTemplatesList) {
+    Write-Error "Unable to load sample index file"
+    exit
+}
+if(!(validateTemplateIndex $sampleTemplatesList)) {
+    exit;
 }
 
 
@@ -271,23 +356,35 @@ Checking prerequisites...
 
 "@
 
-Get-AnyResponse("Hit ENTER to continue")
+Get-AnyResponse "Hit ENTER to continue"
 
 Clear-Host
 
 
 # Check to see if Minecraft Preview is installed, and give the user a chance to do so
+# REQUIRED!
 $minecraftPreviewInstalled = Get-AppxPackage -Name "Microsoft.MinecraftWindowsBeta" -ErrorAction SilentlyContinue
 Write-Host "[ $(if($minecraftPreviewInstalled) {'INSTALLED'} else {'NOT INSTALLED'}) ] Minecraft Preview"
 
-
 # Check to see if Node.js is installed
+# REQUIRED!
 $nodeInstalled = Get-Command node -ErrorAction SilentlyContinue
 Write-Host "[ $(if($nodeInstalled) {'INSTALLED'} else {'NOT INSTALLED'}) ] Node.js"
 
 
 $vscodeInstalled = Get-Command code -ErrorAction SilentlyContinue
 Write-Host "[ $(if($vscodeInstalled) {'INSTALLED'} else {'NOT INSTALLED'}) ] Visual Studio Code"
+
+if( !($minecraftPreviewInstalled -and $nodeInstalled) ) {
+    Write-Host @"
+
+It looks like you're missing some of the required software to get started.
+This Starter Kit will exit now to give you a chance to install the prerequisite software.
+When you're confident that you've installed the missing software, run this script again.
+"@ -ForegroundColor Red
+    exit
+}
+
 
 # OK, let's sit in a loop and ensure that we end up with a validated destination folder location
 # and project name for the extension
@@ -378,8 +475,13 @@ Continue and delete everything (y/N)?
 
 $resourcesRequired = "Yes"
 
-$extensionType = Get-ExtensionTypeResponse
-
+# Fetch the JSON item that relates to the particular sample template that the user has chosen
+#
+$extensionType = Get-ExtensionTypeResponse $sampleTemplatesList
+if($null -eq $extensionType) {
+    Write-Error "Unable to determine the template to use for the project"
+    exit
+}
 
 # START THE INSTALL PROCESS!
 # --------------------------------------------------------------------------
@@ -392,6 +494,8 @@ Write-Host ""
 $promptString = @"
 
 Project '${projectName}' will be installed to '${projectLocation}'.
+  The template '$($extensionType.name)' will be used to create the project.
+
 Do you want to proceed? (y/N)
 
 "@
@@ -473,12 +577,16 @@ catch {
 
 Write-Host "[ Deploying Extension Template ]"
 
-# Copy over the chosen template source example files
-$templateSource = Join-Path -Path $PSScriptRoot -ChildPath "templates/src/extension-$extensionType/*"
-$templateDest = Join-Path -Path $projectLocation -ChildPath "src/extension/"
+# The $extensionType variable is set by the Get-ExtensionTypeResponse function
+# and contains a JSON object of from the `sample-index.json` list
 try {
-    New-Item -ItemType Directory -Path $templateDest -ErrorAction SilentlyContinue -Force | Out-Null
-    Copy-Item -Path $templateSource -Destination $templateDest -Recurse
+    $templateZip = Join-Path -Path $PSScriptRoot -ChildPath "templates\$($extensionType.target_name).zip"
+    Expand-Archive -Path $templateZip -DestinationPath $projectLocation -Force
+
+    # Some of the ZIP's don't contain assets, but the helper scripts and package.json sometimes assume
+    # that the asset folders exist.  So, let's make sure they do.
+    New-Item -ItemType Directory -Path "$projectLocation\assets\resource\textures" -Force | Out-Null
+    New-Item -ItemType Directory -Path "$projectLocation\assets\resource\texts" -Force | Out-Null
 }
 catch {
     Write-Error "There was an issue copying the template project files to the extension folder."
@@ -532,8 +640,3 @@ else {
     $readmeLocation = Join-Path -Path $projectLocation -ChildPath "README.md"
     code $projectLocation $readmeLocation
 }
-
-
-# Start Visual Studio Code at the correct folder, and open the readme
-$readmeMarkdown
-code $projectLocation
