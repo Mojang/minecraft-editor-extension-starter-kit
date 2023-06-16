@@ -15,12 +15,11 @@ We call these **Editor Extensions**.
 
 An Extension is a collective name for a set of resource and behavior packs which contain script and binary assets which are loaded when the Editor starts up.
 
-The Extensions are written in TypeScript and are compiled into JavaScript ready for loading into the game.  The compiler tools and various libraries required to do this are supplied as part of the [Editor Extension Starter Kit](https://github.com/dacowan/EditorExtensionStarterKit).
+The Extensions are written in TypeScript and are compiled into JavaScript ready for loading into the game.  The compiler tools and various libraries required to do this are supplied as part of the [Minecraft Bedrock Editor Extension Starter Kit](https://github.com/Mojang/minecraft-editor-extension-starter-kit).
 
 The behavior pack will contain the compiled scripts which execute on the server, and the resource pack will contain the binary assets required by the Extension (icons, text files, etc).
 
-For a set of install instructions and pre-requisite software required to start, please refer to the [Editor Extension Starter Kit README](https://github.com/dacowan/EditorExtensionStarterKit/blob/main/README.md)  
-### TODO: FIX THIS LINK ###
+For a full set of install instructions and pre-requisite software required to start, please refer to the [Minecraft Bedrock Editor Extension Starter Kit README file](https://github.com/Mojang/minecraft-editor-extension-starter-kit/blob/main/README.md)  
 
 &nbsp;
 
@@ -694,3 +693,14 @@ propertyPane.addVector3(dataSource, 'vector3Value', {
 });
 
 ```
+
+# This looks awesome, but what can I do with it?
+
+You need some samples!   <br>
+Luckily, we have you covered.  There's an ever expanding library of sample extensions over at [Minecraft Bedrock Editor Extension Samples Repository](https://github.com/Mojang/minecraft-editor-extension-samples) over on GitHub.
+
+You can peruse the source code to see how it's done, and even download a whole collection of them to test live in the editor.  
+
+Also, if you're looking to experiment with one of them - all of those samples are available as part of the [Minecraft Bedrock Editor Extension Starter Kit](https://github.com/Mojang/minecraft-editor-extension-starter-kit) - just choose any one of them as a sample starter project and you're set!
+
+Remember too, that you can check out the [Minecraft Bedrock Editor GitHub Page](https://github.com/Mojang/minecraft-editor) for more information about the editor, join in any discussions, or even raise issues if you find any bugs or have any feature requests.

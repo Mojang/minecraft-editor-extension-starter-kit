@@ -113,7 +113,9 @@ At the end of the process, you should have a new folder containing all the files
 
 > **Note:** We recommend running the installer script from a `PowerShell` terminal (not a terminal within an integrated environment like `Visual Studio Code`) - the installer pops up a couple of helper dialogs, and sometimes they will appear behind your integrated environment and you won't know that they're there - so just to be safe, open a fresh `PowerShell` from the `Windows` Start Menu and run the installer from that.  
 > 
-> Alternatively, you can always right-click the `install.ps1` script in `Windows Explorer` and select `Run in PowerShell` and that should be fine too.
+> Alternatively, you can always right-click the `install.ps1` script in `Windows Explorer` and select `Run in PowerShell` and that should be fine too.  
+
+&nbsp;&nbsp;&nbsp;<img src="_/../_assets/explorer-right-click-powershell.png" alt="Right-Click Run in PowerShell" width="300"/>
 
 &nbsp;
 
@@ -126,6 +128,8 @@ At the end of the process, you should have a new folder containing all the files
 Open Visual Studio Code, and select `File > Open Folder` and select the folder that you choose to install your new Extension project (e.g. `c:\mcdev\myNewProject`).
 
 On left hand side of the screen you will see the file explorer window, showing all of the files in your project.  Feel free to explore the files (don't change anything yet)! 
+
+<img src="_/../_assets/vsCodeSidePanel.png" alt="VSCode Left Panel" width="300"/>
 
 Go to the top menu bar and select `Terminal > New Terminal` (or hit `CTRL+~`).  
 (Our tools should work in any of the different terminal flavors, but we generally favor either `PowerShell` or `Git Bash`).
@@ -141,14 +145,14 @@ This will process your project settings and install all of the tools and symbols
 
 &nbsp;
 
-### Choose behavior pack destination
-The first step is to prepare the behavior and resource pack target folders. These will be deployed to the Minecraft `development_behavior_packs` and `developement_resource_packs` folders. These folders live in tandem with your Minecraft worlds and various other Minecraft files.
+### Where does my extension go?
+The first step is to prepare the behavior and resource pack target folders. These will be deployed to the Minecraft `development_behavior_packs` and `developement_resource_packs` folders. These folders are created by Minecraft when you run it for the first time, ahd hold all your own Minecraft worlds as well as templates, packs and other files you may download or create.
 
 ```bash
 npm run prepare
 ```
 
-> **Note:** *If you ever add any additional asset files to your project (sprites, textures, icons, strings, etc), then you need to remember to run the `prepare` step.  This ensures that all of your assets have been deployed to a location where Minecraft can find them*
+> **Note:** *If you ever add any additional asset files to your project (sprites, textures, icons, strings, etc), then you need to remember to run the `prepare` step.  This ensures that all of your assets have been deployed to a location where Minecraft can find them.<br>Try to remember that your new extension project location IS NOT where Minecraft loads or run from - there's always a copy/deploy step to move all of the prepared files into a place and format that Minecraft can use.*
 
 You can open a file explorer and check if you like. (Probably wise to do this the first time around ;) ).  
 
@@ -208,8 +212,6 @@ npm run launch
 ```
 (You can create a shortcut to this file on your desktop or Start Menu to make it easier)  
 
-
-
 Minecraft Preview should start up in Editor mode. You can tell it's Editor mode because the usual `Play Game` and `Settings` buttons are missing, and you're immediately presented with a `Create Project` screen.
 
 &nbsp;
@@ -223,6 +225,17 @@ Launch the project. Your extension should be loaded into the Editor environment!
 #
 
 ## Making Changes
+
+First, you need to find the extension source code -- the Starter Kit installed *a lot* of files in your project folder - so where exactly is the extension code?  
+
+If you're using `Visual Studio Code`, then you can open the `Explorer` panel on the left hand side of the screen and navigate to the `src` folder.  This is where all of the extension source code lives.  
+
+&nbsp;&nbsp;&nbsp;&nbsp;<img src="_/../_assets/source-code-location.png" alt="VSCode Source Location" width="200"/>
+
+If you want to look at the extension code, then check out `src/<sample-name>.ts`.  
+If you want to add new source files, they'll go in here -- this is where the compiler looks for them.  
+Remember to add a reference to any new exported functions into the `src/index.ts` -- this is the entry point for the extension when the game loads it.
+
 
 ### "Hot-reloading" to see script changes
 The only time you should ever need to restart Minecraft is if you add any new assets (sprites, icons, text, etc.). The Editor environment supports "hot-reloading" of compiled script changes using the `/reload` command.  
@@ -301,7 +314,7 @@ If you have a fantastic idea for an Editor Extension, but feel that the API does
 &nbsp;
 
 ### On social media
-Make sure to add #BedrockEditor to ensure it catches our eye! 
+Make sure to add `#BedrockEditor` to ensure it catches our eye! 
 
 <br>
 <br>
@@ -309,3 +322,15 @@ Make sure to add #BedrockEditor to ensure it catches our eye!
 # More Technical Info
 
 Now that you're up and running, you might want to know a little more about how the Editor Extension system works - check out the [Getting Started](.\gettingStarted\README.md) guide; this will help with explanations on how all the Editor systems work, what UI components you have available and how to use them.
+
+# Things to remember
+- **NEVER** store your project source in the Minecraft working folder 
+```bat
+%LOCALAPPDATA%\Packages\Microsoft.MinecraftWindowsBeta_8wekyb3d8bbwe\LocalState\games\com.mojang
+```
+- This folder will be reset every time you uninstall Minecraft, so you can potentially lose anything you've created.
+
+- **ALWAYS** make backups- learn to use Git (or an alternative like SVN) or back it up to the cloud in case of emergencies
+  
+- Minecraft Preview Edition and Minecraft are different apps, and they don't share the same data or data folders.  
+- Editor is *currently* only available in the Preview Edition of Minecraft - your extensions will not work in the regular Minecraft game.
