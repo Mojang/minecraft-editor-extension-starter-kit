@@ -90,8 +90,11 @@ Open Windows PowerShell from the Windows Start Menu (or use WIN+R keys and type 
 Navigate to the location on your hard drive where you placed the Extension Kit Installer. If you downloaded the kit as a `ZIP` file, ensure you navigate to the unzipped folder location.
 
 ```powershell
+
 cd c:\mcdev\EditorExtensionStarterKit     << Use the development folder name you chose here >>
+
 .\install.ps1
+
 ```
 
 
