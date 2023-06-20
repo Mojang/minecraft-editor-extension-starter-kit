@@ -36,7 +36,7 @@
 		"string_prefix": "sample.dyebrush",
 		"entry_point": "registerDyeBrushExtension",
 		"assets": [
-			"dye.*png$"
+			"**/dye*.{png,jpg,jpeg}"
 		],
 		"sort_order": 10,
 		"entry_file": "dye-brush.ts"
@@ -48,7 +48,7 @@
 		"string_prefix": "sample.farmgenerator",
 		"entry_point": "registerFarmGeneratorExtension",
 		"assets": [
-			"farm.*png$"
+			"**/farm*.{png,jpg,jpeg}"
 		],
 		"sort_order": 10,
 		"entry_file": "farm-generator.ts"
@@ -60,7 +60,7 @@
 		"string_prefix": "sample.gotomark",
 		"entry_point": "registerGotoMarkExtension",
 		"assets": [
-			"goto.*png$"
+			"**/goto*.{png,jpg,jpeg}"
 		],
 		"sort_order": 10,
 		"entry_file": "goto-mark.ts"
@@ -72,7 +72,7 @@
 		"string_prefix": "sample.portalgenerator",
 		"entry_point": "registerPortalGeneratorExtension",
 		"assets": [
-			"portal.*png$"
+			"**/portal*.{png,jpg,jpeg}"
 		],
 		"sort_order": 10,
 		"entry_file": "portal-generator.ts"
@@ -84,7 +84,7 @@
 		"string_prefix": "sample.treegenerator",
 		"entry_point": "registerTreeGeneratorExtension",
 		"assets": [
-			"tree.*png$"
+			"**/tree*.{png,jpg,jpeg}"
 		],
 		"sort_order": 10,
 		"entry_file": "tree-generator.ts"
