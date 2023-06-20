@@ -2,32 +2,34 @@
 Getting started guide for building Editor Extensions. 
 
 ### Contents
-- [What is the Editor?](#what-is-the-editor)
-- [What is an Editor Extension?](#what-is-an-editor-extension)
-- [Anatomy of an Extension](#anatomy-of-an-extension)
+- [Minecraft Bedrock Editor](#minecraft-bedrock-editor)
+    - [Contents](#contents)
+  - [What is the Editor?](#what-is-the-editor)
+  - [What is an Editor Extension?](#what-is-an-editor-extension)
+  - [Anatomy of an Extension](#anatomy-of-an-extension)
     - [Activation of an Extension](#activation-of-an-extension)
     - [Deactivation of an Extension](#deactivation-of-an-extension)
-    - [Example: Simple Extension](#example-of-a-simple-extension)
-- [UI and Tools](#ui-and-tools)
+    - [Example of a Simple Extension](#example-of-a-simple-extension)
+  - [UI and Tools](#ui-and-tools)
     - [Element Overview](#element-overview)
-    - [Example: Simple Property Window](#property-window)
-- [Editing Concepts](#editing-concepts)
-    -  [Logging](#logging)
-    -  [Cursor](#cursor)
-    -  [Selection](#selection)
-    -  [Clipboard](#clipboard)
-    -  [Transactions](#transactions)
-- [Available UI Components](#available-ui-components)
+    - [Property Pane](#property-pane)
+  - [Editing Concepts](#editing-concepts)
+    - [Logging](#logging)
+    - [Cursor](#cursor)
+    - [Selection](#selection)
+    - [Clipboard](#clipboard)
+    - [Transactions](#transactions)
+  - [Available UI Components](#available-ui-components)
     - [Block Picker](#block-picker)
     - [Boolean](#boolean)
     - [Buttons](#buttons)
     - [Divider](#divider)
     - [Dropdown](#dropdown)
     - [Number](#number)
-    - [Strings](#strings)
+  - [Strings](#strings)
     - [Vector 3 (XYZ)](#vector-3-xyz)
-- [I want to see samples!](#i-want-to-see-samples)
-- [I have feedback](#i-have-feedback)
+  - [I want to see samples!](#i-want-to-see-samples)
+  - [I have feedback](#i-have-feedback)
 
 ---
   
@@ -152,7 +154,7 @@ When you start the Editor, you will see the traditional UI elements of any edito
 - Menu Bar
 - Tool Palette
 - Action Bar
-- Floating Property Windows
+- Floating Property Panes
 - 3D Viewport
   
 All of these are accessible from the API (*`Action Bar is still in development and currently unavailable`*) and can be modified by your Extension.
@@ -236,17 +238,17 @@ The `Action::onExecute` contains the code that is executed (in this case, it tel
 So now, you can activate your Extension using either *(CTRL+SHIFT+E)* or pressing the icon/button on the Tool Palette.
 
 
-### Property window
+### Property Pane
 
-The next common thing an Extension will want to do is open a property window to display some UI controls or some unique state information.  
+The next common thing an Extension will want to do is open a property pane to display some UI controls or some unique state information.  
 
 This consists of several steps: 
-1. Create a property window
-2. Create a data source which binds the UI elements on the property window with the `data` that the UI elements are meant to represent
+1. Create a property pane
+2. Create a data source which binds the UI elements on the property pane with the `data` that the UI elements are meant to represent
 3. Create whatever buttons, text fields or sliders which map to the data source
-4. Show the property window
+4. Show the property pane
 
-Create a property window for our Extension and give it a title: 
+Create a property pane for our Extension and give it a title: 
 
 ```ts
     // Create a property pane for our extension
