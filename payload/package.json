@@ -7,8 +7,8 @@
 	"main": "lib/index.js",
 	"types": "lib/editor.d.ts",
 	"devDependencies": {
-		"@minecraft/server": "^1.6.0-beta.0.0.901-preview.46",
-		"@minecraft/server-editor": "^0.1.0-beta.0.0.901-preview.46",
+		"@minecraft/server": "^1.6.0-beta.0.0.902-preview.46",
+		"@minecraft/server-editor": "^0.1.0-beta.0.0.902-preview.46",
 		"@types/node": "^12.12.7",
 		"eslint": "^8.20.0",
 		"glob": "^8.0.3",
