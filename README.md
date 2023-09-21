@@ -109,7 +109,6 @@ cd c:\mcdev\EditorExtensionStarterKit     << Use the development folder name you
 
 ```
 
-
 > **Troubleshooting tip:** If you see a script permissions error when attempting to run the installer, you may have to change your Execution privileges in PowerShell. Please read the article [Set-ExecutionPolicy at Microsoft.com](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-7.3).  
 >
 > You may have to change your current script permissions to allow the installer to run (only do this if you're having a problem running it) using: 
