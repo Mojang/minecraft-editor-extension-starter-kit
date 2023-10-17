@@ -263,27 +263,27 @@ Create a property pane for our Extension and give it a title:
         label: 'This is an editor extension property pane!',
         myBoolean: 0,
     };
-    addDataSource(extensionPane, paneData);
+    const boundData = bindDataSource(extensionPane, paneData);
 ```
 
 Create a data source object (we sometimes call these `PropertyBags`), which will contain the operational runtime data which is bound into the pane.  As you operate sliders, enter text fields, etc - these values will be the ones which are bound to those UI controls, and will contain the data that is synchronized from the UI elements into the runtime object.
 
 ```ts
     // Let's bind an ON/OFF boolean UI element
-    extensionPane.addBool(paneData, 'myBoolean', {
+    extensionPane.addBool(boundData, 'myBoolean', {
         titleStringId: 'NO_ID',
         titleAltText: 'True or False?',
     });
 ```
 
-In this example, we create a boolean ON/OFF UI element with the title "True or False?" and bind it to the property `myBoolean` in the `paneData`.  When the user toggles the UI switch on screen, the value `myBoolean` in `paneData` will reflect the current state (`true|false`).
+In this example, we create a boolean ON/OFF UI element with the title "True or False?" and bind it to the property `myBoolean` in the bound proxy (`boundData`) of `paneData`.  When the user toggles the UI switch on screen, the value `myBoolean` in `boundData` will reflect the current state (`true|false`).
 
 ```ts
     // Now we can add a button!  Let's define an action for the button to execute
     const buttonAction = uiSession.actionManager.createAction({
         actionType: ActionTypes.NoArgsAction,
         onExecute: () => {
-            const boolString = paneData.myBoolean ? "true" : "false";
+            const boolString = boundData.myBoolean ? "true" : "false";
             uiSession.log.info(`I've been pressed and the bool flag is ${boolString}`);
         },
     });
@@ -302,6 +302,9 @@ After all that, all we have to do is show the panel...
 ```ts
     extensionPane.show();
 ```
+
+**NOTE** : When you create a data source binding (`const boundData = bindDataSource(extensionPane, paneData)` - the `boundData` object is a proxy copy of the data that was passed in.  The proxy is attached to the property pane along with the original data object, and the proxy ensures that the data is synchronized between the client and server.
+So, when you make a change to `boundData.myBoolean` on the server - the value of `myBoolean` is then reflected on the client (and presumably the tick box you created).  Similarly, if you change the value of `myBoolean` on the client (by pressing on the tick box), the value is synchronized back to the server and can be read by the server script code.
 
 &nbsp;
 
@@ -542,10 +545,11 @@ type BlockPickerDataSource = {
 const dataSource: BlockPickerDataSource = {
     blockType: MinecraftBlockTypes.stone,
 };
+const boundData = bindDataSource(propertyPane, dataSource);
 
 // Add the block picker to the property pane, and tell it which property in
 // the data source it should be bound to
-propertyPane.addBlockPicker(dataSource, 'blockType', {
+propertyPane.addBlockPicker(boundData, 'blockType', {
     titleStringId: 'NO_ID',
     titleAltText: 'Block Type',
 });
@@ -577,10 +581,11 @@ type BoolDataSource = {
 const dataSource: BoolDataSource = {
     boolValue: false,
 };
+const boundData = bindDataSource(propertyPane, dataSource);
 
 // Add a toggle switch to the UI pane, and tell it which property in the data source it should
 // record it's state
-propertyPane.addBool(dataSource, 'boolValue', {
+propertyPane.addBool(boundData, 'boolValue', {
     titleStringId: 'NO_ID',
     titleAltText: 'On or Off?',
 });
@@ -589,7 +594,7 @@ propertyPane.addBool(dataSource, 'boolValue', {
 const action = uiSession.actionManager.createAction({
     actionType: ActionTypes.NoArgsAction,
     onExecute: () => {
-        if( dataSource.boolValue ) {
+        if( boundData.boolValue ) {
             uiSession.log.info('The bool is true');
         }else {
             uiSession.log.info('The bool is false');
@@ -640,6 +645,7 @@ type DropdownDataSource = {
 const dataSource: DropdownDataSource = {
     selectedValueIndex: 0,
 };
+const boundData = bindDataSource(propertyPane, dataSource);
 
 // Create a list of items to display in the dropdown - it's up to you what these might be; it could be
 // a list of strings or a list of objects or world locations, etc - whatever you want to display in the
@@ -662,7 +668,7 @@ const dropdownItems = dropdownItemNames.map((item, index): IDropdownItem => {
 // store the currently selected index.
 // Note the `onChange` event - this is executed when the user changes the selected item in the dropdown
 // to something else
-propertyPane.addDropdown(dataSource, 'selectedValueIndex', {
+propertyPane.addDropdown(boundData, 'selectedValueIndex', {
     titleStringId: 'NO_ID',
     titleAltText: 'Stored Location',
     dropdownItems: dropdownItems,
@@ -688,11 +694,13 @@ type NumberDataSource = {
 const dataSource: NumberDataSource = {
     numberValue: 0,
 };
+const boundData = bindDataSource(propertyPane, dataSource);
+
 // Create a number input UI control, and tell it which property in the data source it should
 // be bound to.
 // Note that the min/max fields are optional, but provide some basic validation of the input
 // Also note that this number control will display a slider bar
-propertyPane.addNumber(dataSource, 'numberValue', {
+propertyPane.addNumber(boundData, 'numberValue', {
     titleStringId: 'NO_ID',
     titleAltText: 'My Number Value',
     min: 0,
@@ -700,6 +708,7 @@ propertyPane.addNumber(dataSource, 'numberValue', {
     showSlider: true,
 });
 ```
+
 ## Strings
 (`addString`) A text input box which allows the user to type in a string
 ```ts
@@ -710,9 +719,11 @@ type StringDataSource = {
 const dataSource: StringDataSource = {
     stringValue: 'Initial String Value',
 };
+const boundData = bindDataSource(propertyPane, dataSource);
+
 // Create a string input UI control, and tell it which property in the data source it should
 // store the string value in
-propertyPane.addString(dataSource, 'stringValue', {
+propertyPane.addString(boundData, 'stringValue', {
     titleStringId: 'NO_ID',
     titleAltText: 'My String Value',
 });
@@ -730,11 +741,13 @@ type Vector3DataSource = {
 const dataSource: Vector3DataSource = {
     vector3Value: { x: 100, y: 200, z: 300 },
 };
+const boundData = bindDataSource(propertyPane, dataSource);
+
 // Add a vector3 UI control to the property pane, and tell it which property in the data source
 // it should store the vector3 value in.
 // Note the use of the optional range validators for each component of the vector3 - 
 // allowing the control to do some basic validation of the input
-propertyPane.addVector3(dataSource, 'vector3Value', {
+propertyPane.addVector3(boundData, 'vector3Value', {
     titleStringId: 'NO_ID',
     titleAltText: 'My Vector3 Value',
     minX: -1000, maxX: 1000,
