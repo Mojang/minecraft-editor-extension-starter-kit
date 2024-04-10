@@ -105,7 +105,7 @@ task('clean', () => {
     });
 });
 
-task('superclean', () => {
+task('superclean_task', () => {
     rimraf('node_modules', {}, () => {});
     rimraf('.yarn/cache', {}, () => {});
     rimraf('.yarn/install-state.gz', {}, () => {});
@@ -128,7 +128,7 @@ task('superclean', () => {
     }
 });
 
-task('nuke', series('clean', 'superclean'));
+task('superclean', series('clean', 'superclean_task'));
 
 task('compressTarget', async () => {
     const exeType: string = (argv().exetype as string).toLowerCase();

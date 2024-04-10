@@ -237,6 +237,18 @@ The `Action::onExecute` contains the code that is executed (in this case, it tel
 
 So now, you can activate your Extension using either *(CTRL+SHIFT+E)* or pressing the icon/button on the Tool Palette.
 
+Now that you have an action and have bound that action to the keypress, there's one more thing you can do (this is optional); you can bind that action directly into the tool itself.  This allows the editor system to show the key binding in the tooltip when the user hovers over the tool icon in the Tool Palette.  
+
+```ts
+    const tool = uiSession.toolRail.addTool({
+        displayStringId: 'myExtension.displayName',
+        displayAltText: 'My Extension (CTRL + SHIFT + E)',
+        icon: 'pack://textures/myExtension.png',
+        tooltipStringId: 'myExtension.toolTip',
+        tooltipAltText: 'This is my extension',
+    },
+        toolToggleAction);          // This optional action here provides context to the editor to display the key binding in the tooltip
+```
 
 ### Property Pane
 
@@ -305,6 +317,40 @@ After all that, all we have to do is show the panel...
 
 **NOTE** : When you create a data source binding (`const boundData = bindDataSource(extensionPane, paneData)` - the `boundData` object is a proxy copy of the data that was passed in.  The proxy is attached to the property pane along with the original data object, and the proxy ensures that the data is synchronized between the client and server.
 So, when you make a change to `boundData.myBoolean` on the server - the value of `myBoolean` is then reflected on the client (and presumably the tick box you created).  Similarly, if you change the value of `myBoolean` on the client (by pressing on the tick box), the value is synchronized back to the server and can be read by the server script code.
+
+&nbsp;
+
+**NOTE** : There are two types of property pane in the Editor window layout.
+1. Modal Tool Property Pane
+2. Global Tool Property Pane
+
+The modal tool pane appears on the left side of the display and is associated with the currently selected tool.  It's modal in the sense that it's only visible when the tool is active, and it's mutually exclusive with all other modal tool panes.
+
+The global tool pane appears on the right hand side and is always active (although active, it can be visible or invisible depending on whether the user closed it).  The global tool panes are useful for things which are not directly associated with any active tool (export settings, general locate tools, property editors, etc).
+
+Creating modal or global panes is exactly the same - there's no difference in the API calls to create them, but the user will interact with them differently.
+To make a pane modal, you simply need to bind it to the tool.
+
+```ts
+    const tool = uiSession.toolRail.addTool({
+        displayStringId: 'myExtension.displayName',
+        displayAltText: 'My Extension (CTRL + SHIFT + E)',
+        icon: 'pack://textures/myExtension.png',
+        tooltipStringId: 'myExtension.toolTip',
+        tooltipAltText: 'This is my extension',
+    },
+        toolToggleAction);
+
+    // Create a property pane for our extension
+    const extensionPane = uiSession.createPropertyPane({
+        titleStringId: 'NO_ID',
+        titleAltText: 'My Extension Pane',
+    });
+
+    // Bind the property pane to the tool to make it modal
+    // (and appear on the left side of the screen)
+    tool.bindPropertyPane(extensionPane);
+```
 
 &nbsp;
 

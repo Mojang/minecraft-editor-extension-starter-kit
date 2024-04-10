@@ -144,7 +144,7 @@ Go to the top menu bar and select `Terminal > New Terminal` (or hit `CTRL+~`). (
 
 **Type the following into the terminal.** This will process your project settings and install all of the tools and symbols required by the Extension kit.  
 ```bash
-npm install
+npm install --legacy-peer-deps
 ```
 
 > **Note:** *Technically, the installer does this during the install process - but if you ever change any of the version numbers, dependencies or anything like that - you need to re-run the `install` step to ensure that everything is up to date.*  
