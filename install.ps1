@@ -600,7 +600,7 @@ catch {
 Write-Host "[ Setting up dev dependencies ]"
 try {
     Push-Location $projectLocation
-    npm install
+    npm install --legacy-peer-deps
 }
 catch {
     Write-Error "There was an issue installing npm package cache. You may have to do it manually."
