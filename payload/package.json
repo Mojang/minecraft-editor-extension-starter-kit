@@ -7,8 +7,8 @@
 	"main": "lib/index.js",
 	"types": "lib/editor.d.ts",
 	"devDependencies": {
-		"@minecraft/server": "^1.12.0-beta.1.21.0-preview.21",
-		"@minecraft/server-editor": "^0.1.0-beta.1.21.0-preview.21",
+		"@minecraft/server": "^1.12.0-beta.1.21.0-preview.22",
+		"@minecraft/server-editor": "^0.1.0-beta.1.21.0-preview.22",
 		"@minecraft/vanilla-data": "1.20.40",
 		"@minecraft/math": "^1.1.0-beta",
 		"@types/node": "^12.12.7",
@@ -30,7 +30,7 @@
 	"scripts": {
 		"prepare": "CheckNetIsolation.exe LoopbackExempt -a -p=S-1-15-2-424268864-5579737-879501358-346833251-474568803-887069379-4040235476 && just-scripts prepare --exetype uwp --forceprepare",
 		"clean": "just-scripts clean",
-		"superclean": "just-scripts superclean",
+		"nuke": "just-scripts nuke",
 		"build": "just-scripts build --exetype uwp",
 		"make-addon": "just-scripts make-addon --exetype uwp",
 		"launch": "powershell.exe -File \"./launch-editor.ps1\"",
