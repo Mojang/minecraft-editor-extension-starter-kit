@@ -78,38 +78,6 @@
 		"entry_file": "portal-generator.ts"
 	},
 	{
-		"name": "Simple Empty",
-		"target_name": "simple-empty",
-		"short_description": "A very basic, empty example of the Simple Tool wrapper",
-		"string_prefix": "sample.simpleempty",
-		"entry_point": "registerSimpleEmptyTool",
-		"assets": [
-			"**/simple-empty*.{png,jpg,jpeg}"
-		],
-		"sort_order": 10,
-		"entry_file": "SimpleEmptyTool.ts"
-	},
-	{
-		"name": "Simple Locate Biome",
-		"target_name": "simple-locate",
-		"short_description": "A Simple Tool Wrapper example demonstrating multiple sub-panes and accessing the Biome API",
-		"string_prefix": "sample.simplelocate",
-		"entry_point": "registerSimpleLocateBiomeTool",
-		"assets": [],
-		"sort_order": 10,
-		"entry_file": "SimpleLocateBiome.ts"
-	},
-	{
-		"name": "Star Brush Shape",
-		"target_name": "star-brush-shape",
-		"short_description": "Adds a star brush shape to the new brush shape manager",
-		"string_prefix": "sample.starbrushshape",
-		"entry_point": "registerStarBrushExtension",
-		"assets": [],
-		"sort_order": 10,
-		"entry_file": "star-brush-shape.ts"
-	},
-	{
 		"name": "Tree Generator",
 		"target_name": "tree-generator",
 		"short_description": "Generate whole trees from a single click",
