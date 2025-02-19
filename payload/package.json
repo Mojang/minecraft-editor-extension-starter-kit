@@ -7,8 +7,8 @@
 	"main": "lib/index.js",
 	"types": "lib/editor.d.ts",
 	"devDependencies": {
-		"@minecraft/server": "^1.18.0-beta.1.21.60-preview.25",
-		"@minecraft/server-editor": "^0.1.0-beta.1.21.60-preview.25",
+		"@minecraft/server": "^1.18.0-beta.1.21.61",
+		"@minecraft/server-editor": "^0.1.0-beta.1.21.61",
 		"@minecraft/vanilla-data": "^1.20.70",
 		"@minecraft/math": "^1.1.0-beta",
 		"@types/node": "^12.12.7",
