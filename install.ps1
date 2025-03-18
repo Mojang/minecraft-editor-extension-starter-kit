@@ -600,6 +600,7 @@ catch {
 Write-Host "[ Setting up dev dependencies ]"
 try {
     Push-Location $projectLocation
+    npm cache clean --force
     npm install --legacy-peer-deps
 }
 catch {
