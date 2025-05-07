@@ -100,16 +100,6 @@
 		"entry_file": "SimpleLocateBiome.ts"
 	},
 	{
-		"name": "Star Brush Shape",
-		"target_name": "star-brush-shape",
-		"short_description": "Adds a star brush shape to the new brush shape manager",
-		"string_prefix": "sample.starbrushshape",
-		"entry_point": "registerStarBrushExtension",
-		"assets": [],
-		"sort_order": 10,
-		"entry_file": "star-brush-shape.ts"
-	},
-	{
 		"name": "Tree Generator",
 		"target_name": "tree-generator",
 		"short_description": "Generate whole trees from a single click",
