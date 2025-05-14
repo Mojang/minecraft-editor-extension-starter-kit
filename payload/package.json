@@ -7,8 +7,8 @@
 	"main": "lib/index.js",
 	"types": "lib/editor.d.ts",
 	"devDependencies": {
-		"@minecraft/server": "^2.0.0-beta.1.21.70-preview.26",
-		"@minecraft/server-editor": "^0.1.0-beta.1.21.70-preview.26",
+		"@minecraft/server": "^2.0.0-beta.1.21.81",
+		"@minecraft/server-editor": "^0.1.0-beta.1.21.81",
 		"@minecraft/vanilla-data": "^1.20.70",
 		"@minecraft/math": "^1.1.0-beta",
 		"@types/node": "^12.12.7",
@@ -24,9 +24,8 @@
 		"typescript": "^5.5.2",
 		"webpack": "^5.86.0",
 		"archiver": "^5.3.1",
-		"tslib": "^2.4.0",
-		"ajv": "^8.13.0"
-},
+		"tslib": "^2.4.0"
+	},
 	"scripts": {
 		"prepare": "CheckNetIsolation.exe LoopbackExempt -a -p=S-1-15-2-424268864-5579737-879501358-346833251-474568803-887069379-4040235476 && just-scripts prepare --exetype uwp --forceprepare",
 		"clean": "just-scripts clean",
