@@ -35,11 +35,11 @@
 	"dependencies": [
 		{
 			"module_name": "@minecraft/server-editor",
-			"version": "0.1.0-beta"
+			"version": "beta"
 		},
 		{
 			"module_name": "@minecraft/server",
-			"version": "2.0.0-beta"
+			"version": "beta"
 		}
 	]
 }
